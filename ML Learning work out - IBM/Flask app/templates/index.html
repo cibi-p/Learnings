@@ -1,0 +1,100 @@
+<html>
+<head>
+  <title>Predict the Profit</title>
+  <style>
+    body{
+      text-align:center;
+      background-color:#BCE29E;
+    }
+    h1{
+      color:#395144;
+      font-size:32px;
+      padding:20px;
+      margin-top:30px;
+    }
+    .ms p{
+      color:#0F3D3E;
+      font-size:20px;
+      font-weight:bold;
+      display:inline-block;
+      width:200px;
+    }
+    .ms input{
+      width:150px;
+      height:35px;
+      border-radius:10px;
+      border:2px solid #395144;
+      background-color:#BCE29E;
+      color:#AC7088;
+      font-weight:bold;
+      font-size:16px;
+      padding:2px 10px;
+      display:inline-block;
+      margin-left:10px;
+    }
+    .ms select{
+      width:150px;
+      height:35px;
+      border-radius:10px;
+      border:2px solid #395144;
+      background-color:#BCE29E;
+      color:#AC7088;
+      font-weight:bold;
+      font-size:16px;
+      padding:2px 10px;
+      display:inline-block;
+      margin-left:10px;
+    }
+    .container{
+      display: block;
+      margin: 0 auto;
+      background-color: white;
+      text-align: left;
+      padding: 20px 50px;
+      width: max-content;
+      border-radius: 10px;
+    }
+    .ms{
+      display: block;
+      width: max-content;
+    }
+    input[type="submit"]{
+      background-color:#395144 !important;
+      color:white;
+      border:none;
+      border-radius:5px;
+      padding:10px 20px;
+      font-size:16px;
+      font-weight:bold;
+      display:block;
+      margin:20px auto;
+    }
+  </style>
+</head>
+<body>
+  <h1>ML model to predict the profit</h1>
+  <form action = "/login" method="post">
+    <div class="container">
+      <div class="ms">
+        <label><p>Marketing Spend: </p><input type="text" name="ms" /></label>
+      </div>
+      <div class="ms as">
+        <label><p>Administration Spend: </p><input type="text" name="as" /></label>
+      </div>
+      <div class="ms rd">
+        <label><p>R & D Spend: </p><input type="text" name="rd" /></label>
+      </div>
+      <div class="ms">
+        <label><p>Choose the State:</p>
+        <select name = "s">
+          <option value ="cal">California</option>
+          <option value ="flo">Florida</option>
+          <option value ="ny">New York</option>
+        </select>
+      </div>
+      <input type="submit" value="submit"/>
+    </div>
+  </form>
+  <b>{{y}}</b>
+</body>
+</html>
