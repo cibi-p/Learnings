@@ -101,19 +101,19 @@ Z-Score is used to normalise the data it means, it will transform the non-normal
 ### Central limit theorem
 The central limit theorem states that whenever a random sample of size n is taken  from any distribution with mean and variance, then the sample mean will be approximately normally distributed with mean and variance. The larger the value of the sample size, the better the approximation to the normal.
 
-
-
+![](img/img2.png)
+![](img/img3.png)
 
 
 ### Hypothesis testing
 
 
 ### Correlation
-
+![](img/img4.png)
 
 
 ### Regression
-
+![](img/img5.png)
 
 
 
@@ -122,7 +122,7 @@ The central limit theorem states that whenever a random sample of size n is take
 
 
 ### One  Hot Encoding
-
+![](img/img6.png)
 
 ### Calculus
 Calculus  plays an integral role in understanding the internal workings of machine learning algorithm, such as the gradient descent algorithm that minimizes an error function based on the comutation of the rate of change.
@@ -139,7 +139,7 @@ The calculation of the partial derivative another important concept in calculus 
 
 
 ### Steps in pre-processing data
-
+![](img/img7.png)
 Data Integration
 Data Cleaning
 Data Transformation
@@ -181,10 +181,10 @@ If we have the historical data but we dont have the output variable in the data,
 It automatically learned by its own experience. 
 
 
-#Supervised Machine Learning:
+# Supervised Machine Learning:
 1. Regression(use this when 1. output variable is continuous)
 Classification(use when the data is discrete or categorical)
-
+![](img/img8.png)
 
 1. Regression
 
