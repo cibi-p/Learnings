@@ -96,7 +96,7 @@ A Z-Score is a numerical measurement that describe a value’s relationship to t
 Z-Score is used to normalise the data it means, it will transform the non-normal distribution data into normally distributed data
 ![image](https://user-images.githubusercontent.com/57592824/212355291-ad51a4a1-85a5-4a38-9376-af5b9962d88e.png)
 
-![](img/img1.png)
+![](https://raw.githubusercontent.com/broharigunda/Learnings/master/ML%20Learning%20work%20out%20-%20IBM/img/img1.png)
 
 ### Central limit theorem
 The central limit theorem states that whenever a random sample of size n is taken  from any distribution with mean and variance, then the sample mean will be approximately normally distributed with mean and variance. The larger the value of the sample size, the better the approximation to the normal.
