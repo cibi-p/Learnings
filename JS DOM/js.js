@@ -9,3 +9,30 @@ console.log(ul.childNodes);
 console.log(ul.children);
 
 li.classList.add('text');
+
+let btn2=document.querySelector(".btn-2");
+btn2.addEventListener("click", hello2);
+const liattri=document.getElementsByClassName("text");
+function hello()
+{
+    alert("hello");
+}
+function hello2()
+{
+    alert("inline buttorn alert");
+}
+
+var k=0;
+function cc(){
+    if(k==0){
+        k=1;
+    for (var i=0; i<liattri.length; i++)
+        liattri[i].style.color="green";
+    
+    }
+    else{
+        k=0;
+    for (var i=0; i<liattri.length; i++)
+        liattri[i].style.color="pink";
+    }
+}
