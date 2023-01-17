@@ -23,16 +23,20 @@ function hello2()
 }
 
 var k=0;
+let bt3=document.getElementById("bt-3");
+console.log(bt3);
 function cc(){
     if(k==0){
         k=1;
     for (var i=0; i<liattri.length; i++)
         liattri[i].style.color="green";
-    
+    bt3.innerText = "change text color to pink";
     }
     else{
         k=0;
     for (var i=0; i<liattri.length; i++)
         liattri[i].style.color="pink";
+        bt3.innerText = "change text color to red";
     }
+    console.log(bt3);
 }
