@@ -35,7 +35,7 @@ Convert character to number (ex: A to 1 ... z to 26)
 so C-3, L-12, A-1, 2-19
     3+12+1+19+19 = 54
 similarly
-B-2, D-4, L-12, 20
+B-2, D-4, L-12, T-20
     2+4+12+20 = 38
 ```
 It can be classified into:
