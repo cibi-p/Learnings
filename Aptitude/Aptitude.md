@@ -111,8 +111,6 @@ Binary value of 8 is 1000;
 similarly, binary value of 7 is 111;
 
 so the answer is 111
-
-
 ```
 ## **2. Quantitative**
 ### **1. Number System**
