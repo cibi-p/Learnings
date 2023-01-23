@@ -137,3 +137,21 @@ Enter 1:
 2
 You are not pressed 1
 ```
+
+### **Primitive Data Types in Java**
+1. Integer Data type
+     Data Type | Size | Range
+     -|-|-
+     byte| 1byte | (2^8)/2 to ((2^8)/2)-1
+     short | 2bytes | (2^(2x8))/2 to ((2^(2x8))/2)-1
+     int | 4bytes | (2^(4x8))/2 to ((2^(4x8))/2)-1
+     long | 8 bytes | (2^(8x8))/2 to ((2^(8x8))/2)-1
+2. Decimal Data type
+    Data Type | Size | Range
+     -|-|-
+    - float
+    - double
+3. character
+    Data Type | Size | Range
+     -|-|-
+4. Boolean

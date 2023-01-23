@@ -119,5 +119,49 @@ so the answer is 111
 3. Divisibility Rule
 4. Remainders
 5. Finding Unit Digits
-#### 1. Simplification
- Here the equation is given and ask you to solve the equation or simpliy the equation to find the value (ex: X);
+#### **1. Simplification**
+ Here the equation is given and ask you to solve the equation or simply the equation to find the value (ex: X);
+
+#### **2. LCM/HCF**
+**LCM** is Least Common Multiple. It is also known as the LCD(least Common divisor).
+Consider we need to find LCM of 8,15
+To find the LCM we need to list the multiples of 8 and 5
+
+8-> 8, 16, 24, 32, **40**, 48, 56, 64, 72, 80,...
+
+5-> 5, 10, 15, 20, 25, 30, 35, **40**, 50,...
+
+You can see that the 40 is the lest number that can dived by 8 and 5.
+
+Lets find the LCM fro 20, 16
+20-> 40, 60, 80, 100, 120, 140, **160**, 180,...
+16-> 16,32,48,64,80,96,112,128,144,**160**,176,...
+
+other method for solving LCM
+![LCM](img/LCM.png)
+
+Sample Questions:
+<details><summary>1. Five bells start tolling at the same time and they toll after 5,6,15,30,25 seconds respectively. when will they toll together again for the first time</summary>
+LCM of the above number gives the answer. (when it will ring all at the same time)
+
+![LCM](img/LCM2.png)
+
+At 450th Second all the bell will ring together.
+</details>
+
+<details><summary>2. Find the smallest number which when divided by 12,15,18,60 leaves a remainder of 5 in each case.</summary>
+(Here % is considered as the operator that produce the remainder of the two number ex: remainder of 6/5 is 1, which is mentioned as 6%5=1)
+Given we need to find the number N, that produce
+N%12=5, N%15=5, N%18=5, N%60 =5.
+
+To do so if we find the LCM, (which all the number is divisible) that gives the remainder of 0.
+so if we add LCM with 5, then we get the remainder of 5.
+
+since, LCM(12,15,18,60)=180
+
+so the ans will be LCM+5=185.
+
+185%12=5, 185%15=5, 185%18=5, 185%60 =5.
+</details>
+
+**HCF** Highest common Factor
