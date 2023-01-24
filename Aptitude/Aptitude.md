@@ -10,12 +10,12 @@ ex: 1,23,234,? find the pattern, what will be the next number
 
 To solve this type of question we go through below list of option
 check weather,
-1. Addition/subraction of consequtive number form a patter
+1. Addition/subtraction of consecutive number form a patter
 2. even number or odd number form the patter
 3. there is pattern by dividing the number or multiplying the number
 4. the power to the certain number forms the pattern
 5. combination of above four forms a pattern
-6. check pattern in prime number, fibinocci number
+6. check pattern in prime number, fibonacci number
 7. Random patter combination of all
 
 ### **2. Analogy and odd man out**
@@ -39,7 +39,7 @@ B-2, D-4, L-12, T-20
     2+4+12+20 = 38
 ```
 It can be classified into:
-1. knowladge based Analogy
+1. knowledge based Analogy
 2. Alphabet based Analogy
 3. Number based Analogy
 
@@ -47,7 +47,7 @@ It can be classified into:
 ```
 1. Ashes:Cricket:: Grand Slam: _______
 
-(for this type of question general Knowladge is used)
+(for this type of question general Knowledge is used)
 
 Ashes is the test cricket series played between England and Australia,
 Grand Slam in tennis is the achievement of winning all four major championships in a calendar year.
@@ -78,15 +78,15 @@ NWVMH is the answer
 
 2. Y:E::__:D
 
-Y is 25th, E is 5th position in the alphabet seriest
+Y is 25th, E is 5th position in the alphabet series
 
 5^2 = 25;
 
-similay,
+similarly,
 D is 4th position in Alphabet series.
 
 4^2 =16 
-P is the 16th posistion in the alphabet series.
+P is the 16th position in the alphabet series.
 answer: P
 ```
 
@@ -138,18 +138,22 @@ Lets find the LCM fro 20, 16
 16-> 16,32,48,64,80,96,112,128,144,**160**,176,...
 
 other method for solving LCM
-![LCM](img/LCM.png)
+<img src="img/LCM.png" width =250px)/>
+
 
 Sample Questions:
-<details><summary>1. Five bells start tolling at the same time and they toll after 5,6,15,30,25 seconds respectively. when will they toll together again for the first time</summary>
+<details><summary>1. Five bells start tolling at the same time and they toll after 5,6,15,30,25 seconds respectively. when will they toll together again for the first time</summary><br />
+
 LCM of the above number gives the answer. (when it will ring all at the same time)
 
-![LCM](img/LCM2.png)
+<img src="img/LCM2.png" width =250px)/>
+
 
 At 450th Second all the bell will ring together.
 </details>
 
-<details><summary>2. Find the smallest number which when divided by 12,15,18,60 leaves a remainder of 5 in each case.</summary>
+<details><summary>2. Find the smallest number which when divided by 12,15,18,60 leaves a remainder of 5 in each case.</summary><br/>
+
 (Here % is considered as the operator that produce the remainder of the two number ex: remainder of 6/5 is 1, which is mentioned as 6%5=1)
 Given we need to find the number N, that produce
 N%12=5, N%15=5, N%18=5, N%60 =5.
@@ -162,6 +166,24 @@ since, LCM(12,15,18,60)=180
 so the ans will be LCM+5=185.
 
 185%12=5, 185%15=5, 185%18=5, 185%60 =5.
-</details>
+</details>    
+<br />
 
-**HCF** Highest common Factor
+---
+**HCF** (Highest common Factor) or GCD (Great Common Divisor)
+suppose if two number are given, Highest number that divides the given number is known as the HCF
+ex: to find HCF of 60,75
+60<-- 30, 20, **15**, 12, 10, 5, 3, 2
+75<-- 25, **15**, 5
+
+60%X=0, where x= 30, 20, 15, 12, 10, 5,3,2
+75%Y=0, where Y=25,15,5
+
+you can see that 15 is the highest number, that can divide both 60 and 75.
+
+Now we understand what is HCF,
+Let see the other simple method.
+
+<img src="img/HCF.png" width =250px)/>
+
+#### **3. Divisibility Rule**
