@@ -106,8 +106,8 @@ multiplication of the number is 36
 Division of the number is 1     
 ```
 
-#### **Control Structure(If-else)**
-
+### **Control Structure**
+#### **If-Else**
 ```java
 import java.util.Scanner;
 
@@ -117,9 +117,13 @@ class demo{
         System.out.println("Enter 1:");
         int a=scan.nextInt();
         if(a==1)
+        {
             System.out.println("You Pressed 1");
+        }
         else
+        {
             System.out.println("You are not pressed 1");
+        }
     }
 }
 ```
@@ -138,20 +142,52 @@ Enter 1:
 You are not pressed 1
 ```
 
+#### **if-else if-else**
+```java
+//Here in the below if not use angular backet for if, because if there there is one statement in if condition, it is not compulsory to put angular bracket, if there is two statement then angular backet is compulsory.
+if(num==1)
+    System.out.println("1 pressed ");
+else if(num==2)
+{
+    System.out.println("2 pressed ");
+    System.out.println("try to press 1");
+}
+else if(num>=3 && num<10)
+    System.out.println("you pressed the number between 3 and 10");
+else
+    System.out.println("you should press number less than 10")
+
 ### **Primitive Data Types in Java**
 1. Integer Data type
-     Data Type | Size | Range
-     -|-|-
-     byte| 1byte | (2^8)/2 to ((2^8)/2)-1
-     short | 2bytes | (2^(2x8))/2 to ((2^(2x8))/2)-1
-     int | 4bytes | (2^(4x8))/2 to ((2^(4x8))/2)-1
-     long | 8 bytes | (2^(8x8))/2 to ((2^(8x8))/2)-1
+     Data Type | Size | Range | Emample
+     -|-|-|-
+     byte| 1byte | $\frac{2^8}{2}$ to $\frac{2^8}{2}-1$ | byte age=35;
+     short | 2bytes | $\frac{2^{2*8}}{2}$ to $\frac{2^{2*8}}{2}-1 $ | short year=2023;
+     int | 4bytes |  $\frac{2^{4*8}}{2}$ to $\frac{2^{4*8}}{2}-1 $ | int sal=365000;
+     long | 8 bytes |$\frac{2^{8*8}}{2}$ to $\frac{2^{8*8}}{2}-1 $ | long pop=99999999999999l; //note `small L` in last.
 2. Decimal Data type
-    Data Type | Size | Range
+    Data Type | Size |Example
      -|-|-
-    - float
-    - double
+    float | 4 bytes | float g=9.8f;
+    double |8 bytes | double pi=3.14159265359;
 3. character
-    Data Type | Size | Range
+    Data Type | Size | Example
      -|-|-
+     char | 2bytes | char gen = 'M';
 4. Boolean
+    Data Type | Size | Example
+     -|-|-
+     Boolean | 1bit | boolean isMarried=false;
+<br />
+
+#### **Typecasting**
+implicit typecasting
+```java
+int salary=365000;
+double dupSalary=salary; //this is known as type casting
+```
+explicit typecasting
+```java
+double pi=3.14;
+int dupPi = (int)pi;
+ //if not put (int), it shows error because size of double is more than int

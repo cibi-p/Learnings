@@ -187,3 +187,31 @@ Let see the other simple method.
 <img src="img/HCF.png" width =250px)/>
 
 #### **3. Divisibility Rule**
+ex: if 853 is divisible by 2 or not? **Ans: No**
+
+Number | Divisibility Rule | Example
+:-:|-|-
+2 | Last digit must be even | 14/2 is divisible , 15/2 is not
+3 | if sum of digits is multiple of 3| 853/3, 8+5+3=16 (16 is divisible by 3) so 853 is divisible by 3
+4 |last two digit of the number is multiple of 4 | 819764 (last two digit is 64, 64 is the multiple of 4, so 819764 is the multiple of 4)
+5 | last digit must be 5 or 0| 85,90 are multiple of 5
+6 | number is divisible by 2 and 3| 186 is divisible by 2 and 3, so it is multiple of 6
+8 | last 3 digit is divisible by 8 | 815762 (762 is divisible of 8), so the given number is divisible of 8
+9 | Sum of digit should be a divisible of 9 | 7164 is divisible by 9 because 7+1+6+4=18, which is divisible by 9
+11 | difference in sum of the number at alternate place is 0 or multiple of 11 | 18425671, (1+4+5+7)-(8+2+6+1)=0. so, the given number is the multiple of 11
+7 | given number is ,separated to 3 digits and there difference between them will be the multiple of 7 | <ul><li>ex1: 891765, 891-765=126, Which is divisible by 7</li><li>875`431`297`818`, (874+297)-(431818)= 77 which is a divisible of 7.</li><li>81764, 081-764=683, not divisible by 7</ul>
+13 | same as 7 but the difference number should be multiple of 13 instead of 7  | 714025, 714-025=689 which is the divisible of 13
+10 | The last digit of the number should be 0 | 890 which is divisible by 10.
+
+#### **Cyclicity of unit digit of a number**
+<sub>Note: unit digit is the last digit in the number. in the number 87654`1`, 1 is the number in the unit place</sub> 
+Number | condition | Example
+:-:|-|-
+2 | unit number of $2^1$, $2^2$, $2^3$, $2^4$ us 2,4,8,6.<ol><li>If the number is of $2^{4k+1}$ then the unit place is 2</li><li>If the number is of $2^{4k+2}$ then the unit place is 4</li><li>If the number is of $2^{4k+3}$ then the unit place is 8</li><li>If the number is of $2^{4k+4}$ then the unit place is 6</li> | $2^4$ is 16, which has the 6 as the number in unit place
+3 | Similary for 3, the unit place of first four power is 3,9,7,1<ol><li>If the number is of $3^{4k+1}$ then the unit place is 3</li><li>If the number is of $3^{4k+2}$ then the unit place is 9</li><li>If the number is of $3^{4k+3}$ then the unit place is 7</li><li>If the number is of $3^{4k+4}$ then the unit place is 1</li> | $3^4$ is 81, which has the unit place of 1.
+4 | <ul><li>if $4^{2k+1}$, the unit digit of the answer is 4</li><li>if $4^{2k}$, the unit digit of the answer is 6</li></ul> | $4^3$ is 6`4`, which as the 4 in the unit place. similarly $4^4$ is 25`6` with unit number of 6.
+5 | $5^n$ always has the unit place of 5. | $5^2$ is 2`5`, 5 is the unit place
+6 | $6^n$ always has the unit place of 6. | $6^2^ is 3`6`, 6 is the unit place
+7 | unit place of $7^1,7^2,7^3,7^4$ is7,9,3,1 respectively and this pattern forms repetatively. use the below condition<br/><ol><li>If the number is $7^{4K+1}$ then unit place is 7</li><li>If the number is $7^{4K+2}$ then unit place is 9</li><li>If the number is $7^{4K+3}$ then unit place is 3</li><li>If the number is $7^{4K+4}$ then unit place is 1</li></ol> | <ul><li> $7^3$ is 343, unit place is 3</li><li>$7^4$ is 2401, unit place has 1</li></ul>
+8 | similarly for 8, <ol><li>$8^{4k+1}$ unit place will be 8</li><li>$8^{4k+2}$ unit place will be 4</li><li>$8^{4k+3}$ unit place will be 2</li><li>$8^{4k+4}$ unit place will be 6</li></ol> | $8^2$ will be 64, 4 is in unit place
+9 | for 9, if the number $9^{2K+1}$, the unit place will be 9, else if $9^(2k+2), the unit place will be 1. | ex: $9^2$ will be 81, the unit place will be 1.
