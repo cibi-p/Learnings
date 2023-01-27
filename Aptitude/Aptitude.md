@@ -215,3 +215,49 @@ Number | condition | Example
 7 | unit place of $7^1,7^2,7^3,7^4$ is7,9,3,1 respectively and this pattern forms repetatively. use the below condition<br/><ol><li>If the number is $7^{4K+1}$ then unit place is 7</li><li>If the number is $7^{4K+2}$ then unit place is 9</li><li>If the number is $7^{4K+3}$ then unit place is 3</li><li>If the number is $7^{4K+4}$ then unit place is 1</li></ol> | <ul><li> $7^3$ is 343, unit place is 3</li><li>$7^4$ is 2401, unit place has 1</li></ul>
 8 | similarly for 8, <ol><li>$8^{4k+1}$ unit place will be 8</li><li>$8^{4k+2}$ unit place will be 4</li><li>$8^{4k+3}$ unit place will be 2</li><li>$8^{4k+4}$ unit place will be 6</li></ol> | $8^2$ will be 64, 4 is in unit place
 9 | for 9, if the number $9^{2K+1}$, the unit place will be 9, else if $9^(2k+2), the unit place will be 1. | ex: $9^2$ will be 81, the unit place will be 1.
+
+
+#### **Remainder**
+if we divide 17/5, 2 will be the remainder
+![remainder](img/remainder.png)
+
+from the above example we can say $17=5*3+2$  
+since, Dividend = Divisor*Quotient + Remainder
+
+**Addition Property of Remainder**   
+<mark>
+Remainder ($\frac{A+B}{D}$)=Remainder($\frac{A}{D}$)+Remainder($\frac{B}{D}$)
+</mark>  
+If the sum of remainder is greater than or equal to D, then again the remainder is take for the sum.
+ex:  
+Assume remainder of 17, 16, 41 divided by 3 will be 2, 1, 2 respectively.
+therefore,  
+Remainder ($\frac{17+16+41}{3}$)=Remainder($\frac{17}{3}$)+Remainder($\frac{16}{3}$)+Remainder($\frac{41}{3}$)
+$  
+=2+1+2         
+=5
+$ 
+The sum is 5 which is greater than D(here D>=3). 
+$Remainder(\frac{5}{3})$ is 2.
+so, 2 is the answer.
+
+**Multiplication Property of Remainder**  
+<mark>
+Remainder($\frac{A*B}{D}$)=Remainder($\frac{A}D$)\*Remainder($\frac{B}D$), similarly if the answer is greater than or equal to D, Then again remainder should be taken
+</mark>   
+ex:  
+Remainder($\frac{137*151*163}{5}$)=Remainder($\frac{137}{5}$)+Remainder($\frac{151}{5}$)+Remainder($\frac{163}{5}$) 
+= 2*1*3
+= 6
+which is greater than D (D=5)
+so the remainder of(6/5)=1
+so the answer will be 1.
+
+#### **Negative Remainder**
+Normal remainder is 17 = 5\*3 + 2;  
+Negative Remainder is 17 = 5\*4 - 3;  
+We can continue the above as,  
+17=5\*2+7;
+17=5\*5-8;
+if we continue the remainder could get increase for normal remainder, and decrease for Negative remainder by D(here, D=5);
+=remainder&plusmn;kD, Where k=1,2,3...   

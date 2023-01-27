@@ -156,7 +156,7 @@ else if(num>=3 && num<10)
     System.out.println("you pressed the number between 3 and 10");
 else
     System.out.println("you should press number less than 10")
-
+```
 ### **Primitive Data Types in Java**
 1. Integer Data type
      Data Type | Size | Range | Emample
@@ -191,3 +191,37 @@ explicit typecasting
 double pi=3.14;
 int dupPi = (int)pi;
  //if not put (int), it shows error because size of double is more than int
+```
+#### **dividing 2 integer**
+Suppose you want to divide two number and try to store it in double, you write code as below
+```java
+int a=16;
+double b=a/3; //b=5.0
+```
+The above code is wrong it store 5.0 in b. if we need to get a accurate decimal value, the numerator or denominator must be an float number
+```java
+int a=16;
+double b=a/3.0; //b=5.3333333333
+```
+#### **Scanner in Java**
+```java
+import java.util.Scanner;
+class scan_java
+{
+    public static void main(String args[])
+    {
+        Scanner scan=new Scanner(System.in);
+        int a=scan.nextInt(); //get integer
+        byte b= scan.nextByte(); //get byte
+        float c=scan.nextFloat(); //get float number
+        String d=scan.nextLine(); //get the string
+        char e=scan.next().charAt(0); //get the character
+        long f=scan.nextLong(); //get the long value
+        double g=scan.nextDouble(); //get the double value
+    }
+}
+```
+
+### **Object Oriented Programming**
+- It is used to solve real-world problems
+- object is the real world entity like pen, car, person, animal... etc
