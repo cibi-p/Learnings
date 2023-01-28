@@ -203,6 +203,43 @@ Number | Divisibility Rule | Example
 13 | same as 7 but the difference number should be multiple of 13 instead of 7  | 714025, 714-025=689 which is the divisible of 13
 10 | The last digit of the number should be 0 | 890 which is divisible by 10.
 
+**Divisibility rules for power of 2 & 5**
+Powers of 2 |Powers of 5 | Condition 
+-|-|-
+2^1 = 2 | 5^1=5 | Last 1 digit should be divisible by the divisor
+2^2 = 4 | 5^1=25 | Last 2 digit should be divisible by divisor 
+2^3 = 8 | 5^1=125 | Last 3 digit should be divisible by divisor 
+2^4 = 16 | 5^1=625 | Last 4 digit should be divisible by divisor 
+... | ... | ...
+and so on...
+
+**Cutting Method (applicable for any number) For 7 it is simple**  
+Consider, the below problem.
+![divisible image](img/divisible.png)
+
+**Rules for numbers such as 6, 12, 48, 72**
+<details><summary>Co-Prime Numbers</summary>
+Pair of such numbers whose only common factor is 1<br/>
+example:  <br/>
+consider 21 and 22  <br/>
+The factor of 21 are 1,3,7,21  <br/>
+The factor of 22 are 1,2,11,22  <br/>
+There is only one common factor of 21 and 22 which is 1.
+so 21 and 22 are co-prime.  <br/>
+Other-example:  <br/>
+consider 21 and 27  <br/>
+The factor of 21 are 1,3,7,21  <br/>
+The factor of 27 are 1,3,9,27  <br/>
+Here there are two common factors 1 and 3, so no common factor. so 21 and 27 or not a co-prime number<br/>
+</details>
+
+To find the divisibility of the number 6, 12, 48, 72 we need to find the co prime numbers.
+for example co-prime of 6 is 2 and 3, If the given number is divisible by 2 and 3 then it also divide by 6.
+
+similarly for 12, the co-prime are 4 and 3.
+48, the co-prime are 3 and 16
+72, co-prime are 8 and 9.
+
 #### **Cyclicity of unit digit of a number**
 <sub>Note: unit digit is the last digit in the number. in the number 87654`1`, 1 is the number in the unit place</sub> 
 Number | condition | Example

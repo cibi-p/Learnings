@@ -155,30 +155,65 @@ else if(num==2)
 else if(num>=3 && num<10)
     System.out.println("you pressed the number between 3 and 10");
 else
-    System.out.println("you should press number less than 10")
+    System.out.println("you should press number less than 10");
 ```
+
+#### **Switch - Case**
+It works same as the if-else if-else  
+ex:
+```java
+import java.util.Scanner;
+class Main
+{
+public static void main(String args[])
+    {
+        Scanner sc=new Scanner(System.in);
+        int a=sc.nextInt();
+        switch(a)
+        {
+            case 1:
+                System.out.println("pressed 1");
+                break; //if break is not suppose a=1, then it print all the cases from, to avoid this we use break.
+            case 2:
+                System.out.println("pressed 2");
+                break;
+            case 3:
+                System.out.println("pressed 3");
+                
+                System.out.println("hello1");
+                break;
+            default:
+                System.out.println(" press 1 or 2 or 3");
+        }
+    }
+}
+```
+
 ### **Primitive Data Types in Java**
 1. Integer Data type
-     Data Type | Size | Range | Emample
+     Data Type | Size | Range | Example
      -|-|-|-
      byte| 1byte | $\frac{2^8}{2}$ to $\frac{2^8}{2}-1$ | byte age=35;
      short | 2bytes | $\frac{2^{2*8}}{2}$ to $\frac{2^{2*8}}{2}-1 $ | short year=2023;
      int | 4bytes |  $\frac{2^{4*8}}{2}$ to $\frac{2^{4*8}}{2}-1 $ | int sal=365000;
      long | 8 bytes |$\frac{2^{8*8}}{2}$ to $\frac{2^{8*8}}{2}-1 $ | long pop=99999999999999l; //note `small L` in last.
+
 2. Decimal Data type
     Data Type | Size |Example
      -|-|-
     float | 4 bytes | float g=9.8f;
     double |8 bytes | double pi=3.14159265359;
+
 3. character
     Data Type | Size | Example
      -|-|-
      char | 2bytes | char gen = 'M';
+
 4. Boolean
     Data Type | Size | Example
      -|-|-
      Boolean | 1bit | boolean isMarried=false;
-<br />
+
 
 #### **Typecasting**
 implicit typecasting
@@ -222,6 +257,66 @@ class scan_java
 }
 ```
 
+### **Looping in java**
+loops available in java
+- for
+- do
+- while
+
+**for**  
+syntax
+```java
+for(initialization; condition; increment/decrement)
+{
+    statement;
+}
+```
+```java
+int a=10;  
+for(int b=1;b<=10;b++)
+{
+    System.out.println("Hi"); //Prints hello 5 times
+}
+
+```
+
+
+
 ### **Object Oriented Programming**
 - It is used to solve real-world problems
 - object is the real world entity like pen, car, person, animal... etc
+- Class name should always start with Capital Letter
+```Java
+//class program
+class Car
+{
+    String brand; //state or property
+    String color; //state or property
+    int price; //state or property
+    void accelerate() //behavior or action performed or methods
+    {
+        System.out.println("A car accelerates");
+    }
+}
+class CarApp
+{
+    public static void main(String args[])
+    {
+        Car c=new Car(); //c is the object of car class.
+        c.brand="maruthi";
+        c.color="red";
+        c.price=1200000;
+        System.out.println(c.brand);
+        System.out.println(c.color);
+        System.out.println(c.price);
+        c.accelerate();
+    }
+}
+```
+Output:
+```output
+maruthi
+red
+1200000
+A car accelerates
+```
