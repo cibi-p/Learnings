@@ -257,6 +257,21 @@ class scan_java
 }
 ```
 
+<div style="background-color:#AB7B7B; color:white; padding: 20px;">
+<b>Note:</b> If you scan string, after the scan of integer, you need to use Scan.nextLine(); function before using String name=Scan.nextLine();
+
+<details><summary>Example</summary>
+
+```java
+Scanner scan = new Scanner(System.in);
+int age = scan.nextInt();
+scan.nextLine(); // If we scan string after the integer we need to use this
+int name = scan.nextLine();
+```
+
+</details>
+</div>
+
 ### **Looping in java**
 loops available in java
 - for
@@ -277,10 +292,67 @@ for(int b=1;b<=10;b++)
 {
     System.out.println("Hi"); //Prints hello 5 times
 }
-
+```
+```output
+Hi
+Hi
+Hi
+Hi
+Hi
+Hi
+Hi
+Hi
+Hi
+Hi
 ```
 
+**while**\
+syntax:
+```java
+initialization;
+while(condition)
+{
+    statement;
+    increment/decrement;
+}
+```
 
+**do-while**
+```java
+// The difference between while and do-while is that while checks the condition first and executes the code, but the do-while executes the statements inside do and then checks the condition.
+initialization;
+do{
+    statements;
+    increment/decrement;
+}while(condition);
+```
+**Note:** `Break;` is the keyword used to take the control out of the loop
+
+
+<details>
+<summary>  
+<b>Nested loop</b>
+</summary>
+
+```java
+for(int i=0; i<5; i++)
+{
+    for(int j=0; j<=i; j++)
+    {
+        System.out.print(j+" ");
+    }
+    System.out.print('\n');
+}
+```
+Output:
+```output
+0 
+0 1 
+0 1 2 
+0 1 2 3 
+0 1 2 3 4 
+```
+</details>
 
 ### **Object Oriented Programming**
 - It is used to solve real-world problems
@@ -320,3 +392,80 @@ red
 1200000
 A car accelerates
 ```
+
+#### **Constructor**
+- Constructor is the one first get executed when you create an objet for an class.
+- Name of the constructor is always same as the name of the class.
+- We can use the constructor to initialize the variable, when an object is create.
+```java
+class Teacher
+{
+    String name;
+    String sub;
+    int sal;
+    void teach()
+    {
+        System.out.println("A teacher teaches");
+    }
+    Teacher(String name, String sub, int sal)
+    {
+        this.name=name;
+        this.sub=sub;
+        this.sal=sal;
+    }
+}
+class TeacherApp
+{
+    static void main(String[] args)
+    {
+        Teacher t1=new Teacher("saranya","aptitude",50000);
+        System.out.println(t1.name+" "+t1.sub+" "+t1.sal);
+    }
+}
+```
+```output
+saranya aptitude 50000
+```
+
+### **Array**
+- An array is a collection of items of same data type stored at contiguous memory locations. It makes easy to access the element.
+- An index of the array always start from zero (0).
+
+Example of declaration of array in java
+```java
+int marks[]=new int[5]; //declaration of array
+marks[0]=99; //initializing the array
+marks[1]=95; //initializing the array
+marks[2]=96; //initializing the array
+marks[3]=90; //initializing the array
+marks[4]=79; //initializing the array
+System.out.println(marks[0]+","+marks[1]+","+marks[2]+","+marks[3]+","+marks[4]+","+); //Printing the values in array.
+```
+Functions in array
+```java
+array_name.length // it gives the size of array
+
+```
+Other ways of declaring array
+```java
+int arr[] = new int[5];
+int[] arr = new int[5];
+int arr[] = {1,2,3,4,5};// array creation by intialization;
+```
+**2D Array**
+```java
+String name[][]=new String[2][2];
+name[0][0]="hin";
+name[0][1]="abu";
+name[1][0]="33hin";
+name[1][1]="aeebu";
+System.out.println(name[0][0]+','+name[1][1]+','+name[0][1]+','+name[1][0]+'\n'+name.length+'\n'+name[0].length);
+```output
+hin,aeebu,abu,33hin
+2
+2
+```
+**Drawbacks of Array**
+- it only store the homogeneous data (data of same data type)
+- it size remains fixed.
+- it always work in continuous memory.
