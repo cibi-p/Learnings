@@ -69,7 +69,7 @@ public class demo
 {
     public static void main(String[] args){
         Scanner scan=new Scanner(System.in);
-        System.out.println("Enter 2 numbers");
+        System.out. println("Enter 2 numbers");
         int a=scan.nextInt();
         int b=scan.nextInt();
         int c=a+b;
@@ -354,6 +354,22 @@ Output:
 ```
 </details>
 
+**Labeled for loop**
+When the break statement encountered with the name of the label of loop, it take control out of that loop.-----
+```java
+outer: for(int i=0; i<3;i++) //outer is the label
+{
+    System.out.println(i);
+    inner: for(int j=0; j<3;j++) // inner is the label
+    {
+        System.out.println("Kodenest");
+        break outer;
+    }
+}
+```output
+1
+kodnest
+```
 ### **Object Oriented Programming**
 - It is used to solve real-world problems
 - object is the real world entity like pen, car, person, animal... etc
@@ -469,3 +485,69 @@ hin,aeebu,abu,33hin
 - it only store the homogeneous data (data of same data type)
 - it size remains fixed.
 - it always work in continuous memory.
+
+**Strings**
+String the group of characters encloded with double quote.
+ex:  
+```java
+String a = "Hello"; //Hello is the string that stored in a variable 'a'
+```
+Different ways of initializing string
+```java
+String s1=new String("Java");
+char ch[]={'p','y','t','o','n'}; //Creating string using char.
+String a= "Hello";//It store the string in string pool, but other 2 are not stored in string pool.
+```
+Difference between storing the string in string pool and not in the string pool is that, string pool does not allow the duplicate string.
+```java
+String s1=new String("java");// not stored in string pool
+String s2=new String("java");// not stored in string pool
+String s3 = "Python";//Stored in string pool
+String s4="Python";//stored in string pool
+
+/* As the duplicates are not allowed in string pool,s4 points to the s3 memory address.
+lets check that the s1 and s2 are different and s3 and s4 are same*/
+
+System.out.println(s1==s2);
+System.out.println(s3==s4);
+```
+Output
+```Output
+false
+true
+```
+**Built-in methods of string**
+```java
+String str="Kodnest tech pvt ltd";
+str.toUpperCase(); // convert to capital letter string
+str.toLowerCase(); // Convert to lower case
+str.subString(8,12); // it is used to get sub string, ex: it produce output of "tech", produce the string form index 8 to 11.
+str.subString(8); // it print all the character from the index 8, output: tech pvt ltd;
+str.length(); // return size of the string
+str.contains("t"); //checks whether the given string or character preset in the string
+char ch[]=str.toCharArray(); //convert string to char
+String s[]=str.split(" "); // it covert the string to string array by the position of the given character, here space. output: s={"kodnes","tech","pvt","ltd"};
+String str2=Str.concat(" Software"); // it combaines the two string, output: kodnest tech pvt ltd software
+String Str3=str+" software"; // you can use this to combine two string as concat();
+char ch=str.charAt(5); // It returns the character at index 5.
+```
+**Immutable String**
+Value of the string variable cannot be modified.
+```java
+String s= new String("Java");
+s.concat("python");
+System.out.println(S);
+System.out.println("After the assignment of s=s.concat(\"python\")");
+s=s.concat("python");
+System.out.println(s);
+```
+Output:
+```output
+String s= new String("Java");
+s.concat("python");
+System.out.println(S);
+System.out.println("After the assignment of s=s.concat(\"python\""));
+s=s.concat("python");
+System.out.println(s);
+```
+You can see it does not print Javapython instead it print Java, because it immutable
