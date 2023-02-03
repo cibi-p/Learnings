@@ -551,3 +551,45 @@ s=s.concat("python");
 System.out.println(s);
 ```
 You can see it does not print Javapython instead it print Java, because it immutable
+
+### **Methods(function) in java**
+#### **Types of Methods or function**
+- No return type without arguments
+- No return type but has arguments
+- It has both return type and arguments
+- Has Return type but not has arguments
+
+**No return type without arguments**
+```java
+void method_name()
+{
+    //statements
+}
+```
+**No return type but has arguments**
+```java
+// <datatype> denotes the data types such as int, char,... etc based on the requirements
+void method_name(<datatype> arg1, <datatype> arg2, ...)
+{
+    //statements
+}
+```
+
+**It has both return type and arguments**
+```java
+// <datatype> denotes the data types such as int, char,... etc based on the requirements
+<datatype> method_name(<datatype> arg1, <datatype> arg2, ...)
+{
+    //statements
+    return variable;
+}
+```
+**Has Return type but not has arguments**
+```java
+// <datatype> denotes the data types such as int, char,... etc based on the requirements
+<datatype> method_name()
+{
+    //statements
+    return variable;
+}
+```
