@@ -298,3 +298,184 @@ We can continue the above as,
 17=5\*5-8;
 if we continue the remainder could get increase for normal remainder, and decrease for Negative remainder by D(here, D=5);
 =remainder&plusmn;kD, Where k=1,2,3...   
+
+#### **Finding unit digit**
+We need to find the unit digit of the given expression.\
+
+1. **123+468+983+729+643+249
+To find the unit digit of the above number**\
+     simply we need to add last number, 3+8+3+9+3+9=25, so the answer will be **5**.
+
+2. **Find the unit digit of 686\*1043\*129**\
+    Multiply only last number, $6*3*9$=72, so the answer is **2**
+
+3. **Find the unit digit of $2^{65}$**\
+    Consider $2^x$, where x=1,2,3,4,5,6,7,8,....etc and the unit digit will be 2,4,8,6,2,4,8,6...etc. You can clearly see that 2,4,8,6 is repeated of the powers. we can use this pattern to find the unit digit. 
+    [more info](#cyclicity-of-unit-digit-of-a-number)
+
+    if we divide 65 by 4 (because 2,4,8,6 is this 4 number repeating again) _remainder_ will be 1, we know that unit digit of $2^1$ will be 2, so the answer is **2**
+
+4. **Find the unit digit of $22^{78}$.**\
+    You can consider only the $2^{78}$ instead of $22^{78}$. follow the same step for the problem $2^{65}$, the answer will be **4**
+
+5. **Find the unit digit of $3^{45}+27^{52}$**\
+    you need to 
+    [check this](#cyclicity-of-unit-digit-of-a-number) and you can easily find unit digit of $3^{45},2^{52}$, (here $2^{52}$ is considered instead of $22^{52}$ because we only need unit digit.) is 3 and 1, if we add $3+1$ the answer will be **4**.
+
+### **Percentage**
+If we express the number per hundred is known as percentage\
+ex: 25% is 25/100 which is 1/4
+1. [Basic](#basic-of-percentage)
+2. [Percentage Increase and Percentage Decrease](#percentage-increase-and-percentage-decrease)
+3. [Calculating percentage using fraction](#calculating-percentage-using-fraction)
+4. [Successive percentage change](#successive-percentage-change)
+5. [Increase and Decrease by the same percentage](#increase-and-Decrease-by-the-same-percentage)
+
+#### **Basic-of-percentage**
+1. **Shyam obtained 325 marks out of 400. calculate his percentage?**\
+    $\frac{325}{400}*100$\
+    The answer is 81.25%
+    
+2. **A student scored 65% marks. Total marks were 500. How much did he/she scores?**\
+    $\frac{65}{100}*500$=**325** (he scored 325 mark).
+
+3. **The Heigh of Amithabh 2 years ago was 110cm. Now his Heights is 120cm. Find the percentage is 120cm. Find the percentage change in his height**
+    - Change in height is 120-110=10cm,
+    - Percentage of change is height can be calculated by change in height divided by previous height and then the answer is multiplied by 100.
+    - $\frac{10}{110}*100$ = **9.09%**
+
+4. **Salary of Raja is 9000 per month and rani is 10000 per month**
+- **What percentage is the salary of Rani to that of raja?**
+    - The percentage of rani salary divided by raja salary is the answer
+    - $\frac{10000}{9000}*100$=111.11% (Rani salary 111.11% of the Raja salary)
+- **What percent is the salary of raja to that of rani?**
+    - The percentage of raja salary divide by the rani salary.
+    - $\frac{9000}{10000}*100$=90% (Raja salary is the 90% of the salary of Rani)
+
+5. **Ashwin got an increase of 25 percent on his salary. By what percentage should his salary be decreased to obtain the previous salary?**
+    - consider 100% is the previous salary and (100+25)% is the new salary.
+    - $\frac{25}{100+25}*100$=**20%**
+    - If we decrease 20% from his new salary we got the old salary,
+    - Note: some people think if we reduce 25% from his new salary we got old salary (Because his new salary is increased by old salary), which is wrong **See carefully**, As the amount get increases, the percentage is also get increases.
+    - you can use $\frac{X}{100+X}*100$ this formula to get the answer for this kind of question
+    <details><summary>Analysis with example</summary>
+
+    - Consider x person salary is 10,000
+    - he got hike in 25% of his previous salary (The increment will be $\frac{10000}{100}*25$=2500)
+    - new salary is 10000+2500=12500
+    - To find the percentage reduced to get old salary, to do so we need to find the percentage of 2500(increment) in the new salary 12500
+    - $\frac{2500}{12500}*100$=**20%**
+
+    </details>
+
+6. **Due to poor performance sndhya's salary was reduced by 20% but after few days her salary was changed to original salary. Calculate percentage change in sandhay's salary**
+    - Original Salary is 100%
+    - Salary after reduced 20% is (100-20)%
+    - We asked to find the percentage value required to get the original salary from the salary after reduced
+    - $\frac{20}{100-20}*100$=**25%**.
+    - if we increase the 25% of the salary after reduced we get original salary
+    <details><summary>Analysis with example</summary>
+
+    - Consider x person salary is 10,000
+    - his/her salary reduced by 20% of his previous salary (The new salary will be $\frac{10000}{100}*20$=2000)
+    - new salary is 10000-2000=8000
+    - To find the percentage-hike required to get old salary, to do so we need to find the percentage of 2000(increment) in the new salary 8000
+    - $\frac{2000}{8000}*100$=**25%**
+
+    </details>
+
+#### **Percentage increase and percentage decrease**
+##### Value percentage table:
+Value | Percentage
+-|-
+1/2 | 50%
+1/3 | 33.33%
+1/4 | 20%
+1/5 | 25%
+1/6 | 16.66%
+1/7 | 14.28%
+1/8 | 12.5%
+1/9 | 11.11%
+1/10 | 10%
+1/11 | 9.09%
+1/12 | 8.33%
+
+1. **Consider price of car is increased by 33.33% and the new price is 400, what is the price before**
+    - **Method 1**\
+        Consider old price is x.\
+        x+33.33% of x = 400, which is the new price\
+        if we find percentage value that can be reduced by new price, then we can get the answer from the percentage value.
+        - $\frac{33.33}{100+33.33}*100=24.99$%
+        - (24.99% of the 400) +x=400
+        - $(\frac{24.99}{100}*400)+x=400$
+        - $x=300$, The original price is 300
+    - **Medthod 2(Easy)** 
+        - from the [value percentage table](#value-percentage-table), the percentage of value **1/3** is 33.33%   
+        - x will be the old price.
+        - x+33.33% of x = 400, which is the new price
+        - $(x+x*\frac{1}{3})=400$, 
+        - $x=400*\frac{3}{4}$
+        - **x= 300**, which is the original price.
+
+2. **A price of car is reduced by 33.33% and the new price is 300, what will be the original price**    
+    from the [value percentage table](#value-percentage-table), the percentage of value **1/3** is 33.33%   
+    - x will be the old price.
+    - x-33.33% of x = 300, which is the new price
+    - $(x-x*\frac{1}{3})=300$, 
+    - $x=300*\frac{3}{2}$
+    - **x= 450**, which is the original price.
+3. **A car price is increased by 40% and the price is 280, what will be the original price**
+    - x will be the old price
+    - x+(40% of x)=280
+    - x+$\frac{40}{100}$*x=280
+    - x($\frac{100+40}{100})=280$
+    - **x=200**, which is the original price
+
+4. **A car price is reduced by 60% and the price is 140, what will be the original price**
+    - x will be the old price
+    - x-(60% of x)=140
+    - x-$\frac{60}{100}$*x=140
+    - x*$(\frac{100-60}{100})=140$
+    - **x=350**, which is the original price
+5. **A price of the car is increase by 33.33% in the first month and 16.66% in the second month, now the price is 500. What is the original price of the car?**
+    - x is the original price, y is the amount after 1month
+    - x+(33.33 % of x)+(16.66% of (*x+ 33.33% of x*))=500
+    - from [this table](#value-percentage-table), we get the value of 33.33% and 16.66% is 1/3 and 1/4 respectively.
+    - ($x+x*\frac{1}{3}$)=y
+    - y=x*($1+\frac{1}{3}$)
+    - similarly for second month,
+    - $y+y*\frac{1}{6}=500$
+    - $y(1+\frac{1}{6})=500)$
+    - therfore y=x*($1+\frac{1}{3}$)
+    - x*($1+\frac{1}{3}$)*$(1+\frac{1}{6})$=500,
+    <div style="background-color:#555; color:white; padding:20px; margin:10px;">From the above, if there is a continuous increase  of percentage, then the formula will be 
+    
+    $x*(1+\frac{100}{p1})*(1+\frac{100}{p2})=y$
+    
+    where, 
+    - x is original price,
+    - p1 is the 1st percentage given
+    - p2 is the 2nd percentage given
+    - y is the price at last.
+    
+    </div>
+6. **If a car price is increased by 50% in the 1st month and decreased by 30% in the second month, what will be the net percentage**
+    <div style="background-color:#555; color:white; padding:20px; margin:10px;">
+
+    Formula for net percentage\
+    $netPercentage=p1+p2+\frac{p1*p2}{100}$\
+    where p1 is the first percentage and p2 is the 2nd percentage.
+        
+    </div>
+
+    as per the formula,\
+    $netPercentage=50-60+\frac{50*30}{100}$\
+    netPercentage=+5%
+    
+
+    if in the same question they give the final price of car is 500 find the ori````````````````````ginal price,
+
+    500-(5% of 500) = x, x is the original value, here minus(-) is used, if the netPercentage is positive, plus(+) will be used
+    x=475, where as 5% of 500 is 25.
+
+
