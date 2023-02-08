@@ -593,3 +593,48 @@ void method_name(<datatype> arg1, <datatype> arg2, ...)
     return variable;
 }
 ```
+
+#### **Memory management of methods in java**
+- Functions/methods are stored in stack(ex: main, ... user defined function)
+- class objects are stored in heap (ex: Student name=new Student(); objects are stored in heap)
+
+#### **Method overloading**
+Method overloading refers to the process of having more than one methods having the same function name, but there should be difference in the number of parameter or atleast data type of the one parameter among the methods or function
+ ```java
+ class Sum{
+    void add(int a, int b)
+    {
+        System.out.println(a+b);
+    }
+    void add(int a, int b, int c)
+    {
+        System.out.println(a+b+c);
+    }
+    void add(double a, int b)
+    {
+        System.out.println(a+b);
+    }
+    void add(int a, double b)
+    {
+        System.out.println(a+b);
+    }
+ }
+ class SumApp
+ {
+    public static void(string arg[])
+    {
+        Sum s=new Sum();
+        s.add(10,5);
+        s.add(1,2,3);
+        s.add(10.5,9);
+        s.add(6,17.3);
+    }
+ }
+ ```
+ Output:
+ ```
+ 15
+ 6
+ 19.5
+ 23.3
+ ```
