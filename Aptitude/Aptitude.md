@@ -448,7 +448,7 @@ Value | Percentage
     - $y(1+\frac{1}{6})=500)$
     - therfore y=x*($1+\frac{1}{3}$)
     - x*($1+\frac{1}{3}$)*$(1+\frac{1}{6})$=500,
-    <div style="background-color:#555; color:white; padding:20px; margin:10px;">From the above, if there is a continuous increase  of percentage, then the formula will be 
+    <div style="background-color:#555; color:white; padding:20px; margin:10px;" id="sussive-incr-form">From the above, if there is a continuous increase  of percentage, then the formula will be 
     
     $x*(1+\frac{100}{p1})*(1+\frac{100}{p2})=y$
     
@@ -478,4 +478,122 @@ Value | Percentage
     500-(5% of 500) = x, x is the original value, here minus(-) is used, if the netPercentage is positive, plus(+) will be used
     x=475, where as 5% of 500 is 25.
 
+#### **Calculating percentage using Fraction**
+we are going to use [Value percentage table](#value-percentage-table)
+1.  **50% of 98?**\
+=$\frac{1}{2}*98=49$ from the [table](#value-percentage-table) 50% is 1/2
 
+2. **33.33% of 99**\
+=$\frac{1}{3}*99=33$ from the [table](#value-percentage-table) 33.33% is 1/3
+
+#### **Successive Percentage Change**
+Q1. **Wholesaler sells the watch with 20% profit to the retailer, Retailer sells the watch with 25% profit, the original price of the watch is 100rs. What is the final cost of the watch while reaching customber?**
+- The Original price of the watch is rs100.
+- Wholesaler sells the watch with 20% profit to the retailer
+- So, retailer buy at the price of, $(100+100*\frac{20}{100})$=120 rs.
+- Retailer sells with 25% profit to the Customer
+- So, the final price is $(120+120*\frac{25}{100})$=**150**Rs
+
+    <div style="background-color:#555; color:white; padding:20px; margin:10px;">
+
+    Formula for **Successive increase percentage change**,
+    $FinalPrice=originalCost*(\frac{100+p1}{100})*(\frac{100+p2}{100})$\
+    where p1 is the first increased percentage and p2 is the second increased percentage.
+
+    ---
+    Formula for **Successive increase and decrease percentage**\
+    $FinalPrice=originalCost*(\frac{100+p1}{100})*(\frac{100-p2}{100})$\
+    if p1 is increase percentage and p2 is decrease percentage.
+
+    **Note:** if there is increase percentage we use $\frac{100+p}{100}$ and decrease percentage $\frac{100-p}{100}$, Based on the question you need to modify the questions. See the next question to understand it clearly.
+
+    </div>
+
+Q2. **In certain city population in 1990 is 50,000, it population is increased by 10% in 2000 and decreased by 20% in 2010, what is the population after 2010?**
+Method 1
+- population at 2000 will be
+- $ 50000+50000*\frac{10}{100} = 55000$
+- population at 2010 will be
+- $ 55000-55000*\frac{20}{100}=44000$
+- 44000 is the answer, if they ask net difference the answer will be -6000
+
+Method 2(Easy using formula)
+- $FinalPrice=originalCost*(\frac{100+p1}{100})*(\frac{100-p2}{100})$
+- $=50000*(\frac{100+10}{100})*(\frac{100-20}{100})=44000$
+
+#### **Increase Decrease By Same Percentage**
+Q1. **Price of pen is 100rs and he sells the pen with 20% and he then reduced it by 20% to increase the sale, what will be the final price**
+- 20% increase in price
+    - $100 + 100*\frac{20}{100} = 120$
+- 20% decrease in price
+    - $120 - 120*\frac{20}{100} = 96$
+
+    <div style="background-color:#555; color:white; padding:20px; margin:10px;">
+
+    Fomula for **Net precentage for Increase and Decrease by Same Percentage**\
+    $NetPercentage=(\frac{p}{10})^2$\
+    where p is the given percentage.\
+    **Note:** Here the net percentage always decreases
+    </div>
+
+Method 2
+- From the above formula $NetPercentage=(\frac{20}{10})^2=4$(Decrease in price)
+- $100-100*\frac{4}{100}=96$
+
+Q2. **The population of a town first increases by 10% in 1990 and then decrease by 10% in the year 2000, find the net percentage?**\
+- Consider Previous population percentage is 100%
+- Population increase by 10%
+    - 100%+10% of 100% =110%
+- Population decrease by 10% 
+    - 110% - 10% of 110% = 110 - 110*\frac{10}{100} =99%
+- Net Percent = Previous population percentage - final population percentage
+- = 100-99=**1%**
+
+Method 2
+- using the formula, $NetPercentage=(\frac{p}{10})^2$
+-$NetPercentage=(\frac{10}{10})^2$=**1**%
+
+### **Profit, Loss and Discounts**
+if Cost Price > Selling price, then it is loss and loss=costPrice-sellingPrince\
+if SellingPrice > costPrice, then it is profit and profit = sellingPrice - costPrice\
+Marked Price is the price marked in the price tag,
+Cost price is the price of bought by the retailer
+Selling price is the price given to the customer,
+Note: x% of cost pice is increased and they put in the price tag.\
+y% decreases at the marked price and give to the customer is discount.
+
+<div style="background-color:#555; color:white; padding:20px; margin:10px;">
+
+- Formula for Profit percentage,\
+    $=\frac{Profit}{CP}*100$\
+    where SP is selling price and CP is cost price, _Profit = SP-CP_
+- Formula for Loss percentage\
+    $=\frac{CP-SP}{CP}*100$\
+    where SP is selling price and CP is cost price, _Loss = CP-SP_ 
+</div>
+
+**Successive percentage change**\
+A sells the diamond to B with 20% profit, B sells to C with 25% profit, calulate the finale price, consider the original price is 'p'.
+
+Ans: 
+<details><summary>Formula</summary>
+<div style="background-color:#555; color:white; padding:20px; margin:10px;" id="sussive-incr-form">if there is a continuous increase  of percentage, then the formula will be 
+    
+$x*(1+\frac{100}{p1})*(1+\frac{100}{p2})=y$
+
+where, 
+- x is original price,
+- p1 is the 1st percentage given
+- p2 is the 2nd percentage given
+- y is the price at last.
+
+<a style="color:#aaa" href="#sussive-incr-form">view more</a>
+
+</div>
+</details>
+
+the answer will = $p*\frac{100+20}{100}*\frac{100+25}{100}=1.50*p$
+
+
+
+This is the test to show git branches
