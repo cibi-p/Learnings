@@ -1,6 +1,6 @@
 # Arduino Simple program
 ## Write a program to on an led for 1 second and off for 1 second
-```Arduino
+```c
 void setup() {
 pinMode(13, OUTPUT);
 }
@@ -15,7 +15,7 @@ delay(1000);
 ```
 
 ## Write a program to increase and decrease the brightness of the led.
-```arduino
+```c
 int brightness=0;
 int fadeAmount=5;
 void setup() {
@@ -38,7 +38,7 @@ void loop() {
 ```
 
 ## Write a program to glow a led if an button is pressed.
-```arduino
+```c
 // constants won't change. They're used here to set pin numbers:
 const int buttonPin = 2;     // the number of the pushbutton pin
 const int ledPin =  13;      // the number of the LED pin
@@ -71,7 +71,7 @@ Circuit:
 <img src="https://user-images.githubusercontent.com/57592824/217681638-555b8ba0-e139-4040-9de0-95f5cf14b7fd.png" width=300px>
 
 ## Write a program to on and off the led when the button is pressed(changing the state of an led)
-```arduino
+```c
 #define LED_PIN 13
 #define BUTTON_PIN 2
 byte lastButtonState = LOW;
@@ -93,7 +93,7 @@ void loop() {
 }
 ```
 ## Write a program to make a LED 5times blink when a button is pressed
-```arduino
+```c
 #define LED_PIN 13
 #define BUTTON_PIN 2
 void setup() {
