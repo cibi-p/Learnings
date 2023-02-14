@@ -443,6 +443,198 @@ class TeacherApp
 saranya aptitude 50000
 ```
 
+#### **Encapsulation**
+- Provide a security
+- keyword `private` is used to provide encapsulation, Private method or variable cannot be access outside the class
+```java
+class Priv
+{
+    private int c=1;
+    private int d=1;
+}
+public class Main
+{
+    public static void main(String[] args)
+    {
+        Priv a=new Priv();
+        System.out.println(a.c+a.d);
+    }
+}
+```
+output:
+```java
+Main.java:13: error: c has private access in Priv
+        System.out.println(a.c+a.d);
+                            ^
+Main.java:13: error: d has private access in Priv
+        System.out.println(a.c+a.d);
+                                ^
+2 errors
+```
+
+#### **Inheritance**
+- Derived class can inherit the characteristics of the main class
+```mermaid
+classDiagram
+note "superclass"
+class SuperclassAnimal{
+    Walk()
+    Drink()
+    Eat()
+}
+
+SuperclassAnimal <|-- derivedclass_Dog
+SuperclassAnimal <|-- derivedclass_Fish
+
+class derivedclass_Dog{
+    Bark()
+}
+
+class derivedclass_Fish{
+    swim()
+}
+```
+
+```java
+class Animal
+{
+    void eat()
+    {
+        System.out.println("eat");
+    }   
+    void drink()
+    {
+        System.out.println("Drink");
+    }
+}
+class Dog extends Animal
+{
+    void bark()
+    {
+        System.out.println("Bark");
+    }
+}
+class Fish extends Animal
+{
+    void swim()
+    {
+        System.out.println("swim");
+    }
+}
+class Main
+{
+    public static void main(String[] args)
+    {
+        Dog a=new Dog();
+        a.bark();
+        a.eat();
+        Fish b=new Fish();
+        b.drink();
+        b.swim();
+    }
+}
+```
+Output:
+```
+Bark
+eat
+Drink
+swim
+```
+**Types of Inheritance**
+- Single level Inheritance
+- Multilevel Inheritance
+- Hierarchal Inheritance
+- Hybrid Inheritance
+Note: Multiple and Cyclic Inheritance is not allowed
+**Single Level Inheritance**
+```mermaid
+classDiagram
+class Parents{
+    attitude()
+}
+Parents <|-- Child
+class Child{
+    selfLearning()
+}
+```
+**Multi level Inheritance**
+```mermaid
+classDiagram
+class Animal
+Animal<|--Herbivore
+class Herbivore
+Herbivore<|--rabit
+class rabit
+```
+**Hierarchal Inheritance**
+```mermaid
+classDiagram
+Animal<|--Herbivore
+Animal<|--omnivore
+```
+**Hybrid Inheritance**
+
+Combination of other inheritance
+```mermaid
+classDiagram
+Animal<|--Herbivore
+Herbivore<|--Rabit
+Animal<|--omnivore
+```
+**Types of Methods during Inheritance**
+- Overriding Method
+
+```java
+class Player
+{
+    void exercise()
+    {
+        System.out.println("exercise");
+    }
+    void play()
+    {
+        System.out.println("Play any game");
+    }
+}
+class Cricket extends Player{
+    void play()
+    {
+        System.out.println("Play Cricket");
+    }
+}
+class Football extends Player
+{
+    void play()
+    {
+        System.out.println("Play a foot ball");
+    }
+}
+class Main
+{
+    public static void main(String args[])
+    {
+        Cricket a=new Cricket();
+        a.play();
+        a.exercise();
+        Player b=new Player();
+        b.play();
+        b.exercise();
+        Football c=new Football();
+        c.play();
+        c.exercise();
+    }
+}
+```
+output
+```
+Play Cricket
+exercise
+Play any game
+exercise
+Play a foot ball
+exercise
+```
 ### **Array**
 - An array is a collection of items of same data type stored at contiguous memory locations. It makes easy to access the element.
 - An index of the array always start from zero (0).

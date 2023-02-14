@@ -594,6 +594,242 @@ where,
 
 the answer will = $p*\frac{100+20}{100}*\frac{100+25}{100}=1.50*p$
 
+### **Ration and Proportion**
+Ration is comparison of magnitude of any 2 or more quantities.
+
+**Q1. Ram speed is 60km/h and shyam speed is 80km/h, Find the ratio of speed of Ram to speed of shyam?**
+
+=60:80
+answer will be  3:4
+
+**Q2. 3:4::12:d, find d?**
+
+Can be written as $\frac{3}{4}=\frac{12}{d}$\
+If we solve this answer will be **d=16**
+
+#### **Combining the ratios A:B:C:D**
+**Q3. A:B=2:5, B:C=6:7, what will be A:B:C?**
+
+given,\
+$\frac{A}{B}=\frac{2}{5}$  ---> equation 1
+
+$\frac{B}{C}=\frac{6}{7}$  ---> equation 2
+
+We need to bring the same value for B in equation 1 and 2. to do so multiply and divide by 5 in equation 1, and multiply and divide by 5 in equation 2, we get
+
+equation 1*(6/6) ->> $\frac{A}{B}=\frac{12}{30}$ 
+
+equation 2*(5/5) ->> $\frac{B}{C}=\frac{30}{35}$ 
+
+The answer will be A:B:C=12:30:35
+
+**Simpler version**\
+given
+
+<img src="https://user-images.githubusercontent.com/57592824/218238475-cfe7d87f-6c24-4910-afd9-88052c1e26cc.png" width=200px>
+
+A= 2*6 =12,
+B= 6*5 = 30,
+C= 5*7 = 35
+
+The answer will be 12:30:35
+
+**Q4. Find A:B:C:D, if A:B=2:3, B:C=4:5, C:D=5:6?**
+
+simpler method,\
+<img src="https://user-images.githubusercontent.com/57592824/218239267-daf58e24-b638-4b37-b69a-4474203a3721.png" width=250px>
+
+A= 2*4*5=40\
+B= 3*4*5=60\
+C= 3*5*5=75\
+D= 3*5*6=90
+
+The answer is *40:60:75:90* or *8:12:13:18* (because of divisible of common number 5 in 40:60:75:90)
+
+#### **Dividing a ratio of A:B:C**
+**Q1. Divide 21 chocolate among Ankita and Neha in the ratio of 5:2?**
+
+Explanation:
+
+If ankitha gets 5 chocolate neha only get 2 chocolates from the given question
+
+**so angitha chocolate= 5*3 =15**\
+**neha choloate = 2*3=6**
+
+15+6=21, so there are 21 given chocolates, so we ne to play with the number to get the answer.
+
+**Simpler Method**
+
+<code>
+
+##### **Formula for dividing ratio**
+</code> 
+
+If N is the total Chocolates then divide it by A:B.
+
+Chocolates for A = $\frac{A}{A+B}*N$
+
+Chocolates for B = $\frac{B}{A+B}*N$
+</mark>
+
+---
+Chocolates for Ankita = $\frac{5}{5+2}*21=15$
+
+Chocolates for Neha =$\frac{2}{5+2}*21=3$
+
+**Q2. Divide 1224 into three parts such that first part be double that of second part and second part be one-third of the third part**
+
+given,
+
+$A=2B => \frac{A}{B}=\frac{2}{1}$
+
+$B=\frac{C}{3} => \frac{B}{C}=\frac{1}{3}$
+
+from the above we written as A:B:C = 2:1:3
+
+Using similar [formula](#formula-for-dividing-ratio),
+
+A=$\frac{2}{2+1+3}*1224=408$
+
+B=$\frac{1}{2+1+3}*1224=204$
+
+C=$\frac{3}{2+1+3}*1224=612$ 
+
+### **Average, Mixture and Alligation**
+#### **Alligation Rule**
 
 
-This is the test to show git branches
+**Q1. 1st container contains the 60% of milk and 40$ of water and second container contains 40% of milk and 60% water, Find the ratio of 1container:2container mixing to get the 45% of milk and 55% of the water**
+
+<img src="https://user-images.githubusercontent.com/57592824/218246492-d89ed6e0-b735-41ed-943e-88e215c21104.png" width=400px>
+
+
+**Q2. 1st container has the milk and water in the ratio of 1:2 with 5 liter, and Second Container has the ratio of 4:3, How much we need to take the quantity of the 2nd container to get the mixture of 1:1**
+
+We need to convert the ratio into fraction,\
+Concentration of milk in the first container will be\
+$\frac{milk}{water}=\frac{milk}{milk+water}$\
+=$\frac{1}{2+1}=\frac{1}{3}$
+
+similarly, for second container\
+=$\frac{4}{3+4}=\frac{4}{7}$
+
+similarly for the ratio we need to find 1:1\
+=$\frac{1}{1+1}=\frac{1}{2}$
+
+```mermaid
+flowchart TD
+id1((1/3))
+X1((4/7))
+id1-->id2(1/2 _We want)
+X1-->id2
+id2-->id4(4/7 - 1/2 = 1/14)
+id2-->id3(1/2 - 1/3  =  1/6)
+```
+we get,\
+$\frac{milk}{water}=\frac{1}{14}:\frac{1}{16}=\frac{1/14}{1/6}=\frac{3}{7}$
+
+1:1 ratio of milk and water is get by the mixture of container1:container2=3:7
+
+given container1 is 5 liter,\
+therefore, $\frac{5}{container2}=\frac{3}{7}$
+
+we get container 2 will be 35/3 liters
+
+**Q3. 1st container has the milk and water in the ratio of 1:2 with 5 liter, and Second Container has the ratio of 3:4, How much we need to take the quantity of the 2nd container to get the mixture of 1:1**
+
+If you carefully see the question1st container has water more than the milk 1:2, 2nd Container also has water more than the milk 3:4, so we cannot increase the milk content from this to 1:1, we cannot reduce it
+
+#### **Average**
+
+Average=$\frac{SumOfAllTheNumbers}{TotalNumberOfNumbers}$
+
+**Q1. Find the average of 97, 93, 107, 103, 105**
+
+Method 1:
+Average=$\frac{97+93+107+103+105}{5}$=101
+
+Method 2:\
+Assume the mean value near to the given point of view(not accurate). Here i consider 98, then find the difference 98-(97, 93, 107, 103, 105)= {-1, -5, 9, 5, 7}.\
+Now if we find this number average it will give the answer quick.\
+Average=$\frac{-1-5+9+5+7}{5}$=3\
+now we need to add 3 with 98 we get 108.
+
+**Q2. Given the average age of group of 5 person is 32. If one person join the group the average age increase to 33. what was the age of the person who joins the group**
+
+Method 1:
+
+let x be the joined person age\
+Based on the formula,\
+Average=$\frac{32*32*32*32*32*x}{6}$\
+33=$\frac{32*32*32*32*32*x}{6}$\
+if you solve this you get answer x= 38.
+38 is the age of the person who joins the group
+
+Method 2:
+
+If you notice the question carefully, that average of five person age is 32, we assume all are same age 32. if one person joins the group the average rices to 33, if we add 33(final average age)+5(same age of 5 people group) = **38**
+
+**Weighted Average**
+
+<mark>formula</mark>\
+$weightedAverage=\frac{p1*q1+p2*q2}{q1+q2}$\
+where p1 and p2 are the given numbers,\
+q1 and q2 are the quantity of the given number
+
+
+**Q3. Given a 1st quality of rice a price of 23/kg and 2nd quality of rice a price of 26/kg. if we mix the 5kg of the 1st quality of rice and a 15 kg of the second quality rice, calculate the price for the mix**
+
+using the formula,\
+$priceForTheMix = \frac{23*5 + 26*15}{5+15} =25.25$/kg
+
+**Concept of Drawing certain amount of mixture**\
+
+**Q1. One container has 10l milk with the milk and water ratio of 1:9. if we draw 1liter in that container, then find the concentration of milk in that drawn 1liter**
+
+concentration of milk in the container = $\frac{1}{1+9}*10=1$ 
+
+this means the 1litter of milk is mixed with the  liter of water.
+
+concentration of milk in the drawn one litter = $\frac{1}{1+9}*1=0.1liters$ 
+
+So in the draw 1liter 0.1litter of water and 0.9litter of milk
+
+**Q2. The container has the 60% of the milk, how much water should me added to get the concentration of milk as 50%?**
+
+```mermaid
+flowchart TD
+id1[60% milk]
+id2[0% milk/purewater]
+id3[50% of milk / we want]
+id1-->id3
+id2-->id3
+id3-->id4[50%-0%=50%]
+id3-->id5[60%-50%=10%]
+id4-->id6[50:10=>5:1]
+id5-->id6
+```
+
+if we fix the milk container and water in the ratio of 5:1 we get the milk with concentration of 50%
+
+**Replacing a liquid by another liquid repeatedly**\
+**Q1. The container A has a 100liter of pure milk. if you take a 10 liter of milk in container A and put in the separate container, you add the 10liter of the water to the container A. what is the concentration of the milk and water in the container A.**
+
+method 1:
+```mermaid
+flowchart TD
+id1[100L of milk]-->id2[90L of milk]
+id1-->id3[10L milk]
+id2-->id5[mixture of 90L of Milk and 10L of water]
+id4[10L of water]-->id5
+id5-->id6[90L is separated it has 81liter of milk and 9liter of water]
+id5-->id7[10L of the milk and water mixture]
+id6-->id9[it has 81 liter of milk and 19 liter of water]
+id8[10L of Water]-->id9
+```
+<mark>Formula</mark>
+$finalQuantity=initialValue * (\frac{newValue}{initialValue})^{numberOfTime}$
+
+concentration of milk = $ 100*(\frac{90}{100})^{2} = 81$
+where is the 100 is the initial value denoting the pure milk that given in the container.\
+after the  1st time there will be 90% milk and 10% of water, so 90 is the new value
