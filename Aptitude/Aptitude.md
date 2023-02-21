@@ -172,11 +172,15 @@ so the ans will be LCM+5=185.
 ---
 **HCF** (Highest common Factor) or GCD (Great Common Divisor)
 suppose if two number are given, Highest number that divides the given number is known as the HCF
+
 ex: to find HCF of 60,75
+
 60<-- 30, 20, **15**, 12, 10, 5, 3, 2
+
 75<-- 25, **15**, 5
 
 60%X=0, where x= 30, 20, 15, 12, 10, 5,3,2
+
 75%Y=0, where Y=25,15,5
 
 you can see that 15 is the highest number, that can divide both 60 and 75.
@@ -207,9 +211,9 @@ Number | Divisibility Rule | Example
 Powers of 2 |Powers of 5 | Condition 
 -|-|-
 2^1 = 2 | 5^1=5 | Last 1 digit should be divisible by the divisor
-2^2 = 4 | 5^1=25 | Last 2 digit should be divisible by divisor 
-2^3 = 8 | 5^1=125 | Last 3 digit should be divisible by divisor 
-2^4 = 16 | 5^1=625 | Last 4 digit should be divisible by divisor 
+2^2 = 4 | 5^2=25 | Last 2 digit should be divisible by divisor 
+2^3 = 8 | 5^3=125 | Last 3 digit should be divisible by divisor 
+2^4 = 16 | 5^4=625 | Last 4 digit should be divisible by divisor 
 ... | ... | ...
 and so on...
 
@@ -339,7 +343,7 @@ ex: 25% is 25/100 which is 1/4
 2. **A student scored 65% marks. Total marks were 500. How much did he/she scores?**\
     $\frac{65}{100}*500$=**325** (he scored 325 mark).
 
-3. **The Heigh of Amithabh 2 years ago was 110cm. Now his Heights is 120cm. Find the percentage is 120cm. Find the percentage change in his height**
+3. **The Heigh of Amithabh 2 years ago was 110cm. Now his Heights is 120cm. Find the percentage change in his height**
     - Change in height is 120-110=10cm,
     - Percentage of change is height can be calculated by change in height divided by previous height and then the answer is multiplied by 100.
     - $\frac{10}{110}*100$ = **9.09%**
@@ -450,7 +454,7 @@ Value | Percentage
     - x*($1+\frac{1}{3}$)*$(1+\frac{1}{6})$=500,
     <div style="background-color:#555; color:white; padding:20px; margin:10px;" id="sussive-incr-form">From the above, if there is a continuous increase  of percentage, then the formula will be 
     
-    $x*(1+\frac{100}{p1})*(1+\frac{100}{p2})=y$
+    $x*(1+\frac{p1}{100})*(1+\frac{p2}{100})=y$
     
     where, 
     - x is original price,
@@ -783,7 +787,7 @@ q1 and q2 are the quantity of the given number
 using the formula,\
 $priceForTheMix = \frac{23*5 + 26*15}{5+15} =25.25$/kg
 
-**Concept of Drawing certain amount of mixture**\
+**Concept of Drawing certain amount of mixture**
 
 **Q1. One container has 10l milk with the milk and water ratio of 1:9. if we draw 1liter in that container, then find the concentration of milk in that drawn 1liter**
 
@@ -833,3 +837,69 @@ $finalQuantity=initialValue * (\frac{newValue}{initialValue})^{numberOfTime}$
 concentration of milk = $ 100*(\frac{90}{100})^{2} = 81$
 where is the 100 is the initial value denoting the pure milk that given in the container.\
 after the  1st time there will be 90% milk and 10% of water, so 90 is the new value
+
+#### **Time, Speed and Distance**
+
+**Relative speed**
+
+Case1: When objects move in same direction
+
+Consider two car is travel in the same direction, Car A travels in 20kmph and car B travels in the 15kmph.
+
+the relative speed will be difference of the speed of the two car.\
+relative speed=$abs(s1-s2)$, where s1 and s2 are the speed of the car travel in the same direction
+
+answer will be 20-15 = 5 kmph.
+
+case 2: when objects moves in the opposite direction
+
+Consider two car is travel in the opposite direction, Car A travels in 20kmph and car B travels in the 15kmph.
+
+the relative speed will be sum of the speed of the two car.\
+relative speed=$s1+s2$, where s1 and s2 are the speed of the car travel in the opposite direction
+
+answer will be 20+15=35, which means two cars will get closer in the speed of the 35kmph
+
+**Average Speed**
+
+<mark>Formula</mark>
+
+$Speed=\frac{distance}{Time}$
+
+$AverageSpeed=\frac{totalDistance}{totalTime}$
+
+**if the distance are same**\
+$AverageSpeed=\frac{d+d}{\frac{d}{x}+\frac{d}{y}} = \frac{2xy}{x+y}$, where time=distance/speed, d=distance, x,y are the speed 
+
+**if the distance are different**\
+$AverageSpeed=\frac{A+B+C}{A/x + b/y + c/z}$, where A,B,C are the distances and x,y,z are the speed, time=distance/speed
+
+**Q.1 A person walks in x kmph to reach the office from home and y kmph from the office to the home. find the average speed?. Consider the distance between the home and the office is d.**
+
+let's consider d= 100, x=25kmph, y=30kmph
+
+$AverageSpeed= \frac{2*25*30}{25+30} = 27.272727...$
+
+**Application of speed, time and distance**
+
+**Q1. A person walks 4/5 times slower than the usual to go to his office from home. He reaches the home 10min late from usual time. find the usual time taken to reach his home from office?**
+
+consider T is the usual time taken to reach his house.
+
+if new speed = (4/5) times the old speed, new time taken will be the 5/4 times the usual time taken. because speed is inversely proportion to the time, if the distance is constant\
+t=distance/speed
+
+(5/4)T-T=10 => T=40min
+
+Usual time taken to reach office from home was 40min
+
+**Q.2 Car A and B are traveling the opposite direction with the speed of 20kmph and 15kmph respectively and they are 70km apart. find the distance covered by the B to meet the car?**
+
+Speed is directly proportional to the distance if the time is constant. speed=distance/time
+
+$\frac{s1}{s2}=\frac{d1}{d2}=\frac{20}{15}=\frac{4}{3}$
+
+d1:d2=4:3, this means if the car A covers the 4km in the time t, car B will cover the 3km in the same time
+
+distance covered by Car B to meet car A = 3*$\frac{70}{7}=30km$
+
