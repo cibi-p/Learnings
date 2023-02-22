@@ -635,6 +635,161 @@ exercise
 Play a foot ball
 exercise
 ```
+
+**Polymorphism**
+```java
+class Shape
+{
+    void area()
+    {
+        System.out.println("Area");
+    }
+}
+class Square extends Shape
+{
+    void area()
+    {
+        System.out.println("Area of the 1cm length square will be 1*4="+4);
+    }
+}
+class Circle extends Shape
+{
+    void area()
+    {
+        System.out.println("Area of the 1cm radius circle will be 2*pi*r=2*3.14*1="+6.28);
+    }
+}
+public class Main
+{
+	public static void main(String[] args) {
+        Shape s=new Shape();
+		Square a=new Square();
+		Circle b=new Circle();
+        s=a;
+        s.area();
+        s=b;
+        s.area();
+	}
+}
+```
+output
+```
+Area of the 1cm length square will be 1*4=4
+Area of the 1cm radius circle will be 2*pi*r=2*3.14*1=6.28
+```
+
+**Abstraction**
+
+Abstract is used to hiding the unnecessary function.
+
+if any one method is declared as abstract in the class, then the class also should be declared as abstract
+```java
+abstract class Shape
+{
+    abstract void area();
+}
+class Square extends Shape
+{
+    void area()
+    {
+        System.out.println("Area of the 1cm length square will be 1*4="+4);
+    }
+}
+class Circle extends Shape
+{
+    void area()
+    {
+        System.out.println("Area of the 1cm radius circle will be 2*pi*r=2*3.14*1="+6.28);
+    }
+}
+public class Main
+{
+	public static void main(String[] args) {
+        Shape s;
+		Square a=new Square();
+		Circle b=new Circle();
+        s=a;
+        s.area();
+        s=b;
+        s.area();
+	}
+}
+```
+output
+```
+Area of the 1cm length square will be 1*4=4
+Area of the 1cm radius circle will be 2*pi*r=2*3.14*1=6.28
+```
+
+**Interface**
+
+in interface the function are default abstract and public
+```java
+interface Shape
+{
+    void area();
+}
+class Square implements Shape
+{
+    public void area() //Public is need to be there for overriding the interface function
+    {
+        System.out.println("Area of the 1cm length square will be 1*4="+4);
+    }
+}
+class Circle implements Shape
+{
+    public void area()
+    {
+        System.out.println("Area of the 1cm radius circle will be 2*pi*r=2*3.14*1="+6.28);
+    }
+}
+public class Main
+{
+	public static void main(String[] args) {
+        Shape s;
+		Square a=new Square();
+		Circle b=new Circle();
+        s=a;
+        s.area();
+        s=b;
+        s.area();
+	}
+}
+```
+output
+```
+Area of the 1cm length square will be 1*4=4
+Area of the 1cm radius circle will be 2*pi*r=2*3.14*1=6.28
+```
+
+**Difference between abstract class and interface**
+Abstract Class | Interface
+-|-
+Executable | Executable
+it is mostly like normal class| Variable inside interface will be public static and final default
+it is mostly like normal class | Method inside the interface will be public abstract void default
+Similar to interface, we cannot create the object | we cannot create the object of interface it will show error ex: interfaceexample ref= new interfaceexample(); it will show error, to avoid this we need to use interfaceexample ref;
+it can have reference variable ex: classname ref; | it can have reference variable ex: interfacename ref;
+
+**Static block**
+Static block will executed before the main function
+```java
+public class Main
+{
+    public static void main(String[] args){
+        System.out.println("Inside Main function");
+    }
+    static{
+        System.out.println("Inside static function");
+    }
+}
+```
+output
+```
+Inside static function
+Inside Main function
+```
+
 ### **Array**
 - An array is a collection of items of same data type stored at contiguous memory locations. It makes easy to access the element.
 - An index of the array always start from zero (0).
