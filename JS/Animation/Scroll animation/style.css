@@ -1,0 +1,48 @@
+body{
+    display:flex;
+    flex-direction:column;
+    justify-content: center;
+    align-items: center;
+    background-color:gray;
+    margin:0;
+    overflow-x:hidden;
+}
+h1{
+    color:white;
+}
+.blue{
+    --clr:blue;
+}
+.green{
+    --clr:green;
+}
+.yellow{
+    --clr:yellow;
+}
+.red{
+    --clr:red;
+}
+.box{
+    background-color: var(--clr);
+    color:white;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    width: 400px;
+    height:200px;
+    border-radius:20px;
+    margin:10px;
+    box-shadow: 2px 4px 5px gray;
+    transition: transform 0.9s ease;
+}
+
+.box.show{
+    transform:translateX(0) !important;
+}
+
+.box:nth-of-type(even){
+    transform:translateX(-400%);
+}
+.box:nth-of-type(odd){
+    transform:translateX(400%);
+}
