@@ -985,3 +985,405 @@ Method overloading refers to the process of having more than one methods having 
  19.5
  23.3
  ```
+
+**String of args in main**
+```java
+public class stringargs
+{
+    public static void main(String args[])
+    {
+        System.out.println(args[0]);
+        System.out.println(args[0]);
+    }
+}
+```
+output:
+```bash
+PS D:\New folder\Learnings\java\Java programs> java stringargs Hello world
+Hello
+world
+PS D:\New folder\Learnings\java\Java programs>
+```
+Below this code also works same
+```java
+public class stringargs
+{
+    public static void main(String... args)
+    {
+        System.out.println(args[0]);
+        System.out.println(args[0]);
+    }
+}
+```
+**Exception Handling in java**
+Dividing the number with zero raise the exception in the programming
+```java
+public class Exception
+{
+    public static void main(String[] args)
+    {
+        System.out.println("program starts");
+        int div = 10/0;
+        System.out.println("ans:"+div);
+    }
+}
+```
+output:
+```
+PS D:\New folder\Learnings\java\Java programs> java Exception.java
+program starts
+Exception in thread "main" java.lang.ArithmeticException: / by zero
+        at Exception.main(Exception.java:6)
+```
+
+The Below program show the try catch block for handling the exception
+```java
+public class Exception
+{
+    public static void main(String[] args)
+    {
+        System.out.println("program starts");
+        try{
+            int div = 10/0;
+            System.out.println("ans:"+div);
+        }
+        catch(java.lang.Exception e)
+        {
+            System.out.println("Exception Handled");
+            e.printStackTrace();
+        }
+        System.out.println("Program ends");
+    }
+}
+```
+output
+```
+program starts
+Exception Handled
+java.lang.ArithmeticException: / by zero
+        at Exception.main(Exception.java:7)
+        at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+        at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+        at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+        at java.base/java.lang.reflect.Method.invoke(Method.java:568)    
+        at jdk.compiler/com.sun.tools.javac.launcher.Main.execute(Main.java:419)
+        at jdk.compiler/com.sun.tools.javac.launcher.Main.run(Main.java:192)
+        at jdk.compiler/com.sun.tools.javac.launcher.Main.main(Main.java:132)
+    program ends
+```
+
+**use of throw, throws and finally**
+```java
+public class Exception
+{
+    public static void main(String[] args)
+    {
+        try{
+            Divide d = new Divide();
+            d.divi();
+        }
+        catch(java.lang.Exception e)
+        {
+            System.out.println("Main function: Exception Handeled");
+        }
+    }
+}
+
+class Divide
+{
+    void divi()
+    {
+        System.out.println("program starts");
+        try{
+            int div = 10/0;
+            System.out.println("ans:"+div);
+        }
+        catch(java.lang.Exception e)
+        {
+            System.out.println("Exception Handled");
+            throw e;
+        }
+        System.out.println("Program ends");
+    }
+}
+```
+output
+```
+PS D:\New folder\Learnings\java\Java programs> java Exception.java
+program starts
+Exception Handled
+Main function: Exception Handeled
+```
+In this you can see that program ends is not printted. because thow return the control to the partent function. to avoid that we need to use finally
+
+```java
+public class Exception
+{
+    public static void main(String[] args)
+    {
+        try{
+            Divide d = new Divide();
+            d.divi();
+        }
+        catch(java.lang.Exception e)
+        {
+            System.out.println("Main function: Exception Handeled");
+        }
+    }
+}
+
+class Divide
+{
+    void divi()
+    {
+        System.out.println("program starts");
+        try{
+            int div = 10/0;
+            System.out.println("ans:"+div);
+        }
+        catch(java.lang.Exception e)
+        {
+            System.out.println("Exception Handled");
+            throw e;
+        }
+        finally{
+            System.out.println("program end");
+        }
+    }
+}
+```
+output
+```
+program starts
+Exception Handled
+program end
+Main function: Exception Handeled
+```
+
+**throws**
+
+if you use throws in the method then the partent function must need to have an try catch blocks, else it show the compile time error.
+
+```java
+public class Exception
+{
+    public static void main(String[] args)
+    {
+        try{
+            Divide d = new Divide();
+            d.divi();
+        }
+        catch(java.lang.Exception e)
+        {
+            System.out.println("Main function: Exception Handeled");
+        }
+    }
+}
+
+class Divide
+{
+    void divi() throws java.lang.Exception
+    {
+        System.out.println("program starts");
+        try{
+            int div = 10/0;
+            System.out.println("ans:"+div);
+        }
+        catch(java.lang.Exception e)
+        {
+            System.out.println("Exception Handled");
+            throw e;
+        }
+        finally{
+            System.out.println("program end");
+        }
+    }
+}
+```
+**Different Types of Exception**
+* ArrayIndexOutOfBoundException (if you create a array of size 5 but you try to access the 6th element it shows this exception)
+* NegativeArraySizeException (If you create a array with negative size)
+* NullPointerException (If you try to print the size of null string)
+* ArithmeticException (Divide by zero)
+* InputMismatchException (if you give input as string for integer variable)
+
+### **Frameworks**
+- Collection Framework
+    - Set
+    - Queue
+    - list
+
+**ArrayList**
+
+Array | ArrayList
+-|-
+Size cannot be modified | size can be modified
+Store only the data's of the same data type | Store the data of different datatype in the single ArrayList
+
+```java
+// need to import java.util.ArrayList;
+ArrayList al=new ArrayList();
+al.add(10);
+al.add("hello");
+al.add(1,"world");
+//output: [10, world, hello]
+a1.set(0,5);
+//output: [5, world, hello]
+
+ArrayList h=new ArrayList();
+h.add(1);
+h.add("vanakam");
+h.addAll(al);
+//output of h: [1, vanakam, 5, world, hello]
+//need toimport java.util.Collections;
+Collections.sort(h);
+```
+Sorting it only sort the homogeneous data type
+```java
+ArrayList al=new ArrayList();
+al.add(10);
+al.add(3);
+al.add(1,2);
+al.set(0,5);
+al.add(1);
+al.add(6);
+Collections.sort(al);
+System.out.println(al);
+//output: [1, 2, 3, 5, 6]
+```
+
+**Iterator**
+
+```java
+// consider al is an ArrayList having the value [1,2,3,4,5,6]
+Iterator itr=al.iterator();
+
+// itr.hasNext(); it returns true if the next element is present else it return flase if there are no more element after the current element
+
+while(itr.hasNext())
+{
+    System.out.print(itr.next()+" "); //itr.next(); moves the iterator to the next position and return the data in that position
+}
+
+// output: 1 2 3 4 5 6
+```
+
+**Linked List**
+Linked list are able to utilize the scatters memory present on RAM
+
+- This linkedList in java can store the data's of diffetent types too...
+```java
+LinkedList l = new LinkedList();
+l.add(1);
+l.add(2);
+l.add(3);
+l.add(4);
+l.add(0);
+System.out.println(l);
+//output: [1,2,3,4,0]
+l.add("hello");
+//output: [1,2,3,4,0,hello]
+```
+Methonds
+```java
+l.contains(2); //return true if the linked list contains 2 else return fase;
+l.peek(); //returns the first element (here it returns 1)
+l.poll(); //returns the first element and also remove it from the linked list  (here it returns 1 and delete 1 from linked list)
+```
+
+**Array Deque**
+
+We can add the element in the both sides
+
+```java
+//need to import java.util.ArrayDeque;
+ArrayDeque ad = new ArrayDeque();
+ad.add(10);
+ad.add("virath");
+ad.addFirst("first");
+ad.addLast("last");
+//value of ad: [first, 10, virath, last]
+```
+
+**priority Queue**
+it gives the preference to small value(note it does not store from ascending order), store only the homogeneous data
+- Priority queue is used whenever we want the priority element or the smallest element at the top in such cases priority queue is used.
+- whenever numbers are passed to the priority queue it will bring smallest numbers at the top.
+- whenever strings are passed to the priority queue it will choose the priority based on dictionary format (whichever comes first) and place it on the top.
+
+```java
+//need to import java.util.PriorityQueue;
+PriorityQueue pq = new PriorityQueue();
+pq.add(50);
+pq.add(40);
+pq.add(20);
+pq.add(10);
+pq.add(8);
+System.out.println(pq);
+//values in pq: [8,10,40,50,20]
+PriorityQueue pq1 = new PriorityQueue();
+pq1.add("B");
+pq1.add("D");
+pq1.add("A");
+//values in pq1: [A,D,B]
+```
+
+**TreeSet**
+It store the data in the ascending order, it store homogeneous tupe
+```java
+TreeSet hgt = new TreeSet();
+hgt.add(4);
+hgt.add(8);
+hgt.add(1);
+// hgt: [1,4,8];
+
+TreeSet hgt1 = new TreeSet();
+hgt1.add("C");
+hgt1.add("B");
+hgt1.add("A");
+//hgt1:[A,B,C]
+```
+
+**Hashing**
+
+Refer online
+
+HashSet and Linked Hashset
+
+```java
+//import java.util.HashSet();
+HashSet hs = new HashSet();
+hs.add(13);
+hs.add(45);
+hs.add(76);
+hs.add(8);
+hs.add(944);
+// hs:[944,8,76,13,45] //it not maintain the order
+LinkedHashSet hs1 = new LinkedHashSet();
+hs1.add(13);
+hs1.add(45);
+hs1.add(76);
+hs1.add(8);
+hs1.add(944);
+// hs1:[13,45,76,8,944] //it maintained the order
+
+HashSet a= new HashSet();
+a.add(908);
+a.add(534);
+a.add(954);
+hs1.addAll(a);
+//hs1:[13,45,76,8,944,908,534,945]
+hs1.removeAll(a);
+// hs1:[13,45,76,8,944]
+```
+
+**Comparing Collection based classes**
+|Collection| allow/deny duplicate | Preserve the insertion order
+-|-|-
+ArrayList | allow | yes
+ArrayDeque | allow | yes
+LinkedList | allow | yes
+PriorityQueue | allow | No
+TreeSet | not allow | No
+HashSet | not allow | No
+LinkedHashSet | not allow | yes
