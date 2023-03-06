@@ -1387,3 +1387,62 @@ PriorityQueue | allow | No
 TreeSet | not allow | No
 HashSet | not allow | No
 LinkedHashSet | not allow | yes
+
+**Maps**
+
+```mermaid
+flowchart TD
+id[Map<>]
+id2[AbstractMap]-.->id
+id3[HashMap]-->id2
+id3-.->id
+id4[LinkedHashMap]-->id3
+id4-.->id
+id5[TreeMap]-->id2
+id6[SortedMap<>]-->id
+id7[NavigableMap]-->id6
+id5-.->id7
+
+```
+* dotted arrow represent the implementation between interference, classes (inheritance using interface)
+* Line arrow represent the extension of the classes (inheritance using class)
+
+**TreeMap**
+- TreeMap stores the values as key value pair. It sort the values based upon the keys
+```java
+TreeMap map=new TreeMap();
+map.put(771,"deep");
+map.put(171,"Kushal");
+map.put(501,"saurav");
+map.put(873,"kushal");
+map.put(111,"ayush");
+
+System.out.println(map);
+//map:{111=ayush, 171=kushal, 501=saurav, 771=deep, 873=kushal}
+```
+
+**HashMap**
+- HashMap, underline data structure is hashing algorithm. It does not preserve the order of insertion
+
+```java
+HashMap map = new HashMap();
+map.put(771,"deep");
+map.put(171,"Kushal");
+map.put(501,"saurav");
+map.put(873,"kushal");
+map.put(111,"ayush");
+//map: {771=deep, 501=saurav, 873=kushal, 171=kushal, 111=ayush} //it stores the data based on the hash algorithmn
+```
+
+**LinkedHashMap**
+- LinkedHashMap, THe order of insertion is preserved.
+```java
+LinkedHashMap map = new LinkedHashMap();
+map.put(771,"deep");
+map.put(171,"Kushal");
+map.put(501,"saurav");
+map.put(873,"kushal");
+map.put(111,"ayush");
+// map: {771=deep, 171=Kushal, 501=saurav, 873=kushal, 111=ayush
+// preserve the order of insertion
+```

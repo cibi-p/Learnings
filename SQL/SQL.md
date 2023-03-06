@@ -92,3 +92,26 @@ Single row functions | Multiple row functions
 Single row functions are such functions which accepts single row or multiple rows as input but produces 1 result per input. | Multiple row function are such functions single row or multiple rows as input but produces 1 result per group.
 ex: if you gives n column and n column as output | ex: if you gives n column and it give 1 column as output.
 ex. functions: Upper(),lower(),length(),concat(),substr(),instr(),trim() | ex. functions: min(),max(),sum(),avg(),count()
+
+**Group by, ORDER BY, HAVING**
+```sql
+SELECT team, SUM(salary) FROM employee GROUP BY team; /* it add the salary for the same team */
+
+SELECT team, MAX(salary) FROM employee GROUP BY team; /* Shows the maximum salary in the team */
+
+SELECT team, SUM(salary) FROM employee WHERE SUM(salary) > 100000  GROUP BY team; /* This is not correct */
+
+SELECT team, SUM(salary) FROM employee GROUP BY team HAVING SUM(salary) > 100000; /* Where is not used for agregate function, having should be used instead of where */
+
+SELECT team, MAX(salary) FROM employee GROUP BY team HAVING MAX(salary) > 40000;
+
+SELECT team, MAX(salary) FROM employee GROUP BY team HAVING MAX(salary) > 40000 ORDER BY MAX(salary) asc; /* order by ascending based on the salary */
+
+SELECT team, MAX(salary) FROM employee GROUP BY team HAVING MAX(salary) > 40000 ORDER BY MAX(salary) desc; /* order by descending based on the salary */
+
+SELECT team, MAX(salary) FROM employee GROUP BY team HAVING MAX(salary) > 40000 ORDER BY MAX(salary); /* default it sort in descending order.*/
+
+SELECT team, MAX(salary) from employee WHERE age > 23 GROUP BY team  Having MAX(salary)>40000 ORDER BY salary desc;
+```
+<mark>**Note:** Whenever you want to use condition with normal function use `where`, if you want to use condition on the aggregate functions like SUM, AVG, etc... use `having`
+</mark>
