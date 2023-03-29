@@ -1342,6 +1342,7 @@ hgt1.add("C");
 hgt1.add("B");
 hgt1.add("A");
 //hgt1:[A,B,C]
+//TreeSet only store homogeneous data
 ```
 
 **Hashing**
@@ -1445,4 +1446,58 @@ map.put(873,"kushal");
 map.put(111,"ayush");
 // map: {771=deep, 171=Kushal, 501=saurav, 873=kushal, 111=ayush
 // preserve the order of insertion
+```
+
+**Generics**
+
+```java
+TreeSet<Integer> ts = new TreeSet<Integer>(); //Here <Integer> is the is the Generic
+
+// If we add other data type values other than Integer it will show error
+```
+
+**Autoboxing**
+
+Process of converting data of the primitive type into object of respective wrapper class
+
+```java
+ArrayList al=new ArrayList();
+al.add(55); //al.add(new Integer(55));
+al.add(false); //al.add(new Boolean(false));
+// etc...
+```
+
+### **JDBC** (Java Database Connectivity)
+
+It connects the java application with DBMS software
+
+Requirements
+- Driver (act as translator)
+- Interface Connection (act as a Bridge)
+- Spaceship (JDBC statement)
+
+**Steps for JDBC**
+1. Import the sql package
+1. Load the Driver
+1. Establish Connection
+1. Create Statement
+1. Get ResultSet
+
+**Establishing Connection**
+```java
+package com.jdbcDemo;
+
+import java.sql.*;
+public class ConnectionDemo{
+	public static void main(String args[])throws Exception {
+		
+		String driver = "oracle.jdbc.driver.OracleDriver";
+		String url="jdbc:oracle:thin:@localhost:1521:xe";
+		String user="system";
+		String pass="####";
+		Class.forName(driver);
+		Connection con = DriverManager.getConnection(url,user,pass);
+		System.out.println("Connection Successfull");
+	}
+}
 ```

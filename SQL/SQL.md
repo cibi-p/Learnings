@@ -115,3 +115,30 @@ SELECT team, MAX(salary) from employee WHERE age > 23 GROUP BY team  Having MAX(
 ```
 <mark>**Note:** Whenever you want to use condition with normal function use `where`, if you want to use condition on the aggregate functions like SUM, AVG, etc... use `having`
 </mark>
+
+
+**Subquery**
+```SQL
+SELECT id, name, salary FROM employee WHERE salary > (SELECT salary FROM employee WHERE name="suraj");
+
+SELECT id, name, salary FROM employee WHERE age = (SELECT age FROM employee WHERE name='Kavya');
+
+SELECT team, name, age FROM employee WHERE age > (SELECT age FROM employee WHERE name='rimjim') AND team = (SELECT team FROM employee WHERE name='naveen');
+```
+
+**JOIN**
+- Inner join (Equi join)
+- Natural Join
+- Outer join
+    - Right outer join
+    - Left outer join
+    - Full Outer join
+
+
+```sql
+/* Equi join */
+SELECT emp_id, emp_name, emp_salary from Employee, Department where Employee.dept_id = Department.dept_id
+/*Inner Join (here instead of where on is used) */
+SELECT emp_id, emp_name, emp_salary from Employee INNER JOIN Department ON Employee.dept_id = Department.dept_id
+/* Natural Join (it will not show duplicate column) (it also make the common row as the first column)*/
+SELECT emp_id, emp_name, emp_salary from Employee NATURAL JOIN Department ON Employee.dept_id = Department.dept_id
