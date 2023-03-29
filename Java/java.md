@@ -1342,6 +1342,7 @@ hgt1.add("C");
 hgt1.add("B");
 hgt1.add("A");
 //hgt1:[A,B,C]
+//TreeSet only store homogeneous data
 ```
 
 **Hashing**
@@ -1387,3 +1388,116 @@ PriorityQueue | allow | No
 TreeSet | not allow | No
 HashSet | not allow | No
 LinkedHashSet | not allow | yes
+
+**Maps**
+
+```mermaid
+flowchart TD
+id[Map<>]
+id2[AbstractMap]-.->id
+id3[HashMap]-->id2
+id3-.->id
+id4[LinkedHashMap]-->id3
+id4-.->id
+id5[TreeMap]-->id2
+id6[SortedMap<>]-->id
+id7[NavigableMap]-->id6
+id5-.->id7
+
+```
+* dotted arrow represent the implementation between interference, classes (inheritance using interface)
+* Line arrow represent the extension of the classes (inheritance using class)
+
+**TreeMap**
+- TreeMap stores the values as key value pair. It sort the values based upon the keys
+```java
+TreeMap map=new TreeMap();
+map.put(771,"deep");
+map.put(171,"Kushal");
+map.put(501,"saurav");
+map.put(873,"kushal");
+map.put(111,"ayush");
+
+System.out.println(map);
+//map:{111=ayush, 171=kushal, 501=saurav, 771=deep, 873=kushal}
+```
+
+**HashMap**
+- HashMap, underline data structure is hashing algorithm. It does not preserve the order of insertion
+
+```java
+HashMap map = new HashMap();
+map.put(771,"deep");
+map.put(171,"Kushal");
+map.put(501,"saurav");
+map.put(873,"kushal");
+map.put(111,"ayush");
+//map: {771=deep, 501=saurav, 873=kushal, 171=kushal, 111=ayush} //it stores the data based on the hash algorithmn
+```
+
+**LinkedHashMap**
+- LinkedHashMap, THe order of insertion is preserved.
+```java
+LinkedHashMap map = new LinkedHashMap();
+map.put(771,"deep");
+map.put(171,"Kushal");
+map.put(501,"saurav");
+map.put(873,"kushal");
+map.put(111,"ayush");
+// map: {771=deep, 171=Kushal, 501=saurav, 873=kushal, 111=ayush
+// preserve the order of insertion
+```
+
+**Generics**
+
+```java
+TreeSet<Integer> ts = new TreeSet<Integer>(); //Here <Integer> is the is the Generic
+
+// If we add other data type values other than Integer it will show error
+```
+
+**Autoboxing**
+
+Process of converting data of the primitive type into object of respective wrapper class
+
+```java
+ArrayList al=new ArrayList();
+al.add(55); //al.add(new Integer(55));
+al.add(false); //al.add(new Boolean(false));
+// etc...
+```
+
+### **JDBC** (Java Database Connectivity)
+
+It connects the java application with DBMS software
+
+Requirements
+- Driver (act as translator)
+- Interface Connection (act as a Bridge)
+- Spaceship (JDBC statement)
+
+**Steps for JDBC**
+1. Import the sql package
+1. Load the Driver
+1. Establish Connection
+1. Create Statement
+1. Get ResultSet
+
+**Establishing Connection**
+```java
+package com.jdbcDemo;
+
+import java.sql.*;
+public class ConnectionDemo{
+	public static void main(String args[])throws Exception {
+		
+		String driver = "oracle.jdbc.driver.OracleDriver";
+		String url="jdbc:oracle:thin:@localhost:1521:xe";
+		String user="system";
+		String pass="####";
+		Class.forName(driver);
+		Connection con = DriverManager.getConnection(url,user,pass);
+		System.out.println("Connection Successfull");
+	}
+}
+```

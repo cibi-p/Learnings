@@ -92,3 +92,53 @@ Single row functions | Multiple row functions
 Single row functions are such functions which accepts single row or multiple rows as input but produces 1 result per input. | Multiple row function are such functions single row or multiple rows as input but produces 1 result per group.
 ex: if you gives n column and n column as output | ex: if you gives n column and it give 1 column as output.
 ex. functions: Upper(),lower(),length(),concat(),substr(),instr(),trim() | ex. functions: min(),max(),sum(),avg(),count()
+
+**Group by, ORDER BY, HAVING**
+```sql
+SELECT team, SUM(salary) FROM employee GROUP BY team; /* it add the salary for the same team */
+
+SELECT team, MAX(salary) FROM employee GROUP BY team; /* Shows the maximum salary in the team */
+
+SELECT team, SUM(salary) FROM employee WHERE SUM(salary) > 100000  GROUP BY team; /* This is not correct */
+
+SELECT team, SUM(salary) FROM employee GROUP BY team HAVING SUM(salary) > 100000; /* Where is not used for agregate function, having should be used instead of where */
+
+SELECT team, MAX(salary) FROM employee GROUP BY team HAVING MAX(salary) > 40000;
+
+SELECT team, MAX(salary) FROM employee GROUP BY team HAVING MAX(salary) > 40000 ORDER BY MAX(salary) asc; /* order by ascending based on the salary */
+
+SELECT team, MAX(salary) FROM employee GROUP BY team HAVING MAX(salary) > 40000 ORDER BY MAX(salary) desc; /* order by descending based on the salary */
+
+SELECT team, MAX(salary) FROM employee GROUP BY team HAVING MAX(salary) > 40000 ORDER BY MAX(salary); /* default it sort in descending order.*/
+
+SELECT team, MAX(salary) from employee WHERE age > 23 GROUP BY team  Having MAX(salary)>40000 ORDER BY salary desc;
+```
+<mark>**Note:** Whenever you want to use condition with normal function use `where`, if you want to use condition on the aggregate functions like SUM, AVG, etc... use `having`
+</mark>
+
+
+**Subquery**
+```SQL
+SELECT id, name, salary FROM employee WHERE salary > (SELECT salary FROM employee WHERE name="suraj");
+
+SELECT id, name, salary FROM employee WHERE age = (SELECT age FROM employee WHERE name='Kavya');
+
+SELECT team, name, age FROM employee WHERE age > (SELECT age FROM employee WHERE name='rimjim') AND team = (SELECT team FROM employee WHERE name='naveen');
+```
+
+**JOIN**
+- Inner join (Equi join)
+- Natural Join
+- Outer join
+    - Right outer join
+    - Left outer join
+    - Full Outer join
+
+
+```sql
+/* Equi join */
+SELECT emp_id, emp_name, emp_salary from Employee, Department where Employee.dept_id = Department.dept_id
+/*Inner Join (here instead of where on is used) */
+SELECT emp_id, emp_name, emp_salary from Employee INNER JOIN Department ON Employee.dept_id = Department.dept_id
+/* Natural Join (it will not show duplicate column) (it also make the common row as the first column)*/
+SELECT emp_id, emp_name, emp_salary from Employee NATURAL JOIN Department ON Employee.dept_id = Department.dept_id
