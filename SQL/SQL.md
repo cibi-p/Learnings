@@ -142,3 +142,11 @@ SELECT emp_id, emp_name, emp_salary from Employee, Department where Employee.dep
 SELECT emp_id, emp_name, emp_salary from Employee INNER JOIN Department ON Employee.dept_id = Department.dept_id
 /* Natural Join (it will not show duplicate column) (it also make the common row as the first column)*/
 SELECT emp_id, emp_name, emp_salary from Employee NATURAL JOIN Department ON Employee.dept_id = Department.dept_id
+/* Left outer Join */
+SELECT emp_id, emp_name, emp_salary from Employee LEFT OUTER JOIN Department ON Employee.dept_id = Department.dept_id
+/* Right outer Join */
+SELECT emp_id, emp_name, emp_salary from Employee RIGHT OUTER JOIN Department ON Employee.dept_id = Department.dept_id
+/* Full outer join */
+SELECT emp_id, emp_name, emp_salary from Employee FULL OUTER JOIN Department ON Employee.dept_id = Department.dept_id
+/* CROSS JOIN*/
+SELECT emp_id, emp_name, emp_salary from Employee CROSS JOIN Department

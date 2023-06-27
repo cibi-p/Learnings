@@ -1501,3 +1501,39 @@ public class ConnectionDemo{
 	}
 }
 ```
+
+**Creating Table and insert, delete update**
+```java
+package com.jdbcDemo;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.Statement;
+
+public class create_table {
+public static void main(String args[])throws Exception {
+		
+		String driver = "oracle.jdbc.driver.OracleDriver";
+		String url="jdbc:oracle:thin:@localhost:1521:xe";
+		String user="system";
+		String pass="2002";
+		Class.forName(driver);
+		Connection con = DriverManager.getConnection(url,user,pass);
+		System.out.println("Connection Successfull");
+		Statement st = con.createStatement();
+		st.execute("CREATE TABLE cricketers(jersey NUMBER, name VARCHAR(2))");
+        //inseting value
+        st.execute("INSERT INTO cricketers Value(45,'Ram')");
+        //updating
+        st.executeUpdate("UPDATE cricketers SET name='ku' where jersey=45");
+        //Deleting
+        st.executeUpdate("DELETE FROM cricketers where jersey=45");
+        //fetch data
+        ResultSet rs=st.executeUpdate("SELECT * FROM cricketers");
+        while(rs.next())
+        {
+            System.out.println(rs.getInt(1)+":"+rs.getString(2));
+        }
+	}
+}
+```
