@@ -363,7 +363,8 @@ typedef struct image_header {
 ![u-boot partial console output](https://slideplayer.com/slide/3997036/13/images/18/Kernel+uImage+%E2%80%93+What+is+it.jpg)
 
 ### linux Boot strap loader
-![Control flow during linux boot](https://github.com/broharigunda/Learnings/assets/57592824/2f369c2f-a6e8-472a-b420-dce6ff80f59e)
+![Control flow during booting](https://github.com/broharigunda/Learnings/assets/57592824/291d936e-764f-4f7d-a3b0-1a978f932678)
+
 
 `bootm.c` is the one of the file of the U-boot source code, which will help the U-boot to hands off the control to the linux kernel (it leave boot strap loader because linux will be in compressed mode, boot strap mode first has to be called to uncompress and relocate the kernel)
 
@@ -687,6 +688,220 @@ We have to boot exactly the same way how we used to boot via SD card, that is pr
         UART0
     IT check SPI0, MMC0 (SD card), USB0. since we does not connect any it will Check UART0 and boot.
 
+### Booting Using TFTP
+Ethernet port of the BBB hardware ot PC's Ethernet port using Ethernet cable. SD card is also required for this experiment
+
+TFTP stands fro Trivial FIle Transfer Protocol, which can be used to transfer files between a TFTP server and a TFTP client.
+
+
+
+### Linux Source Tree
+https://github.com/beagleboard/linux/tree/master/arch/arm/
+
+
+### Configuring and generating SPL, MLO, Boot images
+
+**cross tool-chain installation and settings for linux host**
+
+Linora toolchain link: https://releases.linaro.org/
+
+STEP 1 : Download arm cross toolchain for your Host machine
+
+STEP 2 :  export  path of the cross compilation toolchain. 
+
+`export PATH=$PATH:/home/kiran/BBB_Workspace/Downloads/gcc-linaro-6.3.1-2017.02-x86_64_arm-linux-gnueabihf/bin
+`
+**U-boot Compilation**
+
+U-Boot file: https://u-boot.readthedocs.io/en/latest/
+Also install u-boot-tools using apt install u-boot-tools
+
+STEP 1: distclean : deletes all the previously compiled/generated object files. 
+
+`make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- distclean`
+
+STEP 2 : apply board default configuration for uboot
+
+`make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- am335x_boneblack_defconfig`
+
+
+STEP 3 : run menuconfig, if you want to do any settings other than default configuration . 
+
+`make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf-  menuconfig`
+
+STEP 4 : compile 
+
+`make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- -j4  // -j4(4 core machine) will instructs the make tool to spawn 4 threads`
+
+`make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- -j8  // -j8(8 core machine) will instructs the make tool to spawn 8 threads`
+
+
+**linux compilation**
+
+**STEP 1:**
+``` make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- distclean ```
+
+STEP 2:
+ `make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- bb.org_defconfig (4.4)`
+for 4.11 use omap2plus_defconfig
+
+STEP 3:
+ `make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- menuconfig`
+ 
+STEP 4:
+ `make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- uImage dtbs LOADADDR=0x80008000 -j4`
+
+STEP 5:
+ `make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- -j4 modules`
+
+STEP 6:
+ `make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- INSTALL_MOD_PATH=<path of the RFS> modules_install`
+
+
+**Busy box compilation**
+
+Busybox is a software tool, that enables us to create a customized root file system for your embedded linux products
+
+STEP 1: download busybox 
+
+STEP 2 : Apply default configuration
+`make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- defconfig`
+
+STEP 3 : change default settings if you want 
+`make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- menuconfig`
+
+STEP 4 : generate the busy box binary and minimal file system 
+make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- CONFIG_PREFIX=<install_path> install
+
+
+
+********************************* build-root compilation  ***********************************
+1) download the build root package from 
+
+https://buildroot.org/
+
+2) configure the build root 
+
+
+*******************************Dropbear compilation*************************************
+
+1) Download Dropbear 
+
+2) Configure Dropbear
+
+./configure --host=arm-linux-gnueabihf --disable-zlib --prefix=/home/kiran/BBB_Workspace/dropbear CC=arm-linux-gnueabihf-gcc
+
+3) compile the Dropbear as static 
+
+make PROGRAMS="dropbear dropbearkey dbclient scp" STATIC=1
+
+4) install dropbear generated binaries 
+make PROGRAMS="dropbear dropbearkey dbclient scp" install
+
+
+5) generate RSA and DSS keys 
+dropbearkey -t dss -f dropbear_dss_host_key
+dropbearkey -t rsa -f dropbear_rsa_host_key
+
+6) run the dropbear 
+#dropbear
+
+7) make a SSh connection from pc 
+ssh -l root 192.168.7.2
+
+
+
+
+
+#use this command to install a openssh server on your ubuntu host 
+sudo apt-get install openssh-server
+
+
+### Eclipse
+for that install Eclipse for c/c++ development software, Linora cross tool chain, make(GNU win)
+
+## AM335x pin details, gpios and sysfs control
+- It consists of 4 GPIO modules. and each one contains 32 dedicated GPIO pins
+
+- But Beagle bone has 2 exapnsion header p8 and p9
+
+The image is taken from BBB SRM(System Reference Module)
+
+![Expansion header p8](https://github.com/broharigunda/Learnings/assets/57592824/03cd76f7-b0ae-48d9-ad6a-33fac19348bd)
+![Expansion header p9](https://github.com/broharigunda/Learnings/assets/57592824/64767cc0-3c70-4807-8646-a499269f23a3)
+
+GPIO files are found in `/sys/class/gpio`
+![GPIO](https://github.com/broharigunda/Learnings/assets/57592824/ca60fa34-bb5d-4abb-9fd8-1ac70b8caf58)
+<details><summary>gpio convention</summary>
+
+`gpio0[4]` this represent the 4th pin of the 0th gpio module in (0,1,2,3 modules)
+
+in programming it should  be represent as `0*32+4=4` so `gpio4`.\
+ex: gpio3[2] ---> `3*32+2=98` so `gpio98`
+</details>
+
+Here single pin can operate in 8 different modes based using multiplexing (modes can be set by the register)
+
+The details about this will be found in Techinical refrence manual of AM335x guide
+
+![TRM](https://github.com/broharigunda/Learnings/assets/57592824/d48e9793-1b83-44d5-8da7-becc18cc5877)
+
+In the image `offset 800h` (which means the register is located in `BASE_ADDRESS+800h` or `0x44E1_0000+800h`) is used for the pad/pin configuration registers.
+ 
+ The base address of the control module is `0x44E1_0000` and end address is `0x44E1_1FFF`.
+![base address of control module](https://github.com/broharigunda/Learnings/assets/57592824/3dfdd2e3-3f16-4708-829a-48786be70398)
+
+![pin config register](https://github.com/broharigunda/Learnings/assets/57592824/2ca59052-57ba-48db-876f-187003a50485)
+
+To configure this register we need to go `/sys/kernel/debug/pinctrl`. in the below image you can see the folder `44e10800.pinmux`(due to `BASE_ADDRESS+800h` or `0x44E1_0000+800h`) 
+
+![register control module pins](https://github.com/broharigunda/Learnings/assets/57592824/30167f30-e482-42d2-bfc6-5ea0ba3c6439)
+![pins output](https://github.com/broharigunda/Learnings/assets/57592824/ef3249e2-e020-4994-a84f-ec5dd43d88d9)
+
+It mas pin config. register of 142 (pin 0 to pin 141)
+
+In the above image
+pin | memory | value
+-|-|-
+pin 0 | 44e10800 | 00000031 (last value represent mode so it is **mode 1**)
+... | ... | ...
+pin 8 | 44e10820 | 00000027 (it is **mode 7**)
+... | ... | ...
+pin 40 | 44e108a0 | 00000008 (it is **mode 0**
+... | ... | ...
+
+refere more in internet for doubt
+
+example: lest say 00000031 last byte is **31**, if we convert this hexadecimal to binary we have `0011 0001`. this binary represent the below bit configuration. Example here the 6th bit is `0` so it is in slower rate accroding to the below table. similarly 3rd bit is `0` so it represent pullup/pulldown selected, 5th big is 1 so reciever enable (so it is input) ,etc...
+
+![pin config table control module table 9-60](https://github.com/broharigunda/Learnings/assets/57592824/a6005a90-3160-4924-99f0-33747062d81a)
+
+
+
+Now let see whats in pinmux-pins by command `cat pinmux-pins | more`
+![pinmux-pin](https://github.com/broharigunda/Learnings/assets/57592824/251b7ae5-1b30-4021-9fcb-0f5c200e9131)
+
+in the above table it tells that pin 0 is actualy configured for MMC mode which belog to the group pinmux_emmc_pins. similar for other pins. 
+
+```
+...
+...
+...
+pin 25 (44e10865.0): (MUX UNCLAIMED)(GPIO UNCLAIMED)
+---More---
+```
+This line says that software is not claimbed pin 25. we can use it to configure what we want.
+
+**pin groups**
+![pin groups (1)](https://github.com/broharigunda/Learnings/assets/57592824/71a47b04-3161-4480-8a5d-8122717f31a4)
+![pingroups (2)](https://github.com/broharigunda/Learnings/assets/57592824/b170bd10-fc41-4104-a9dd-c424b999780d)
+
+You can now the available gpio pin using in directory `/sys/kernel/debug`
+```bash
+cat  gpio
+```
+
+
 ## Important Hints
 1. **Recommended load addresses**
     Binary | DDR RAM Load address
@@ -694,6 +909,7 @@ We have to boot exactly the same way how we used to boot via SD card, that is pr
     Linux kernel image (uImage) | 0x82000000
     FDT or DTB | 0x88000000
     RAMDIS or INITRAMFS | 0x88080000
+2. GPIO files are found in /sys/class/gpio
   
 ## Glossory
 - **SYSFS** 
@@ -714,12 +930,14 @@ Abb. | Full form
  DTC | Device Tree Compiler
  ELF | Executable and Linkable Format
  eMMC | Embedded Multimedia Card (NAND Flash memory and it also has controller)
+ GPIO | General-Purpose Input/Output
  MMU | Memory Management Unit
  MMC | MultiMediaCard 
  MLO | Memory Loader
  RBL | ROM Boot Loader
  SPL | Secondary Program Loader
  SPI | Serial Peripheral Interface
+ TFTP | Trivial File Transfer Protocol
  UART | Universal Asynchronours receiver-transmitter
 
 ## Commands
@@ -727,7 +945,12 @@ Abb. | Full form
 Command | Explanation
 -|-
 dmesg | The dmesg command is a Linux utility that displays kernel-related messages retrieved from the kernel ring buffer. The ring buffer stores information about hardware, device driver initialization, and messages from kernel modules that take place during system startup
-
+distclean | deletes all the previously compiled/generate object files
+du | summarize the disk usage of the set of files, recursively for directory
+exportfs | maintain table of exported NFS file systems
+insmod | it is same as modprobe(adds or removes module from the linux kernel) but does not install the dependent file that mentioned in the depenency file(modules.dep)
+modprobe | adds or removes module from the linux kernel, (it uses dependency, meanse it will install the dependent file(modules.deb) first that are mentioned in the dependency file. then they  install the file we pass)
+rmmod | uloads the module which are added using `modprobe` or `insmod`
 **U-Boot Commands**
 commands | explanation
 -|-
