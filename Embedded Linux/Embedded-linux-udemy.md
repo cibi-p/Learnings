@@ -115,7 +115,7 @@ Serial Monitoring Software lets you monitor and record any data going through se
   - For Example click **Blink a in built led** demo. You can see the `java script` code for blink a led. which is use `Node.js` and `BoneScript Library`
 
 ## TI's AM335x Functional block overview
-![AM335x block diagram](https://www.mouser.in/images/marketingid/2012/microsites/145997644/TI_AM335x_blkdia.png)
+![AM335x block diagram](https://github.com/broharigunda/Learnings/assets/57592824/476679da-6e2b-4e67-a675-d8e490eff9e0)
 
 ## What do we need to boot Linux kernel in ARM based Hardware(BBB)
 We Need at-least 4 software components
