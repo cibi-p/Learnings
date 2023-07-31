@@ -19,6 +19,10 @@ Property of material to oppose the flow of electrons through the material
 1. Power ansprned of by resistor $P=VI=I^2 R$
 1. Energy lost in the resistance in form of heat $E=I^2Rt$ Joules
 
+- Linear device
+- ohms law, V=IR
+- before using restitor know, Actual Resistance, power rating, resistor tolerance, thermal coefficient,
+
 ### Inductance
 Property of material which opposes any change of magnitude or direction of current passing through the conductor. Energy stored in the inductor is in the form of magnetic field. unit is henry
 
@@ -40,3 +44,4 @@ Capacbility of element to store electric charge within it. unit is Farad
 1. Capacitive reactance, $X_C=\frac{1}{2\pi fC}$ $\Omega$
 
 Here Current is leading voltage in phasor diagram by 90&deg;
+
