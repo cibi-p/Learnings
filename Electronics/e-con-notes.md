@@ -45,3 +45,13 @@ Capacbility of element to store electric charge within it. unit is Farad
 
 Here Current is leading voltage in phasor diagram by 90&deg;
 
+
+## MOSFET
+- Metal Oxide Semiconductor Field Effect Transistor
+![](https://www.lesics.com/Working-of-Transistors/mosfet.jpg)
+
+![](https://www.electricaltechnology.org/wp-content/uploads/2021/06/MOSFET-Working-Types-Operation-Advantages-and-Applications.png)
+ - Enhancement Mode (off at Zero gate-source voltage)
+ - Deplition Mode (on at zero gate-source voltage)
+
+ 
