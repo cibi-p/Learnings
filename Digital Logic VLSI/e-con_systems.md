@@ -72,3 +72,15 @@ tinuous change in the angular position of a shaft. The shaft is partitioned into
 and each segment is assigned a number. If adjacent segments are made to correspond
 with the Gray‐code sequence, ambiguity is eliminated between the angle of the shaft
 and the value encoded by the sensor.
+
+## Chapter 2: Boolean Algebra and Logic Gates
+
+- Huntington Posutulates (6 Properties)
+- Duality properties
+- Boolean functions (ex: function of x'y'z+x'yz+xy' is reduced to x'z(y'+y)+xy', therefore y'+y is always 1. so, final reduced function is x'z+xy' and it requires less gates to create this function, it implies the use of boolean algebra)
+- Canonical and standard form(refer book pg. No. 51)
+
+ ## Important tips
+1. XOR Gate produce one if the number of 1 is odd (ex: suppose for 3 input, XOR output will be 1 if the count of 1's in the input is odd)
+
+## Chaper 3: Gate-Level Minimization

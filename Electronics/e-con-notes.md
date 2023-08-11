@@ -54,4 +54,14 @@ Here Current is leading voltage in phasor diagram by 90&deg;
  - Enhancement Mode (off at Zero gate-source voltage)
  - Deplition Mode (on at zero gate-source voltage)
 
- 
+## Voltage regulators  
+The below diagram shows the 5 voltage regulator, it convert the 6-35V to 5V constant. (78xx here xx represert the output voltage of the regulate). We can connect the capactiter parallel in the ouput to avoid fluctuation or to get constant voltage.  
+LM7805 is the voltage regulator name, here `LM78` represent regulator series. ex: LM7805 produce 5V, 0.5A, L7805 --> 5V,1A, L78S05 --> 5V, 2A  
+
+7905 produces the negative 5volts
+
+If you want to reduce the current you need to use DC-DC step down converter (buck converter)
+![](https://components101.com/sites/default/files/component_pin/7805-Voltage-Regulator-Pinout.png)
+
+## Buck Converter (https://www.youtube.com/watch?v=W6NOV6b8kxs)
+we reduce the AC voltage using transformer, similary for DC we use Buck converter
