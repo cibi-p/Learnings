@@ -84,3 +84,13 @@ and the value encoded by the sensor.
 1. XOR Gate produce one if the number of 1 is odd (ex: suppose for 3 input, XOR output will be 1 if the count of 1's in the input is odd)
 
 ## Chaper 3: Gate-Level Minimization
+
+
+## Chapter 4: Combinational Logic
+
+Logic circuits for digital systems may be combinational or sequential. A combinational
+circuit consists of logic gates whose outputs at any time are determined from only the
+present combination of inputs.
+
+## Properties
+

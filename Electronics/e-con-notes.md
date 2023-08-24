@@ -64,4 +64,15 @@ If you want to reduce the current you need to use DC-DC step down converter (buc
 ![](https://components101.com/sites/default/files/component_pin/7805-Voltage-Regulator-Pinout.png)
 
 ## Buck Converter (https://www.youtube.com/watch?v=W6NOV6b8kxs)
-we reduce the AC voltage using transformer, similary for DC we use Buck converter
+we reduce the AC voltage using transformer, similary for DC we use Buck converter  
+
+https://electronics-fun.com/buck-converter/
+![](https://electronics-fun.com/wp-content/uploads/2021/11/Buck-Boost-circuit-diagram-768x435.png)
+
+## LDO Basics: Dropout voltage
+Low Dropout or LDO regulator is a linear voltage regulator that can retulate even weh teh supply is close to the ouput
+example IC: TLV760
+
+$V_{OUT} = V_{IN} - V_{DO}$
+
+$V_{DO}$ is the voldate drop or the minimum voltage difference between $V_{IN}$ and $V_{OUT}$ need for regulation
