@@ -1,4 +1,7 @@
 # C tricky question
+## Chapter 2
+1. Modulus operator cannot be used on float
+## Chapter 11
 1. `char` store -128 to +178, `unsigned char` stores from 0 to 255. suppose if we attempt to store +129 in `char` it will become -127...
 2. switch cannot be used float, ex: case 6.5
 3. If there is a nested scope in the program, local variable in that scope will be high priority, and its value will be utilized.
@@ -17,8 +20,15 @@
 3. 1Meter = 100centimeter
 4. 1inch = 2.54cm
 5. 1feet =  12inch
-6. centigrade = 5.0/9.0 *(farhenheit-32)
+6. centigrade = 5.0/9.0 \*(farhenheit-32)
 7. Area of rect. A=l*b
 8. Perimeter =2l+2b
-9. Area of circ. A=3.14*r*r
-10. Circum. =2*3.14*r
+9. Area of circ. A=3.14\*r\*r
+10. Circum. =2\*3.14\*r
+11. Area of triable Area of a triangle: K= sqrt(s(s−a)(s−b)(s−c)), where s is semiperimeter=(a+b+c)/2
+12. Height = Area/Breath
+13. cartesion to polar r=sqrt(x\*x+y\*y), degree  = $tan^{-1}(y/x)$
+14. theta to degree degree=theta*180/3.14
+
+## Tips
+1. `int arr[101] = { [0 ... 100] = 0 };` use this for initializing the array with values
