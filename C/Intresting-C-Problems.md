@@ -209,3 +209,70 @@ Roman equivalent of 1525 is mdxxv.**\
         return 0;
     }
     ```
+
+**N to 1, without using '-', similary we can do for 1 to N without using '+'. It is a Kind of Backtrack problem**  
+<sub>tag: recurssion, backtrack</sub>
+```c
+#include <stdio.h>
+
+void func(int j,int k)
+{
+    if(j>k)
+        return;
+    func(j+1,k);
+    printf("%d ",j);
+}
+int main()
+{
+   int i=5;
+   func(1,5);
+    return 0;
+}
+```
+**subsequence in non-continuous but only increse order of index**  
+<sub>tag: subsequence, non-continuous</sub> 
+```c
+#include <stdio.h>
+#include <math.h>
+
+int main()
+{
+    int a[]={1,2,3,4,};
+    int count=0;
+    int s=4;
+    int power_set_size=pow(2,s);
+    for(int counter=0;counter<power_set_size; counter++){
+        for(int j=0; j<s; j++)
+        {
+            if(counter & 1<<j){
+                printf("%d ", a[j]);
+            }
+        }
+        printf("\n");
+        count++;
+    }
+    printf("\nThe total count = %d",count-1);
+    return 0;
+}
+```
+
+```
+
+1 
+2 
+1 2 
+3 
+1 3 
+2 3 
+1 2 3 
+4 
+1 4 
+2 4 
+1 2 4 
+3 4 
+1 3 4 
+2 3 4 
+1 2 3 4 
+
+The total count = 15 // always total count is (2^n -1)
+``````
