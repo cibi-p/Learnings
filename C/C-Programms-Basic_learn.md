@@ -12,7 +12,7 @@ int main()
     scanf("%d",&a);
     printf("last number");
     scanf("%d",&b);
-    
+ V   
     for(int i=a;i<b; i++)
     {
         printf("%d \n",i);
@@ -284,3 +284,29 @@ int main()
 
 The total count = 15 // always total count is (2^n -1)
 ``````
+
+# File
+```c
+FILE *fp;
+fp=fopen("PRI.c", "r" or "w"); // r- read, w - write, a- append, r+ -read and write and modify existing data, w+ - read and write modify existing data, a+ - cannot modify existing data, wb - write binary, rb - read binary
+fclose(fp);
+
+fgets(localstringvariable, size, filepointer);
+fscanf ( fp, "%s %d %f", e.name, &e.age, &e.bs );
+
+fwrite ( &e, sizeof ( e ), 1, fp ) ; //&e is struct contains name, age, bs. 1 ->rpresents number of such structures that we want to write at one time
+fread ( &e, sizeof ( e ), 1, fp ); //return 1 ir it 9is success
+
+fseek(filepointer, offset, SEEK_CUR or SEEK_END or SEEK_SET/*SEEK_start*/)
+//Here, -recsize moves the pointer back by recsize bytes from the current position. SEEK_CUR is a macro defined in “stdio.h”.
+
+
+//The C library function void rewind(FILE *stream) sets the file position to the beginning of the file of the given stream.
+
+//If we wish to know where the pointer is positioned right now, we can
+//use the function ftell( ). It returns this position as a long int which is an
+//offset from the beginning of the file. The value returned by ftell( ) can be
+//used in subsequent calls to fseek( ). A sample call to ftell( ) is shown
+//below.
+position = ftell ( fp ) ;
+```
