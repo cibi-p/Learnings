@@ -38,6 +38,15 @@ where as M and N are the number of image rows and columns
 
 ## MATH FORMULAS (EXPLANATION/LINK)
 
+- [Probability Mass Function](https://www.probabilitycourse.com/chapter3/3_1_3_pmf.php)  
+        ex:  
+        $R_X$ = { HEAD, TAIL }  
+        P( X = HEAD )  or $P_X(x_K)$ is known as PMF
+        PMF can not to be defined for continuous random variable
+- [ Cumulative Distribution Function ]( https://www.probabilitycourse.com/chapter3/3_2_1_cdf.php)  
+          defined as $F_X(x) = P(X<=x)$ for alll x belongs to Real Number      
+        
+
 
 
 
