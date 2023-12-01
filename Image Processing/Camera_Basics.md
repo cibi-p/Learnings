@@ -46,3 +46,17 @@ it works similar to the working of human eye pupils
 
 <sub> **ISO**  
 [ ISO DEF. Camera ](https://www.youtube.com/watch?v=fBxsCNF5ims)
+
+Iso deside the light sensitivity of the sensor...  
+If it is low, sensor will be less sensitive to the light and vise versa.  
+
+most common ISO values are 100 200 400 800 1600 3000
+
+we can use it whith sutter speed to take the image in low light... condition... etc...
+</sub>
+
+### Digital Camera
+![digital camera diagram ](https://github.com/cibi-p/Learnings/assets/57592824/4a23b5ae-b12b-4908-98c4-2d3bc6f6fbc0)
+
+Image Color filter  
+![Image color filter](https://github.com/cibi-p/Learnings/assets/57592824/f58d8dd4-6834-41fe-b25b-c7209852cca1)
