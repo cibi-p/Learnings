@@ -84,6 +84,17 @@ Types of Color Filter array
 -> 1 pixel containt 1 blue, 1 red, and 2 green filter  
 -> denoted as RGBG or BGGR or GRBG or RGGB
 
+<details>
+<summary>Why green is twice ?</summary>
+
+An experiment shows that under normal light, rods cells are highly sensitive at or above 500nm which is sort of the border of blue moving into green in the visible spectrum.   
+There are 10millions of the rod cell, and 6 million of cone cells. and rods see green best.  
+![image](https://github.com/cibi-p/Learnings/assets/57592824/ce235fa9-2cd3-4a05-be26-ee2f08debfed)  
+Human eye is more sensitive to the light present and less sensitive to the range of color.
+When the light levels drop to near total darkness, the response of the eye changes significantly as shown by the scotopic response curve on the left.  At this level of light, the rods are most active and the human eye is more sensitive to the light present, and less sensitive to the range of color
+
+</details>
+
 -> Bayer ( who invented ) called the grenn photosensor luminance-sensitive element and the red and blue ones are chroinance-sensitive elements. he used twice as many green elements compared to blue one to mimic human eye
 
 <sub> Luminance is the brightness information, chrominance is the color information </sub>
