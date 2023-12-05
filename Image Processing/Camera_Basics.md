@@ -89,9 +89,20 @@ Types of Color Filter array
 
 An experiment shows that under normal light, rods cells are highly sensitive at or above 500nm which is sort of the border of blue moving into green in the visible spectrum.   
 There are 10millions of the rod cell, and 6 million of cone cells. and rods see green best.  
-![image](https://github.com/cibi-p/Learnings/assets/57592824/ce235fa9-2cd3-4a05-be26-ee2f08debfed)  
+
+![image](https://github.com/cibi-p/Learnings/assets/57592824/ce235fa9-2cd3-4a05-be26-ee2f08debfed) 
+
 Human eye is more sensitive to the light present and less sensitive to the range of color.
 When the light levels drop to near total darkness, the response of the eye changes significantly as shown by the scotopic response curve on the left.  At this level of light, the rods are most active and the human eye is more sensitive to the light present, and less sensitive to the range of color
+
+To see saturated colour, the brain does more or less the same sort of processing that has to happen in a Bayer-sensor camera in order to recover full-colour information. The reason this gives us best acuity in green is simply that there's really a lot of overlap between the medium and long (green and red) cones. This happens to the point where the medium-length cones can see everything from a greenish turquoise all the way through to, well, a fairly orange yellow, while the red cones can see from mid-green to the borders of infra-red. The result is an overall peak of sensitivity at a place which really looks pretty green, despite the fact that we can also see red using the same anatomy.
+
+The retina is a mosaic of two basic types of photoreceptors: rods, and cones. Rods are sensitive to blue-green light with peak sensitivity at a wavelength of 498 nm, and are used for vision under dark or dim conditions. There are three types of cones that give us our basic color vision: L-cones (red) with a peak sensitivity of 564 nm, M-cones (green) with a peak sensitivity of 533 nm, and S-cones (blue) with a peak sensitivity of 437 nm.
+
+**REF.**  
+[ important article ](https://www.nde-ed.org/NDETechniques/PenetrantTest/Introduction/visualacuity.xhtml)  
+[ article * ](https://www.redsharknews.com/technology-computing/item/4741-human-vision-and-why-the-colour-green-is-so-important)
+ 
 
 </details>
 
@@ -126,8 +137,18 @@ color correction
 **Types of Sensors**
 - CCD
 - CMOS
+
   
 ![image](https://github.com/cibi-p/Learnings/assets/57592824/72680052-30c2-4860-8450-365626259e66)  
 ![image](https://github.com/cibi-p/Learnings/assets/57592824/07041ac7-025b-4474-ae3f-538c1d705cbb)  
 
 [ CDD , CMOS (V) ](https://www.youtube.com/watch?v=FKJFIzDfUNE)
+
+
+# ISP ( Image Signal Processing )
+
+## White Balancing  
+When the image is taken in low light the image will have red or orange shade, if the image in taken in high light condition the image will apper in blue color. the aim of this balancing is to make white ( and other colors ) same as white in all lightening conition.
+
+
+
