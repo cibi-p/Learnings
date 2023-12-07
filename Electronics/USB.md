@@ -1,5 +1,7 @@
 # USB
-<sup>[USB is a NutShell](https://www.beyondlogic.org/usbnutshell/usb1.shtml)</sup>
+<sup>**Ref.**</sup>  
+<sup>[USB is a NutShell](https://www.beyondlogic.org/usbnutshell/usb1.shtml)</sup>  
+<sup>USB 2.0 Specification</sub>
 
 # BASICS of USB 
 - USB 1.0
@@ -66,7 +68,7 @@ K is differential `0` in LOW Speed Mode
 
 </details>
 
-<details><summary><PID/summary>
+<details><summary>PID</summary>
    PID stands for Packet ID. This field is used to identify the type of packet that is being sent. The following table shows the possible values.
    
 ![PID](https://github.com/cibi-p/Learnings/assets/57592824/897022fe-fc0f-4fb2-a832-49d13d48fab8)
