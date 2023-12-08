@@ -72,15 +72,25 @@ K is differential `0` in LOW Speed Mode
    PID stands for Packet ID. This field is used to identify the type of packet that is being sent. The following table shows the possible values.
    
 ![PID](https://github.com/cibi-p/Learnings/assets/57592824/897022fe-fc0f-4fb2-a832-49d13d48fab8)
+
+![PID expla-1 ](https://github.com/cibi-p/Learnings/assets/57592824/0bc5bf93-8baa-4ea0-bca7-232a1e6eb425)
+![PID table](https://github.com/cibi-p/Learnings/assets/57592824/ab41d40c-13ab-433a-a816-3dc7d5a02cf9)
+
    
 </details>
 
 <details><summary>ADDR</summary>
    The address field specifies which device the packet is designated for. Being 7 bits in length allows for 127 devices to be supported. Address 0 is not valid, as any device which is not yet assigned an address must respond to packets sent to address zero.
+
+   ![image](https://github.com/cibi-p/Learnings/assets/57592824/2dcc511c-862f-4630-b24d-56f145408eb5)
+
 </details>
 
 <details><summary>ENDP</summary>
    The endpoint field is made up of 4 bits, allowing 16 possible endpoints. Low speed devices, however can only have 2 additional endpoints on top of the default pipe. (4 endpoints max)
+
+   ![image](https://github.com/cibi-p/Learnings/assets/57592824/2578e66a-6ad9-45be-92cb-7e190a6d0d2c)
+
 </details>
 
 <details><summary>CRC</summary>
@@ -93,3 +103,5 @@ K is differential `0` in LOW Speed Mode
 
 ### Bit Stuffing
 ![ Bit Stuffing ](https://github.com/cibi-p/Learnings/assets/57592824/3a6dc389-af01-4f59-8bc1-e3d61da518a1)
+
+
