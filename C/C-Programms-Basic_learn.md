@@ -264,8 +264,6 @@ int main()
 }
 ```
 
-```
-
 1 
 2 
 1 2 
@@ -283,9 +281,8 @@ int main()
 1 2 3 4 
 
 The total count = 15 // always total count is (2^n -1)
-``````
-
 # File
+
 ```c
 FILE *fp;
 fp=fopen("PRI.c", "r" or "w"); // r- read, w - write, a- append, r+ -read and write and modify existing data, w+ - read and write modify existing data, a+ - cannot modify existing data, wb - write binary, rb - read binary
