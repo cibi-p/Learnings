@@ -11,5 +11,35 @@ There three fundamental devices types in Linux.
 
 3. <details><summary>Network module</summary>Any network transaction is made through an interface, that is, a device that is able to exchange data with other hosts. Usually, an interface is a hardware device, but it might also be a pure software device, like the loopback interface. A network interface is in charge of sending and receiving data packets, driven by the network subsystem of the kernel, without knowing how individual transac- tions map to the actual packets being transmitted. Many network connections (especially those using TCP) are stream-oriented, but network devices are, usu- ally, designed around the transmission and receipt of packets. A network driver knows nothing about individual connections; it only handles packets. Not being a stream-oriented device, a network interface isn’t easily mapped to a node in the filesystem, as /dev/tty1 is. The Unix way to provide access to inter- faces is still by assigning a unique name to them (such as eth0), but that name doesn’t have a corresponding entry in the filesystem. Communication between the kernel and a network device driver is completely different from that used with char and block drivers. Instead of read and write, the kernel calls functions related to packet transmission.</details>
 
-![class of devices](img/Ldd/Class_of_device.png)
+![class of devices](/OS/img/Ldd/Class_of_device.png))
 
+# Basics
+## Hello World Linux driver ( accessing the pid )
+
+```c
+#include <linux/init.h>
+#include <linux/module.h>
+#include <asm/current.h> // used to get the PID
+MODULE_LICENSE("Dual BSD/GPL");
+static int hello_init(void)
+{
+    // EX: 1 Printing Hello World
+    printk(KERN_ALERT "Hello, world\n");
+
+    // Ex: 2 THe current is defined in asm/current.h, which gives the pid
+    printk(KERN_INFO "The Process is \"%s\" (pid %i)\n", current->comm, current->pid);
+    return 0;
+}
+static void hello_exit(void)
+{
+    printk(KERN_ALERT "Goodbye, cruel world\n");
+}
+module_init(hello_init);
+module_exit(hello_exit);
+```
+## linking a module to kernel
+![linking a module to kernel](ldd_try/ldd_module_linking.png)
+
+# Key Points
+* As a programmer, you know that an application can call functions it doesn’t define: the linking stage resolves external references using the appropriate library of func- tions. printf is one of those callable functions and is defined in libc. **A module, on the other hand, is linked only to the kernel, and the only functions it can call are the ones exported by the kernel; there are no libraries to link to.** (pg no: 18)
+* A module runs in kernel space, whereas applications run in user space. This concept is at the base of operating systems theory.

@@ -261,6 +261,111 @@ Time Quanta should be calculated baseced on the requirement
 * starvation can happen, but lesser than mult-level-queue
 
 ### Longest Remaining 
+
+
+## Inter Process communiation (IPC) in processa
+Inter process communication is used to communicate between the two process
+
+Types
+1. Pipes
+2. Shared Memory
+3. Message Passing
+4. Queue
+
+Note: Intra-process communication is  communication done between functions in the single process ( global variable, passing value as a argument to the function is the way it done)
+
+### Challanges
+**Producer consumer problem** ( this is the synchronization problem )  
+Producer-Consumer problem is a classical synchronization problem in the operating system. With the presence of more than one process and limited resources in the system the synchronization problem arises. If one resource is shared between more than one process at the same time then it can lead to data inconsistency. In the producer-consumer problem, the producer produces an item and the consumer consumes the item produced by the producer
+
+[more here](https://www.scaler.com/topics/operating-system/producer-consumer-problem-in-os/)
+
+
+**There are two types of synchronisation happen in the IPC**  
+1. Cooperative ( ex: video streaming it should be synchronized in a way between of process p1 of placing the image in memory and process p2 of taking the image in a memory)
+2. competitive ( ex: printer, if two process p1 and p2 try access the printer, only one can take control of printer at a time for that this synchronization is used)
+
+### Necessary condition for synchronization problems
+1. Critical Section ( CS )  
+    <sup>Part of the program where shared resources are accessed</sup>
+2. Race Condition  
+    <sub>Processes must be racing/competing to access the shared resources(or critical section part)</sub>
+3. Preemption  
+    <sub>Preempting the process that access the critical section, and other process that access the critical section can cause the produce-consuber-problem</sub>
+
+### Methods to Solve synchronization problems
+**MUTUAL EXCLUSTION**  
+This mechanism allows only one of the competing process can be in the Critical Section at any point of time. (other process need to wait until the other process completes its critical section code )
+
+**Kinds....**
+* A1. Mutual Exclusion with busy waiting ( means it uses the cpu for waiting (ex: while( isCricleResourceFree == 1); ) so the while loop will run in the cpu. It is useless execution right, at that time we may execute the some other process in the Ready queue)  
+* A2. Mutual Exclusion without Busy Waiting ( means it doest not uses the CPU to wait for the critical resource )  
+* B1. Hardware Mechanisum  
+* B2. Software Mecanisum   
+    * Kernel Level  
+    * User Level  
+
+### Condition for Sychronization Mechonisms
+1. Gauranteed Mutual Exclusion
+2. Progress  
+    </sub>Processes in Non-critical section may not block other processes which want to enter CPU</sub>
+3. Bounded waiting
+    </sub>No process must wait forever to enter its Critical Section( secondary )</sub>
+4. No assomption about Speed & CPUS
+    <sub>Don't write for the particular processor or number processor or speed dependent. Make it General purpose OS</sub>
+
+### Mechanism
+<sub>[Geek for Geek tutorial detail link](https://www.geeksforgeeks.org/process-synchronization-set-2/)  </sub>      
+
+#### 1. Disabling Interrupt Mechanism
+It disables the interrupt before getting in to the critical section, no preemption will happen, it occupy the cpu until it executes the critical section code. Then it enable_interrupt, so other process can execute.
+![img-disabling-interrupt method](https://media.geeksforgeeks.org/wp-content/uploads/interrupt-1.png)
+
+#### 2. Lock Variable Mechanism
+1. Pure software mechanisum
+2. It is Busy waiting ( means it uses the cpu for waiting (ex: while( isCricleResourceFree == 1); ) so the while loop will run in the cpu. It is useless execution right, at that time we may execute the some other process in the Ready queue )
+3. It is working in user mode
+4. This solution does not garante Mutual Exclusion, since it uses a sharaed variable named lock, to indicate wheter the critical section is occupied or not...
+![Lock_Variable_Mechanism](https://www.gatevidyalay.com/wp-content/uploads/2018/10/Lock-Variable-Synchronization-Mechanism.png)
+5. Advanced version of this idea is established in peterson algorithm for mutual exclusion, which solved all the issues in the Lock variable Mechanism
+
+#### 3. Strict Alteration Mechanism / Turn Based Mechanisms
+1. Pure software mechanisum
+2. It is Busy waiting ( means it uses the cpu for waiting (ex: while( isCricleResourceFree == 1); ) so the while loop will run in the cpu. It is useless execution right, at that time we may execute the some other process in the Ready queue )
+3. It is similar to shared variable lock it has turn. consider two process p1 and p2. p1 get into the Critical Section only when turn=1 and p2 get into CS only when turn=0. This is the difference between Lock variable mechanism, there lock is set to 1 when any one of the process is get into the CS.
+4. Since the Exit section only changes turn it *garantees the mutual exclusion.* ( ADVICE-😁: only a simple change bring new posibilities)
+5. Disadvantage: If you see the below image, it changes the turn=1 in the process p0. Suppose if there is another Critical section code is back in the p0, it can't access them because still turn=1. It will wait until p1 come into the critical section and change the turn=0. so that p0 2nd critical section will get execute. So it does not garantee progress
+[strict-alteration-img](https://www.gatevidyalay.com/wp-content/uploads/2018/11/Turn-Variable-Synchronization-Mechanism.png)
+
+#### 4. Peterson's Solution for Synchonization mechanism
+1. It is software based, mutual exclusive, busy waiting and it ensure progress.
+2. It uses two shared variable named `int turn` and `int flag[2] = { 0, 0 }`
+![perterson-solution-img](https://media.geeksforgeeks.org/wp-content/uploads/peterson-1.png)
+3. Instruction in updating the shared variable ( turn and flag[a] ) should be automic and instant. we need it as only one machine level instruction to update...
+4. The image shown above is fo 2processs, but there is version for multiprocess
+5. It get into Deadlock, If it uses priority based scheduling. Consider two process p0 and p1 with priority 10 and 0, 0 is the highest priority task. consdier p0 is in the critical section, if p1 is come in ready queue, p0 is preemited from cpu and the cpu is given to the p1 ( since it has the highest priority ). now if p1 tries to access crictial section, it can't able to access it, since p0 own the crictical scection. so scheduler can't give access to the p0 to leave the critical section, because p1 is the highest priority. so the cpu stuck in the infinite loop ( p1 waits for the critical section infinitely ). This is know as Priority inversion problem
+#### 5. Test and Set Lock (TSL) Mechanism 
+1. It is Hardware 
+    (it gives the instruction `TSL` a machine level instruction. Which do the job of two instruction in single instruction.  
+    ex:  
+        `TSL LOCK, R0` :It copyies the value of register R0 to Lock, and it make R0=1.  
+        Then Critical section will get executed, after that, R0 is Made to 0. It is same as Lock variable wince it performs the 2task in the single instruction it give mutual exclusion)
+2. It garantee Mutual Exclusion, It is busy waiting, And it is not Bonded waiting. Since it compete with multiple process, it does not know after the crictical section is free wheter its get in or not.
+
+![TSL-synhronisation](https://www.cs.uni.edu/~fienup/courses/copy-of-operating-systems/lecture-notes/notes98f-6.lwp/3627bd28.jpg)
+
+3. It get into Deadlock, If it uses priority based scheduling. Consider two process p0 and p1 with priority 10 and 0, 0 is the highest priority task. consdier p0 is in the critical section, if p1 is come in ready queue, p0 is preemited from cpu and the cpu is given to the p1 ( since it has the highest priority ). now if p1 tries to access crictial section, it can't able to access it, since p0 own the crictical scection. so scheduler can't give access to the p0 to leave the critical section, because p1 is the highest priority. so the cpu stuck in the infinite loop ( p1 waits for the critical section infinitely ). This is know as Priority inversion problem
+
+#### 6. Sleep & Wakeup based synchronization
+1. It solve's the busy waiting
+2. It Does not garantee mutual exclusion
+3. It uses the system all sleep() and wakeup(). consider two process p0, p1. suppose if p0 is in the Critical section and it got preempted, then p1 take the cpu, then it also tries to enter into the Critical section. Since p0 occupied the critical section, p1 execute the sleep() and leave the cpu by telling the scheduling algorithm, the p0 will get into the cpu, after completing the critical section it will wake up the p1. This how its work.
+4. consider if process try to get into the Critical section at some what same time, at that time it does not garantee the critial section...
+5. Dead lock also happen at some time both process get into sleep...
+
+
+#### 7. Semaphores
+1. It is the software resource
 # Other Titles
 - Fork()
 
