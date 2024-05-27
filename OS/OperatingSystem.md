@@ -366,6 +366,132 @@ It disables the interrupt before getting in to the critical section, no preempti
 
 #### 7. Semaphores
 1. It is the software resource
+2. It store integer value ( You can consider the semaphore as a integer variable provided by OS Kernel. All operation, intcrementing (UP), decrementing (DOWN) this values are atomic ( _atomic operation_))
+3. Its of 2 types
+    * Counting ( integer Value )
+    * Binary ( 0 0r 1 value)
+4. Two Operation ( UP & DOWN  or Signal & Wait or V & P )
+
+```c
+// Binary semaphore
+struct semaphore {
+  
+    enum value(0, 1);
+
+    // q contains all Process Control Blocks (PCBs)
+    // corresponding to processes got blocked
+    // while performing down operation.
+    Queue<process> q;
+
+};
+P(semaphore s)
+{
+    if (s.value == 1) {
+        s.value = 0;
+    }
+    else {
+        // add the process to the waiting queue
+        q.push(P) sleep();
+    }
+}
+V(semaphore s)
+{
+    if (s.q is empty) {
+        s.value = 1;
+    }
+    else {
+
+        // select a process from waiting queue
+        Process p = q.front();
+        // remove the process from waiting as it has been
+        // sent for CS
+        q.pop();
+        wakeup(p);
+    }
+}
+
+// This code is modified by Susobhan Akhuli
+```
+
+```c
+// counting semaphore
+struct Semaphore {
+
+    int value;
+
+    // q contains all Process Control Blocks(PCBs)
+    // corresponding to processes got blocked
+    // while performing down operation.
+    Queue<process> q;
+
+};
+P(Semaphore s)
+{
+    s.value = s.value - 1;
+    if (s.value < 0) {
+
+        // add process to queue
+        // here p is a process which is currently executing
+        q.push(p);
+        block();
+    }
+    else
+        return;
+}
+
+V(Semaphore s)
+{
+    s.value = s.value + 1;
+    if (s.value <= 0) {
+
+        // remove process p from queue
+        Process p = q.pop();
+        wakeup(p);
+    }
+    else
+        return;
+}
+```
+
+[ geeks for geeks link ](https://www.geeksforgeeks.org/semaphores-in-process-synchronization/)
+
+**Producer and consumer probrem using semaphores**
+we need the 3 semaphore, to solve the producer and consumer problem.
+1. counting Semaphore to track empty space ( buffer has space to put data )(checked by producer to place the data)
+2. counting semaphore to track data availability in buffer ( this is done by the consumer )
+3. Binary semaphore which helps to access the ctritical section only one at a time
+
+```c
+do{
+
+//produce an item
+
+wait(empty); // checks for empty spcae, if it available continue
+wait(mutex); // binary semaphor, to manage the access of critical section  
+
+//place in buffer ( critical section )
+
+signal(mutex); //wake the other process that wait for critical section
+signal(full); // tell the other process that i have added data in buffer
+
+}while(true);
+```
+
+```c
+do{
+// consumer side
+wait(full); // check for data availability in buffer, if no data available wait, else continue
+wait(mutex); // binary semaphor, to manage the access of critical section
+
+// consume item from buffer, critical section
+
+signal(mutex);//wake the other process that wait for critical section
+signal(empty); // tell the producer that i have consumed one data, now that space is free to put data..
+
+
+}while(true);
+```
+
 # Other Titles
 - Fork()
 
