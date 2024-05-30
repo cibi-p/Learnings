@@ -545,7 +545,27 @@ do {
 
 } while(true);
 ```
+[link](https://www.geeksforgeeks.org/readers-writers-problem-set-1-introduction-and-readers-preference-solution/)
 
+#### Dining Philosopher's problem
+**Scenario:**
+
+Imagine several (usually five) philosophers sitting around a circular table.
+Each philosopher alternates between two states: thinking and eating.
+A large bowl of food (like spaghetti) is placed in the center, but each philosopher needs two chopsticks to eat (their left and right chopstick).
+There's only one chopstick between each pair of philosophers.
+
+**The Problem:**
+
+The challenge is to design a system (or algorithm) that ensures:
+
+* No two neighboring philosophers try to grab the same chopstick at once, leading to a fight.
+* No philosopher gets stuck in a situation where they can never eat because their neighbors are always holding the chopsticks they need (deadlock).
+
+![img dining philosopher](https://scaler.com/topics/images/dining-philosphers-problems-in-os-image2.webp)
+
+
+[link](https://www.scaler.com/topics/operating-system/dining-philosophers-problem-in-os/)
 # Other Titles
 - Fork()
 
