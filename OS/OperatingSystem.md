@@ -566,9 +566,188 @@ The challenge is to design a system (or algorithm) that ensures:
 
 
 [link](https://www.scaler.com/topics/operating-system/dining-philosophers-problem-in-os/)
+
+### Concurrent Programming
+now a days there are more the 1 cpu core in the processor, consider below example
+```c
+s=b+c; // Readset{ b, c}, writeset {s}
+e=s+a; // ReadSet { s,c}, writeset{n}
+```
+
+if 1 line run in cpu core1 and 2nd line run in cpu core2, we get a wrong value store in e, since it depends on 1st write.
+
+to solve this we need to identify it. run both the lines in the any one of the singe core.
+
+#### Bernsteins condiions for concurrency
+
+1) Readset(Si) n writeset(Sj) = $\empty$
+2) Readset(Sj) n writeset(Si) = $\empty$
+3) writeset(Si) n writeset(Sj) = $\empty$
+
+n - means intersection
+
+if it follow the above condition we can run the statements in multiple core, if it not then we should run in single core
+
+#### Precidence graphy
+![precedence grapy](img/precdence_graph.png)
+
+here begin and end is like { , } braces
+parabegin used to tell stat parallal execution for below statements.
+
+disadvantage of parbegin and parend is wecant use it for cases like below, ( i.e, look s6 )
+![dis_parbeginend](img/dis_parbegin_end.png)
+for like this case we use semaphore with in parabegin and paraend
+![sema+parbegin](img/sema_parbegin.png)
+
+#### Fork & Join Model of Concurrency
+![fork and join](img/fork_join1.png)
+![fork and join](img/fork_join2.png)
+
+# Deadlocks and Threading in process
+
+## Resource allogation graph (RAG)
+simple version resource allocation graph is shown below
+![image of RAG](https://media.geeksforgeeks.org/wp-content/uploads/Slide1.jpg)
+
+## Necessary conditions for deadlocks
+Requires
+1. Mutual Exclusion ( because it make the code wait until other processs free the resource )
+2. Hold and wait 
+3. No preemption ( here it means, process not allowed forcefully take control of the resource that is used by other process )
+4. Circular Wait ( P1 require resource used by p2, similary p2->p3, p3->p1, (This forms circular wait))
+
+this is only for general condition, some methods include the above condition and avoid deadlock.
+
+## Deadlock handeling
+**strategies...**
+1. ignoring the deadlock
+2. Detect & recover
+3. Prevention and avoidance
+
+### Ignoring dead lock
+1. called as ostrich algorithm ( ostrich burry there head under the sand when sand strom)
+2. eventually process will start again, due to long time... ( may be like watch dog timer for process )
+
+### Prevention
+1.ex.: Dead lock can be prepented by using !( hold & wait ). if lets say process p1 holding resource R1, it want resource R2 also, which is controlled by p2 and p2 wants resource R1. Now p1 need to wait for resource R2 right, suppose before waiting for the resource R2, if p1 free the resource R1 and then start waiting for the resource R2 the deadlock can be avoided write.
+2. any process are not allowed to HOLD and WAIT the resources at the same time, can prevent deadlock.
+3. starvation occurs in  all prevention
+**Methods:**
+1. Request all the resource at even start of the process
+    1. It is inefficient
+2. Release all resources before requesting new resources
+3. forcefully take resource from other process, maybe based on priority
+4. self realisation, in this case process know that other process want the resource that this process hold, knows deadlead happend and give the resource itself
+5. prevention of cicular wait
+    * Here each resource is asigned with uinque id
+    * to avoid the circular wait process Pi can only reqest resource with id greater than other resources holded by the process Pi.
+    * ex, Resource id holded by Pi are 1,2 ,5,8,9
+    * suppose if Pi want to acces the resource with id 6, it need to free all the resources greater than resource id 6 and then need to access it
+
+### Avoidance 
+#### Banker Algorithm
+**Data Structures:**
+
+**Max**: A matrix representing the maximum resource each process might need.
+**Allocation**: A matrix showing the resources currently allocated to each process.
+**Need**: A matrix calculated as Max - Allocation, representing the remaining resource needs of each process.
+**Available**: A vector representing available units of each resource type.
+
+**Safe State Check:**
+The algorithm checks if the system is in a safe state, meaning it can finish all processes without encountering a deadlock. It simulates a scenario where processes finish one by one, releasing their allocated resources back to the Available vector.
+
+**Process Completion Simulation:**
+
+A process Pi is eligible to finish if its Need vector is less than or equal to the Available vector.
+If Pi is eligible, its allocated resources are released back to Available, and Pi is marked as finished.
+The Available vector is updated to reflect the released resources.
+This simulation continues until all processes are finished, or a deadlock is detected (no process is eligible).
+
+**Granting Requests:**
+When a process requests additional resources, the Banker's algorithm checks if granting the request would leave the system in a safe state. It performs the simulation mentioned above considering the requested resources being allocated to the process.
+
+**Limitation**
+Sure. The Banker's algorithm is great for preventing deadlocks, but it has some downsides. It requires a fixed number of processes and resources, and processes need to know their maximum needs in advance, which can be tricky. It can also be computationally expensive for many processes and resources.
+
+### Detection and recovery
+#### Detection
+Detects Deadlock based on
+1. low utilization of cpu, ( or majority of processes are blocked )
+2. using Resource Allocation Graph, we can detect the wait-for-graph and we can found cycles in it  ( only for single instance resource only )
+![detectionn](img/detection1.png)
+3. it uses the banker alogirthm like mechanism, but without the MAX matrix, it detect the safe state based on allogated resource, requesting resource and currently available resource
+
+#### Recovery
+types
+1. Process termination
+    1. kill all ( DISADVANTAGE: utilize more cp )
+    2. kill one at a time ( only kill the last process that caused dead lock. if the dead lock is continued, then it kill the next last process, continues )
+2. Resource preemption (Force process to give up resource)
+    1. Roll-Back ( it forcefully remove the resource in all process, that was asked last time)  
+        ex: Before rool Back  
+            P1-> 1 -> 4 -> 5  
+            P2-> 2 -> 3 -> 6  
+        after on roll back it forcefully remove 11 resource  
+            P1-> 1 -> 4   
+            P2-> 2 -> 3 
+        it can also roll back two stage back
+
+## Multi Threading Introduction
+MultiThreading Vs MultiTasking ( using fork )
+1. code and sharing memory is same in multithreading
+2. better CPU utilisation in multithreading
+3. Easier access to shared data in multithreading
+4. multithreading is faster in context switch
+5. multithreading gives more control &ease
+
+![treads image](https://www.tutorialspoint.com/operating_system/images/thread_processes.jpg) 
+
+### Threads Types
+1. USER thread ( os does not know the thread, it only look it as a single process,  )
+2. KERNEL thread ( here OS knows about threads (increase efficiency), but switching via kernel is expensive )
+3. HYBRID thread
+
+# Memory Management
+Loader ( load the program to memory )
+    * Static loading ( int stack, whole program including other function function also takes memory )
+    * Dynamic loading (stack will be created when function is called )
+
+Linking ( BInding the address of called function into the calling function machine level code)
+* Static linking ( create one big ML code, including all function )
+* Dynamic linking ( it uses symbol table to link in runtime)
+
+
+## Object
+1. minimize wastage of memory / better utilization of memory
+2. Increase degree of multi-taskinga
+
+## Functions
+1. Memory allocation
+2. Memory deallocation
+3. Managing Free-space
+4. Protection
+
+## Memory Managing Models
+1. Contigous ( continuous )
+    1. overlays
+    2. partitioning
+    3. Buddy system
+2. Non-Contigous ( non continuous )
+    1. paging
+    2. segmentation
+    3. segmented paging
+    4. virtal memory & demand paging
+
+
+### Overlays
+Overlay driver go through the source code, and constructing the tree of dependency. And finds the modules that are independent from one other. and using this it can able to utilize the RAM better.
+
+![overlay Image](img/Overlay_memoryManagement.png)
+
+[link](https://www.geeksforgeeks.org/overlays-in-memory-management/)
 # Other Titles
 - Fork()
-
+- Symbol Table is used to tell the function or variable address in the OS.
 # Glossory
 1. **Preemptive vs Non- Preemptive ( or atomic execution )**  
     Preemptive OS can kill the process, or program, where on Non-preemptive it will not able to kill the process ( process had to leave from it side )
