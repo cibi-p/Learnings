@@ -745,6 +745,40 @@ Overlay driver go through the source code, and constructing the tree of dependen
 ![overlay Image](img/Overlay_memoryManagement.png)
 
 [link](https://www.geeksforgeeks.org/overlays-in-memory-management/)
+
+overal cannot be applied in some program which may not in a proper structure...
+
+### Partioning 
+Types  
+1. Fixed Partition ( MFT )
+2. Variable Partition ( MVT )
+
+Each process should present in only one partition, to avoid the confusing with the variable name of the two process
+#### Fixed Partition
+* Maximum number of partition number = maximum number of process  
+* Fixed Partition find, which available partition should we place a new process  
+* Protection ( It allow only to access the memory within the given partion, using the MIN and MAX of the partion.)
+
+![fixed partion img](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRk-a7qRynrU-ZslZQGvdYHnIJKdML8Yk9Wx0ibmD_ZJdfPQ86vFXQ4GeYIrb6EblJNKe8&usqp=CAU)
+
+#### Performance of MFT / Fixed Partition
+1. Fragmentation
+    * Wastage of Memory
+    * Internal Fragmentation
+    ![Fragnmentation](https://d3e8mc9t3dqxs7.cloudfront.net/wp-content/uploads/sites/11/2020/05/Fragmentation3.png)
+    * Externel Fragmentation: ( is an inability to place a process with in main memory, because all the free non internal fragmented space is contigous )
+    ![Fragmentation](img/Fragmentation.png)
+2. Degree or maximum number of multiprogramming ( processes ) are fixed based on the number of partions
+3. Process size limitation, ( we cannot allocate the process with has more memory than the partition size)
+
+
+#### Partition Allocation Methods
+* **First-fit** (place the process in first empty partition)
+* **Best-Fit** ( it find the partion size closest to the process size, so the unused memory is reduced)
+    * **Best fit** only ( process is waits for the best partition, until the partition get freed from other process)
+    * **Best available fit** ( if the partition found is not free, find the next best fit)
+* **Next-Fit** ( next fit is similar to the first fit, but it start looking for the partion, from the previous allogated partition. It has time advantage )
+* **Worst-fit** ( wastage is maximal )
 # Other Titles
 - Fork()
 - Symbol Table is used to tell the function or variable address in the OS.
