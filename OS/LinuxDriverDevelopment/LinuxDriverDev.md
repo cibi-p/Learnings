@@ -43,3 +43,11 @@ module_exit(hello_exit);
 # Key Points
 * As a programmer, you know that an application can call functions it doesn’t define: the linking stage resolves external references using the appropriate library of func- tions. printf is one of those callable functions and is defined in libc. **A module, on the other hand, is linked only to the kernel, and the only functions it can call are the ones exported by the kernel; there are no libraries to link to.** (pg no: 18)
 * A module runs in kernel space, whereas applications run in user space. This concept is at the base of operating systems theory.
+
+
+# File Information
+1. `Documentation/kbuild`: To understand the comiling
+2. `Documentation/Changes`: List the Required Tools
+3. `/proc/modules` or `/sys/modules`: lsmod infos...
+4. ``vermagic.o'`` : Before locading the module, kernel use this file to check wheter the modules is suitable for kernel.
+5. `/var/log/messages`: you can read the info from here when some proble occurs
