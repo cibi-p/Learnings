@@ -757,7 +757,7 @@ Each process should present in only one partition, to avoid the confusing with t
 #### Fixed Partition
 * Maximum number of partition number = maximum number of process  
 * Fixed Partition find, which available partition should we place a new process  
-* Protection ( It allow only to access the memory within the given partion, using the MIN and MAX of the partion.)
+* Protection ( It allow only to access the memory within the given partion, using the MIN and MAX Register of the partion.)
 
 ![fixed partion img](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRk-a7qRynrU-ZslZQGvdYHnIJKdML8Yk9Wx0ibmD_ZJdfPQ86vFXQ4GeYIrb6EblJNKe8&usqp=CAU)
 
@@ -772,13 +772,42 @@ Each process should present in only one partition, to avoid the confusing with t
 3. Process size limitation, ( we cannot allocate the process with has more memory than the partition size)
 
 
-#### Partition Allocation Methods
+##### Partition Allocation Methods for fixed partition
 * **First-fit** (place the process in first empty partition)
 * **Best-Fit** ( it find the partion size closest to the process size, so the unused memory is reduced)
     * **Best fit** only ( process is waits for the best partition, until the partition get freed from other process)
     * **Best available fit** ( if the partition found is not free, find the next best fit)
 * **Next-Fit** ( next fit is similar to the first fit, but it start looking for the partion, from the previous allogated partition. It has time advantage )
 * **Worst-fit** ( wastage is maximal )
+
+
+#### Partition - Variable / MVT
+* Multi Programing with vairable number of Task ( MVT )
+* It has no Internal Fragmentation, since our partition sizes are not fixed, we create partition with size based on the incomming process.
+* Protection: It mainatin a Table PCM ( Partition Control Memory ), which contain lower limit, upper limit, size... etc to know the boundary for the particular process
+![Partition-variable](https://files.codingninjas.in/article_images/variable-size-partitioning-0-1641800237.webp)
+
+##### Partition Allocation Methods for variable partition
+* **First-fit** (place the process in first enough empty partition and resize the partion size suitable for process, if the partition size is larger than required)
+* **Best-Fit** ( it find the partion size closest to the process size, so the unused memory is reduced)
+    * **Best fit** only ( process is waits for the best partition, until the partition get freed from other process)
+    * **Best available fit** ( if the partition found is not free, find the next best fit)
+* **Next-Fit** ( next fit is similar to the first fit, but it start looking for the partion, from the previous allogated partition. It has time advantage )
+* **Worst-fit** ( Place the process in the biggest empty space and create partition based on the process size ), ( It should work good here )
+
+##### Performance of Variable Partition
+* No Internal Fragmentation
+* External Framentation can occur
+* Number or Degree of Multi-programming increases, based on the empty space available ( continuous space ), since there is no fixed partition
+* Number of process is not limited
+
+##### Solution to External Fragmentation:
+**Compacting / Coalesing:**
+1. To avoid External Fragmentation, it realocates the other process memory to create a continuous empty space
+2. It is time consuming  
+![compacting](https://media.geeksforgeeks.org/wp-content/uploads/20220201132848/CompactionTechnique.jpg)
+
+
 # Other Titles
 - Fork()
 - Symbol Table is used to tell the function or variable address in the OS.
