@@ -38,15 +38,19 @@ int main()
         return -1;
     }
 
+    // view port to tell the size to the openGL
     glViewport(0, 0, 800, 600);  
 
     while(!glfwWindowShouldClose(window))
     {
+        // input
         processInput(window);
 
+        // rendering commands
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
+        // check and call eents and swap the buffers
         glfwSwapBuffers(window);
         glfwPollEvents();    
     }  
