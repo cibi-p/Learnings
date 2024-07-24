@@ -335,7 +335,7 @@ It disables the interrupt before getting in to the critical section, no preempti
 3. It is similar to shared variable lock it has turn. consider two process p1 and p2. p1 get into the Critical Section only when turn=1 and p2 get into CS only when turn=0. This is the difference between Lock variable mechanism, there lock is set to 1 when any one of the process is get into the CS.
 4. Since the Exit section only changes turn it *garantees the mutual exclusion.* ( ADVICE-😁: only a simple change bring new posibilities)
 5. Disadvantage: If you see the below image, it changes the turn=1 in the process p0. Suppose if there is another Critical section code is back in the p0, it can't access them because still turn=1. It will wait until p1 come into the critical section and change the turn=0. so that p0 2nd critical section will get execute. So it does not garantee progress
-[strict-alteration-img](https://www.gatevidyalay.com/wp-content/uploads/2018/11/Turn-Variable-Synchronization-Mechanism.png)
+![strict-alteration-img](https://www.gatevidyalay.com/wp-content/uploads/2018/11/Turn-Variable-Synchronization-Mechanism.png)
 
 #### 4. Peterson's Solution for Synchonization mechanism
 1. It is software based, mutual exclusive, busy waiting and it ensure progress.
@@ -359,7 +359,7 @@ It disables the interrupt before getting in to the critical section, no preempti
 #### 6. Sleep & Wakeup based synchronization
 1. It solve's the busy waiting
 2. It Does not garantee mutual exclusion
-3. It uses the system all sleep() and wakeup(). consider two process p0, p1. suppose if p0 is in the Critical section and it got preempted, then p1 take the cpu, then it also tries to enter into the Critical section. Since p0 occupied the critical section, p1 execute the sleep() and leave the cpu by telling the scheduling algorithm, the p0 will get into the cpu, after completing the critical section it will wake up the p1. This how its work.
+3. It uses the system call sleep() and wakeup(). consider two process p0, p1. suppose if p0 is in the Critical section and it got preempted, then p1 take the cpu, then it also tries to enter into the Critical section. Since p0 occupied the critical section, p1 execute the sleep() and leave the cpu by telling the scheduling algorithm, the p0 will get into the cpu, after completing the critical section it will wake up the p1. This how its work.
 4. consider if process try to get into the Critical section at some what same time, at that time it does not garantee the critial section...
 5. Dead lock also happen at some time both process get into sleep...
 
@@ -738,12 +738,12 @@ Linking ( BInding the address of called function into the calling function machi
     3. segmented paging
     4. virtal memory & demand paging
 
-
+## Contigous Memory
 ### Overlays
 Overlay driver go through the source code, and constructing the tree of dependency. And finds the modules that are independent from one other. and using this it can able to utilize the RAM better.
 
 ![overlay Image](img/Overlay_memoryManagement.png)
-
+![overlay Image](https://media.geeksforgeeks.org/wp-content/cdn-uploads/os_overlaymemory.png)
 [link](https://www.geeksforgeeks.org/overlays-in-memory-management/)
 
 overal cannot be applied in some program which may not in a proper structure...
@@ -806,6 +806,108 @@ Each process should present in only one partition, to avoid the confusing with t
 1. To avoid External Fragmentation, it realocates the other process memory to create a continuous empty space
 2. It is time consuming  
 ![compacting](https://media.geeksforgeeks.org/wp-content/uploads/20220201132848/CompactionTechnique.jpg)
+
+## Non-contigous memory allocation
+1. Logical Address Space & Physical address space
+![LASvsPAS](https://media.geeksforgeeks.org/wp-content/uploads/operating_system.png)a
+
+### Simple Paging /paging
+1. Organization of LAS ( Logical Address Space ):  
+    * The LAS are broken into the pages with same size
+2. Organization of PAS ( Physical Address Space ):  
+    * The PAS are broken into frames with same size as page in LAS.
+3. MMU Organization
+    * page-table or page-maptable
+    * everyprocess has a page table
+
+#### Performance of Simple-paging
+memory access time ( if you give a physical address, how much time it take toaccess the memory )  
+
+In simple paging we use 2 memory access, since we need to access the Page Table which is also stored in Ram memory.
+
+effective memory access time =2*m times,( where m is the time to access the single physical address )
+
+To solve this issue, we are storing the TLB ( Translation Lookaside Buffer ), is stored in a CPU cache
+
+If the Page Table becomes large, it will take the most of the memory, To solve this we can use Multi-level Paging
+
+1. solution 1:
+    increase page-size for each page, so the Page table size reduces...
+    But you may have internel fragmentation
+2. solution 2: is Multi-Level Paging
+
+#### Multilevel Paging
+it is the multi level of the simple paging
+![multilevelPaging](https://i.sstatic.net/Iz7Ti.png)
+
+Performance of Multilevel Paging
+
+EMAT ( for 2 level ) = 3*m ns
+EMAT ( for n level ) = (n+1)*m ns
+
+EMAT : Effective Memory access time
+
+It can also use the TLB. To reduce the EMAT.
+
+#### Paging with Hashing ( like hash table algo )
+this is the utilization of hashing table algorithm
+
+### Segmentation
+Limitation of Paging: Users view of memory allocation is not preserved with paging, ( ex: suppose if the for loop is sperated between the 2 pages, It increases the time)
+
+difference between page and segment are, Pages are equi-size, while segment is unequied  
+
+It is very similar to the variable-size partition in Contigous memory, but here it is used for Non-contiguous memory
+
+![segmentation](https://media.geeksforgeeks.org/wp-content/uploads/20230703103700/ezgifcom-gif-maker-(16).webp)
+
+#### Segmented Pages
+
+![segmented  pages](https://static.javatpoint.com/operating-system/images/os-segmented-paging1.png)
+![segmented pages](https://static.javatpoint.com/operating-system/images/os-segmented-paging2.png)
+
+if the segmented table it too large we can segment them as well 
+
+### Virtual-Memory + Demand Paging
+
+Secondary disk is used for the virtual memory....
+
+performace
+
+$$EMAT_DP  = p( s+3m ) + (1-p)2m = ps + (1-p)(2m)$$  
+    MMAT = m ns  
+    PFST = s ms //page fault service time   millisecons=d
+    Pagefault rate = p // like persentage time page fault occurs  
+    page-hit-rate = ( 1-p)
+
+### Page Replacement Algorithm
+
+Types
+* First in First Out ( FIFO )  
+    Usally, page falut reduces with increase in Number of memory frame. some time it may not the case, it is known as Belady's anamoly
+    <note>condition for Belady's anamoly</note>  
+    if set of pages in memory with nframes is the subset of pages in memory with n+1 frames, then there is no Belady anamoly.
+
+* Replace the page that not needed longest into the future. (optimal replacement algo)
+    ex: resource.request = { 1, 2,3, 2,3,1,1,2,2,1}, and we had 2 page capacity.
+    1 and 2 are thake the resource, to palace the page 3 in memory. this algo check among 1 and 2 which is not used near or frequently, here 1, so it removes the 1 and places the 3 in the page of the RAM, 1 is gone to virtual memory.
+
+* Least Recently used (LRU)  
+    if page fault occurs, replace the page, which was not used for the more time or least recently used. It is time consuming, it need to maintain seperate table. so some can use linked list to solve large table...
+* Most Recently used (MRU)  
+    It is not optimal
+* Least Freqently Used ( LFU )
+    least freqently used pages got replaced, but need to update the count in table it takes time
+* Most Freqently Used ( MFU )
+    most freqently used pages got replaced, but need to update the count in table it takes time
+* LRU-approximation algo:
+    * Reference Bit method 
+         instread of storing the time in long int, it uses the bit. it is possible by epoch ( a small time interval splitted equally)  
+         Problem: if all reference bit is 1, it will fails
+    * Second-chance/clock algorithm  
+        It solves the reference bit algo. by using FIFO if all reference bit is 1 only.
+    * Enhanced Second Chance  
+        It has extra bit, called modified/dirty bit (means, it's page/frame conent is modified) ( if we use swap on dirty page, it requires a read and write on the disk)
 
 
 # Other Titles
