@@ -24,3 +24,9 @@ The recovered internal parameters are stored in a matrix called the intrinsic ma
 ## Comprehensive Image model
 ### Forward Imaging Model
 which takes you from  3D to 2D
+
+![alt text](img/fim1.png)
+![alt text](img/perspectiveprojection.png)
+
+ref:  
+https://in.mathworks.com/help/vision/ug/camera-calibration.html
