@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <pthread.h>
 #include <semaphore.h>
+#include "timeAnalysisfun.h"
 
 #include "learnopengl/shader_s.h"
 
@@ -36,6 +37,8 @@ unsigned int ProgramObject;
 GLuint texture1;
 
 sem_t mutex, statusUpdateMutex;
+
+TManalysis tm_time[3];
 
 int updateFrame();
 void* thread1_fun(void* arg);
@@ -189,6 +192,7 @@ void* thread1_fun(void* arg)
 
 int updateFrame()
 {
+    tm_startTimeAnalysis(&tm_time[0]);
     int freeTex = 0;
     sem_wait(&mutex);
     sem_wait(&statusUpdateMutex);
@@ -197,8 +201,8 @@ int updateFrame()
         if( texStatusArr[freeTex] == TEX_RESOURCE_FREE )
             break;
     }
-
     texStatusArr[freeTex] = TEX_RESOURCE_USED;
+    tm_startTimeAnalysis(&tm_time[1]);
     sem_post(&statusUpdateMutex);
         // input
         // -----
@@ -226,7 +230,7 @@ int updateFrame()
         else{
             return 0;
         }
-        memset( data, color, width*height*4);
+        //memset( data, color, width*height*4);
         color++;
         if(color >254)
             color = 0;
@@ -234,13 +238,19 @@ int updateFrame()
 
 #ifdef PBO_USE
         glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+
+#define USE_PBO_MEMCPY   
+#ifdef USE_PBO_MEMCPY   
     glBufferData(GL_PIXEL_UNPACK_BUFFER,width*height*4, 0, pbo);
-    GLubyte* ptr = (GLubyte*) glMapBuffer(GL_PIXEL_UNPACK_BUFFER, GL_WRITE_ONLY);
+    GLubyte* ptr = (GLubyte*) glMapBufferRange(+GL_PIXEL_UNPACK_BUFFER,0, width*height*4, GL_MAP_WRITE_BIT);
     if(ptr)
     {
-        memset( ptr, 128, width*height*4);
+        memcpy(ptr, data, width*height*4);
         glUnmapBuffer(GL_PIXEL_UNPACK_BUFFER);
     }
+#else
+    glBufferSubData(GL_PIXEL_UNPACK_BUFFER, 0, width*height*4, data);
+#endif
 #else
         glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, data);
 #endif
@@ -257,16 +267,18 @@ int updateFrame()
         glBindVertexArray(VAO);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
-        std::cout<<"currTex: "<<freeTex<<" tex1:"<<(int) texStatusArr[0]<<" tex2:"<<(int) texStatusArr[1]<<std::endl;
+        //std::cout<<"currTex: "<<freeTex<<" tex1:"<<(int) texStatusArr[0]<<" tex2:"<<(int) texStatusArr[1]<<std::endl;
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         // -------------------------------------------------------------------------------
         glfwSwapBuffers(window);
         glfwPollEvents();
-
+    tm_calculateUsedTime(&tm_time[1]);
     sem_wait(&statusUpdateMutex);
     texStatusArr[freeTex] = TEX_RESOURCE_FREE;
+    std::cout<<"mutex Tm: "<< tm_time[0].usedTm << "\t\tinTime :" <<tm_time[1].usedTm <<std::endl;
     sem_post(&statusUpdateMutex);
     sem_post(&mutex);
+    tm_calculateUsedTime(&tm_time[0]);
     return 0;
 }
 
