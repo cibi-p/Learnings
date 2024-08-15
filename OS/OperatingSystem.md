@@ -3,6 +3,7 @@
 <sub>Scaler Free OS course [video](https://www.scaler.com/topics/course/free-operating-system-course/video/1343/), [text](https://www.scaler.com/topics/operating-system/)</sub>
 
 -> Basics of Operating system
+[[TOC]]
 
 **What does OS do?**  
 -> Manages resources( H/W & S/W )  
@@ -578,6 +579,10 @@ if 1 line run in cpu core1 and 2nd line run in cpu core2, we get a wrong value s
 
 to solve this we need to identify it. run both the lines in the any one of the singe core.
 
+ex: megre sort can be used concurrently
+
+Notte: concurrency anf parallelism is different
+
 #### Bernsteins condiions for concurrency
 
 1) Readset(Si) n writeset(Sj) = $\empty$
@@ -589,26 +594,54 @@ n - means intersection
 if it follow the above condition we can run the statements in multiple core, if it not then we should run in single core
 
 #### Precidence graphy
-![precedence grapy](img/precdence_graph.png)
-
+![precedence grapy](https://media.geeksforgeeks.org/wp-content/uploads/20201022122439/os.jpg)
+```c
+// for the above image
+begin 
+    S1:
+    par begin 
+        begin
+            S2;
+            S6;
+        end
+        begin
+            S3;
+            S7;
+        end
+            S4;
+            S5;
+    par end
+            S8;
+end
+```
 here begin and end is like { , } braces
 parabegin used to tell stat parallal execution for below statements.
 
-disadvantage of parbegin and parend is wecant use it for cases like below, ( i.e, look s6 )
+disadvantage of parbegin and parend is wecant use it for cases like below, ( i.e, look s6 )  
 ![dis_parbeginend](img/dis_parbegin_end.png)
-for like this case we use semaphore with in parabegin and paraend
-![sema+parbegin](img/sema_parbegin.png)
+for like this case we use semaphore with in parabegin and paraend  
+![sema+parbegin](img/sema_parbegin.png)  
+
+
+[concurent program with precednce graph](https://www.geeksforgeeks.org/concurrent-program-with-precedence-graph/)
+[parbegin and parend](https://www.geeksforgeeks.org/parbegin-parend-concurrent-statement/)
 
 #### Fork & Join Model of Concurrency
+
+
 ![fork and join](img/fork_join1.png)
 ![fork and join](img/fork_join2.png)
+
+[fork join](https://www.geeksforgeeks.org/fork-and-join-constructs-in-concurrency/)
+
 
 # Deadlocks and Threading in process
 
 ## Resource allogation graph (RAG)
-simple version resource allocation graph is shown below
+simple version resource allocation graph is shown below  
 ![image of RAG](https://media.geeksforgeeks.org/wp-content/uploads/Slide1.jpg)
 
+[resource allocation graph](https://www.geeksforgeeks.org/resource-allocation-graph-rag-in-operating-system/)
 ## Necessary conditions for deadlocks
 Requires
 1. Mutual Exclusion ( because it make the code wait until other processs free the resource )
@@ -742,7 +775,7 @@ Linking ( BInding the address of called function into the calling function machi
 ### Overlays
 Overlay driver go through the source code, and constructing the tree of dependency. And finds the modules that are independent from one other. and using this it can able to utilize the RAM better.
 
-![overlay Image](img/Overlay_memoryManagement.png)
+
 ![overlay Image](https://media.geeksforgeeks.org/wp-content/cdn-uploads/os_overlaymemory.png)
 [link](https://www.geeksforgeeks.org/overlays-in-memory-management/)
 
@@ -909,6 +942,133 @@ Types
     * Enhanced Second Chance  
         It has extra bit, called modified/dirty bit (means, it's page/frame conent is modified) ( if we use swap on dirty page, it requires a read and write on the disk)
 
+### Trashing
+
+consider the system it high page activity for example high page fault rate, then the actual process in CPU util is low...
+
+![Trasing](https://scaler.com/topics/images/Thrashing-in-OS-1.webp)
+
+Reasons for Trashing  
+* Primary reason: few frames, too many processes
+* Secondary reason: page-replacement algo, small page-size, program data structure also impact
+
+#### Trashing control stategies:
+
+1. Prevention  
+    based on the above graph, increase the process and find the peak point (k) in the above graph, in the experiment basis.
+    ![trashing_vid_n](img/trashing_vn.png)
+2. Detection and Recovery
+    * Detection
+        1. If there is low cpu utilization, it means we may encounter trashing
+        2. hing paging-disk utilization, (to spwan the pages from/to the disk/pages)
+    * Recovery
+        1. suspend the few process
+    
+**consideration while programming**
+
+1. Program structure  
+![alt text](img/trashing_DS_vn.png)
+
+in program 1, for every iteration ofr j there is a page fault, since it store in the coloumn wise. consider the page size is 128, then based on the array data structure every row will in a single page. since row size is 128. so, if you try to access the element in the column, at worst cast it will has the page falut of row*col times. while in the 2nd program the worst case of having the page fault will be the col times.
+
+2. Linked List  vs Array
+nodes of the linked list may be seperated into the more nodes, while the array is a continuous.
+
+# File System and Disk Management
+
+1. Physical Structure of the DISK ( mainly HDD )  
+![physical structure of the disk](https://sf.ezoiccdn.com/ezoimgfmt/cstaleem.com/wp-content/uploads/2020/06/Hard-Disk-structure-in-OS-Updated.png?ezimgfmt=ng:webp/ngcb1)
+
+[link](https://cstaleem.com/hard-disk-structure-in-os)
+
+2. Logical Structure of the Disk  
+    Formating - secondary storatge - partitions (ex:mmcblk0n1p1)
+
+### Master Boot Record ( MBR )
+* It is stored in the first partition
+* It store the partition table
+* It also stores the bootloader
+* If MBR is corrupted, whole harddisk will be corrupted
+* there are more file systems, NTFS, FAT32, EXT4, JFS, UFS, ZFS
+
+### Structure of a Partition
+1. Boot Control Block ( kernel of the OS)
+2. Partition Control Block
+3. Directory Structure/file
+4. Data Blocks ( it is the clusture of sectors in HDD)
+
+**FILE**
+1. collection of Data Blocks
+2. It is a data structure
+3. Operations: create, open, read, write, modify, truncate, seek, copy, move, rename, permission, close, delete
+
+**Directory**
+Directory is a special type of file with the meta-data  
+Directory structure type  
+1. single level
+2. 2 level
+3. Tree/hierarical
+4. Acyclic graph
+
+## Implementation of  File system
+( how to allocate or dellocate the file, information of file, ensure protection)  
+( here block is similar to the pages/frame in ram)  
+
+1. Contigous Allogation ( similar like RAM...)  
+    * It also can have internal and external fragmentation. And further we cannot increase file size, and advantage is sequential and random access
+2. Link Alloction  
+    * It is like linked list of blocks, but stored in disk...
+    * Internal fragmentation can happen
+    * No External fragmentation
+    * can increase file size
+    * types of acces: sequentially, ( like linked list, to index something, you need to iterate from head node... ( problem of linked list))
+3. Indexed Allocation
+    * it use the block index of the file is stored in the seperate block. and based on the index, we can iterate throught the file.
+    * internal frag can happen
+    * no external frag
+    * File-size can increace
+    * Type of access, random and sequential access...
+    * but if index block is corrupted, whole file is loss
+4. Multilevel Index Allocation
+    * in index allocation, based on the index block size, it has restriction on file size. to place the file we may need the more index block to store the index.
+    * here at the end of the index block, address of the next index block is stored here ( like linked list)    
+
+Example Unix File System Implementation : [link](https://www.javatpoint.com/internal-structure-of-unix-file-system)
+
+Example DOS File System Implementation : [link](https://web.cs.ucla.edu/classes/winter19/cs111/readings/FAT.html)
+
+## Disk Free space management
+1.**Free linked-list approach:** it is linked list approach we have the free block in the linked list method. (disadvantage of linked list)
+2. **Free List:** In one block stores the address of the all the free block, if index of the free block is more than the block size, it can uses the other blocks also by adding the address of the new block in the end of the previous block.
+3. **Bitmap approach:** it uses the bitvector, if the index of the bit is 0 it is free, if it is 1 then it is not free...
+
+## Disk/Device scheduling
+consider there is mulitiple process are trying to write to device, it will put in to the Dist/Device Queue  
+Types:
+1. FCFS/FIFO: 
+2. SSTF
+3. SCCAN
+4. LOOK
+5. C-SCAN
+
+[disk sheduling algo](https://www.geeksforgeeks.org/disk-scheduling-algorithms/)
+
+
+
+# System calls
+1. fork() -> modes of CPU: kernel & user mode
+2. shmget(), shmat() -> shared memory
+... etc, 100s of system calls...
+
+## HOw do system calls works?
+
+The Applications run in an area of memory known as user space. A system call connects to the operating system's kernel, which executes in kernel space. When an application creates a system call, it must first obtain permission from the kernel. It achieves this using an interrupt request, which pauses the current process and transfers control to the kernel.
+
+If the request is permitted, the kernel performs the requested action, like creating or deleting a file. As input, the application receives the kernel's output. The application resumes the procedure after the input is received. When the operation is finished, the kernel returns the results to the application and then moves data from kernel space to user space in memory.
+
+A simple system call may take few nanoseconds to provide the result, like retrieving the system date and time. A more complicated system call, such as connecting to a network device, may take a few seconds. Most operating systems launch a distinct kernel thread for each system call to avoid bottlenecks. Modern operating systems are multi-threaded, which means they can handle various system calls at the same time.
+
+[system calls](https://www.javatpoint.com/system-calls-in-operating-system)
 
 # Other Titles
 - Fork()
