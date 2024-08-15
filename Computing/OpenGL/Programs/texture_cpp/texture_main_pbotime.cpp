@@ -2,17 +2,16 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #define STB_IMAGE_IMPLEMENTATION
-#include "../../stb_image.h"
+#include "../stb_image.h"
 #include <stdlib.h>
 #include <pthread.h>
 #include <semaphore.h>
+#include "texture_pbo_2tex/timeAnalysisfun.h"
 
 #include "learnopengl/shader_s.h"
 
-
-#define TEX_RESOURCE_FREE 0
-#define TEX_RESOURCE_USED 1
-
+#define PBO_USE
+GLuint pbo;
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow *window);
@@ -26,7 +25,7 @@ unsigned int tex0, tex1, texture;
 unsigned int VBO, VAO, EBO;
 unsigned char* data;
 
-#define MAX_PARALLEL_TEX 2
+#define MAX_PARALLEL_TEX 1
 
 unsigned char texStatusArr[MAX_PARALLEL_TEX] = {0};
 
@@ -34,6 +33,8 @@ unsigned int ProgramObject;
 GLuint texture1;
 
 sem_t mutex, statusUpdateMutex;
+
+TManalysis tm_time[3];
 
 int updateFrame();
 void* thread1_fun(void* arg);
@@ -114,11 +115,18 @@ int main()
 
     stbi_set_flip_vertically_on_load(true);  
     // The FileSystem::getPath(...) is part of the GitHub repository so we can find files on any IDE/platform; replace it with your own image path.
-    data = stbi_load("image2x4k.png", &width, &height, &nrChannels, 0);
+    data = stbi_load("texture_pbo_2tex/image2x4k.png", &width, &height, &nrChannels, 0);
     if (!data)
     {
         std::cout << "Failed to load texture" << std::endl;
     }
+
+    // PBO part
+#ifdef PBO_USE
+    glGenBuffers(1, &pbo);
+    glBindBuffer( GL_PIXEL_UNPACK_BUFFER, pbo );
+    glBufferData(GL_PIXEL_UNPACK_BUFFER, width*height*4, 0, GL_STREAM_DRAW);
+#endif
 
     // load and create a texture 
     // -------------------------
@@ -146,13 +154,66 @@ glGenTextures(1, &tex1);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
     // render loop
     // -----------
-    sem_init( &mutex, 1, MAX_PARALLEL_TEX);
-    sem_init( &statusUpdateMutex, 1, 1);
-    pthread_t thread1, thread2;
-    pthread_create(&thread1, NULL, thread1_fun, NULL );
+    //sem_init( &mutex, 1, MAX_PARALLEL_TEX);
+    //sem_init( &statusUpdateMutex, 1, 1);
+    //pthread_t thread1, thread2;
+    //pthread_create(&thread1, NULL, thread1_fun, NULL );
    // pthread_join(thread1, NULL);
     while(!glfwWindowShouldClose(window)){
-        updateFrame();
+        tm_startTimeAnalysis(&tm_time[1]);
+            // input
+            // -----
+            processInput(window);
+
+            // render
+            // ------
+            glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+            glClear(GL_COLOR_BUFFER_BIT);
+
+            // bind Texture
+            glActiveTexture(GL_TEXTURE0);
+                glBindTexture(GL_TEXTURE_2D, tex0);
+    #ifdef PBO_USE
+                glBindBuffer(GL_PIXEL_UNPACK_BUFFER, pbo);
+    #endif
+            //memset( data, color, width*height*4);
+            color++;
+            if(color >254)
+                color = 0;
+
+
+    #ifdef PBO_USE
+            glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+
+    #define USE_PBO_MEMCPY   
+    #ifdef USE_PBO_MEMCPY   
+        glBufferData(GL_PIXEL_UNPACK_BUFFER,width*height*4, 0, pbo);
+        GLubyte* ptr = (GLubyte*) glMapBufferRange(GL_PIXEL_UNPACK_BUFFER,0, width*height*4, GL_MAP_WRITE_BIT);
+        if(ptr)
+        {
+            memcpy(ptr, data, width*height*4);
+            glUnmapBuffer(GL_PIXEL_UNPACK_BUFFER);
+        }
+    #else
+        glBufferSubData(GL_PIXEL_UNPACK_BUFFER, 0, width*height*4, data);
+    #endif
+    #else
+            glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, data);
+    #endif
+
+            // render container
+            //ourShader.use();
+            glUseProgram(ProgramObject);
+            glUniform1i( texture1, 0);
+            glBindVertexArray(VAO);
+            glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
+            // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
+            // -------------------------------------------------------------------------------
+            glfwSwapBuffers(window);
+            glfwPollEvents();
+        tm_calculateUsedTime(&tm_time[1]);
+        std::cout<< "inTime :" <<tm_time[1].usedTm <<std::endl;
     }
     stbi_image_free(data);
     // optional: de-allocate all resources once they've outlived their purpose:
@@ -167,83 +228,7 @@ glGenTextures(1, &tex1);
     return 0;
 }
 
-void* thread1_fun(void* arg)
-{
-    //printf("Afdafaf");
 
-    while (!glfwWindowShouldClose(window))
-    //while (1)
-    {
-        updateFrame();
-    }
-}
-
-int updateFrame()
-{
-    int freeTex = 0;
-    sem_wait(&mutex);
-    sem_wait(&statusUpdateMutex);
-    for( freeTex = 0; freeTex < MAX_PARALLEL_TEX; freeTex++ )
-    {
-        if( texStatusArr[freeTex] == TEX_RESOURCE_FREE )
-            break;
-    }
-
-    texStatusArr[freeTex] = TEX_RESOURCE_USED;
-    sem_post(&statusUpdateMutex);
-        // input
-        // -----
-        processInput(window);
-
-        // render
-        // ------
-        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
-
-        // bind Texture
-        if( freeTex == 0 )
-        {
-        glActiveTexture(GL_TEXTURE0);
-            glBindTexture(GL_TEXTURE_2D, tex0);
-        }
-        else if( freeTex == 1 )
-        {
-            glActiveTexture(GL_TEXTURE1);
-            glBindTexture(GL_TEXTURE_2D, tex1);
-        }
-        else{
-            return 0;
-        }
-        memset( data, color, width*height*4);
-        color++;
-        if(color >254)
-            color = 0;
-
-        glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, data);
-        // render container
-        //ourShader.use();
-        glUseProgram(ProgramObject);
-        if( freeTex == 0 )
-        glUniform1i( texture1, 0);
-        else if(freeTex == 1)
-            glUniform1i(texture1, 1);
-        else
-            return 0;
-        glBindVertexArray(VAO);
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-
-        std::cout<<"currTex: "<<freeTex<<" tex1:"<<(int) texStatusArr[0]<<" tex2:"<<(int) texStatusArr[1]<<std::endl;
-        // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
-        // -------------------------------------------------------------------------------
-        glfwSwapBuffers(window);
-        glfwPollEvents();
-
-    sem_wait(&statusUpdateMutex);
-    texStatusArr[freeTex] = TEX_RESOURCE_FREE;
-    sem_post(&statusUpdateMutex);
-    sem_post(&mutex);
-    return 0;
-}
 
 // process all input: query GLFW whether relevant keys are pressed/released this frame and react accordingly
 // ---------------------------------------------------------------------------------------------------------

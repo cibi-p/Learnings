@@ -22,11 +22,11 @@ const unsigned int SCR_WIDTH = 1280;
 const unsigned int SCR_HEIGHT = 720;
 GLFWwindow* window;
 int width, height, nrChannels,color = 0;
-unsigned int tex0, tex1, texture;
+unsigned int tex0, tex1,texture;
 unsigned int VBO, VAO, EBO;
 unsigned char* data;
 
-#define MAX_PARALLEL_TEX 2
+#define MAX_PARALLEL_TEX 1
 
 unsigned char texStatusArr[MAX_PARALLEL_TEX] = {0};
 
@@ -112,20 +112,13 @@ int main()
     glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
     glEnableVertexAttribArray(2);
 
-    stbi_set_flip_vertically_on_load(true);  
-    // The FileSystem::getPath(...) is part of the GitHub repository so we can find files on any IDE/platform; replace it with your own image path.
-    data = stbi_load("image2x4k.png", &width, &height, &nrChannels, 0);
-    if (!data)
-    {
-        std::cout << "Failed to load texture" << std::endl;
-    }
 
     // load and create a texture 
     // -------------------------
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-    glGenTextures(1, &tex0);
+    glGenTextures(1, &texture);
     glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, tex0); // all upcoming GL_TEXTURE_2D operations now have effect on this texture object
+    glBindTexture(GL_TEXTURE_2D, texture); // all upcoming GL_TEXTURE_2D operations now have effect on this texture object
     // set the texture wrapping parameters
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	// set texture wrapping to GL_REPEAT (default wrapping method)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -133,17 +126,18 @@ int main()
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     // load image, create texture and generate mipmaps
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
-glGenTextures(1, &tex1);
-    glActiveTexture(GL_TEXTURE1);
-    glBindTexture(GL_TEXTURE_2D, tex1); // all upcoming GL_TEXTURE_2D operations now have effect on this texture object
-    // set the texture wrapping parameters
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	// set texture wrapping to GL_REPEAT (default wrapping method)
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    // set texture filtering parameters
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+    stbi_set_flip_vertically_on_load(true);  
+    // The FileSystem::getPath(...) is part of the GitHub repository so we can find files on any IDE/platform; replace it with your own image path.
+    data = stbi_load("image2x4k.png", &width, &height, &nrChannels, 0);
+    if (data)
+    {
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+        //glGenerateMipmap(GL_TEXTURE_2D);
+    }
+    else
+    {
+        std::cout << "Failed to load texture" << std::endl;
+    }
     // render loop
     // -----------
     sem_init( &mutex, 1, MAX_PARALLEL_TEX);
@@ -180,17 +174,7 @@ void* thread1_fun(void* arg)
 
 int updateFrame()
 {
-    int freeTex = 0;
     sem_wait(&mutex);
-    sem_wait(&statusUpdateMutex);
-    for( freeTex = 0; freeTex < MAX_PARALLEL_TEX; freeTex++ )
-    {
-        if( texStatusArr[freeTex] == TEX_RESOURCE_FREE )
-            break;
-    }
-
-    texStatusArr[freeTex] = TEX_RESOURCE_USED;
-    sem_post(&statusUpdateMutex);
         // input
         // -----
         processInput(window);
@@ -201,46 +185,23 @@ int updateFrame()
         glClear(GL_COLOR_BUFFER_BIT);
 
         // bind Texture
-        if( freeTex == 0 )
-        {
         glActiveTexture(GL_TEXTURE0);
-            glBindTexture(GL_TEXTURE_2D, tex0);
-        }
-        else if( freeTex == 1 )
-        {
-            glActiveTexture(GL_TEXTURE1);
-            glBindTexture(GL_TEXTURE_2D, tex1);
-        }
-        else{
-            return 0;
-        }
+        glBindTexture(GL_TEXTURE_2D, texture);
         memset( data, color, width*height*4);
         color++;
         if(color >254)
             color = 0;
-
         glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, data);
         // render container
-        //ourShader.use();
         glUseProgram(ProgramObject);
-        if( freeTex == 0 )
         glUniform1i( texture1, 0);
-        else if(freeTex == 1)
-            glUniform1i(texture1, 1);
-        else
-            return 0;
         glBindVertexArray(VAO);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
-        std::cout<<"currTex: "<<freeTex<<" tex1:"<<(int) texStatusArr[0]<<" tex2:"<<(int) texStatusArr[1]<<std::endl;
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         // -------------------------------------------------------------------------------
         glfwSwapBuffers(window);
         glfwPollEvents();
-
-    sem_wait(&statusUpdateMutex);
-    texStatusArr[freeTex] = TEX_RESOURCE_FREE;
-    sem_post(&statusUpdateMutex);
     sem_post(&mutex);
     return 0;
 }
