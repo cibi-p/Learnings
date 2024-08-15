@@ -41,7 +41,7 @@
 
 
 char*        dev_name = DEFAULT_DEV_NAME;
-int          fd = -1, frame_count;
+int          fd = -1, frame_count = 1;
 unsigned int n_bufs;
 bool format_change = FALSE;
 bool width_change = FALSE;
@@ -63,7 +63,7 @@ static void errno_exit(const char *s)
         exit(EXIT_FAILURE);
 }
 
-static void process_image(const void *p, int size)
+void process_image(const void *p, int size)
 {
 	fName[4] = img_cnt + '0';
 	fp = fopen( fName, "wb" );
@@ -80,7 +80,19 @@ static void process_image(const void *p, int size)
 
 }
 
-static int read_frame(void)
+int queue_next_buff()
+{
+
+	//below is for the MMAP only
+
+        struct v4l2_buffer buf;
+	CLEAR(buf);
+	buf.type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
+	buf.memory = V4L2_MEMORY_MMAP;
+	if (-1 == ioctl(fd, VIDIOC_QBUF, &buf))
+		errno_exit("VIDIOC_QBUF");
+}
+int read_frame(char **outBuf, int *size )
 {
         struct v4l2_buffer buf;
         unsigned int i;
@@ -96,7 +108,7 @@ static int read_frame(void)
 		switch (errno) {
 		case EAGAIN:
 			//printf("D");
-			return 0;
+			return NULL;
 
 		case EIO:
 			/* Could ignore EIO, see spec. */
@@ -109,8 +121,10 @@ static int read_frame(void)
 	}
 
 	assert(buf.index < n_bufs);
-
-	process_image(buffers[buf.index].start, buf.bytesused);
+	*outBuf = buffers[buf.index].start;
+	*size = buf.bytesused;
+	
+	//process_image(buffers[buf.index].start, buf.bytesused);
 
 	if (-1 == ioctl(fd, VIDIOC_QBUF, &buf))
 		errno_exit("VIDIOC_QBUF");
@@ -140,6 +154,8 @@ static int read_frame(void)
 		if (buf.m.userptr == (unsigned long)buffers[i].start
 		    && buf.length == buffers[i].length)
 			break;
+	*outBuf = buf.m.userptr;
+	*size = buf.bytesused;
 
 //	process_image((void *)buf.m.userptr, buf.bytesused);
 
@@ -151,7 +167,7 @@ static int read_frame(void)
 
         return 1;
 }
-static void capture_image( void )
+int capture_image( char **outBuf, int *size )
 {
         unsigned int count;
 	time_t time_var;
@@ -200,7 +216,7 @@ static void capture_image( void )
                         }
 
 		//printf("%d ", e_sec - s_sec );
-                        if (read_frame())
+                        if (read_frame( outBuf, size))
                                 break;
                         /* EAGAIN - continue select loop. */
                 }
@@ -546,7 +562,7 @@ bool set_format( unsigned int fmt_nu, unsigned int width, unsigned int height )
 	}while( 0 );
 	return rtn_status;
 }
-
+#ifdef OLD_MAIN
 int main( int argc, char **argv )
 {
 	int option_index, i;
@@ -565,7 +581,7 @@ int main( int argc, char **argv )
 		if (-1 == choice)
                         break;
 
-                switch (choice) 
+		switch (choice) 
 		{
                		case 0: /* getopt_long() flag */
                         	break;
@@ -690,3 +706,109 @@ int main( int argc, char **argv )
         fd = -1;
 
 }
+
+#endif
+
+int init_v4l2_lib_stream(char *devName )
+{
+	int option_index, i;
+	short int choice;
+	enum v4l2_buf_type type;
+	unsigned int width = DEF_WIDTH;
+	unsigned int height = DEF_HIGHT;
+	unsigned int fmt_nu = 0;
+	unsigned int sizeimage;
+
+	dev_name = devName;
+	
+		// Opening the device camera
+    fd = open(dev_name, O_RDWR /* required */ | O_NONBLOCK, 0);
+    if (-1 == fd) 
+	{
+                fprintf(stderr, "Cannot open '%s': %d, %s\\n",
+                         dev_name, errno, strerror(errno));
+                exit(EXIT_FAILURE);
+    }
+	
+		if( format_change == TRUE || ( width_change == TRUE && height_change == TRUE ) )
+	{
+
+		if( set_format( fmt_nu, width, height ) )
+			exit( 1 );
+	}
+
+	struct v4l2_format format;
+	format.type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
+	if( -1 == ioctl( fd, VIDIOC_G_FMT, &format ) )
+	{
+		perror( "E" );
+	}
+	sizeimage = format.fmt.pix.sizeimage;
+
+
+
+	// Creating MMAP buffer
+#ifdef USE_MMAP
+	init_mmap();
+#endif
+
+#ifdef USE_USER_POINTER
+	printf("Test: %d\n\n", sizeimage );
+	init_UserPointer( sizeimage );
+#endif
+
+	start_capturing();
+	//capture_image();
+	
+	return 0;
+}
+
+int exit_v4l2_lib_stream()
+{
+	
+	enum v4l2_buf_type type;
+	int i=0;
+	/* Steaming off */
+	type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
+                if (-1 == ioctl(fd, VIDIOC_STREAMOFF, &type))
+                        errno_exit("VIDIOC_STREAMOFF");
+
+#ifdef USE_MMAP
+	/* free mmap buffer */
+	for (i = 0; i < n_bufs; ++i)
+		if (-1 == munmap(buffers[i].start, buffers[i].length))
+			errno_exit("munmap");
+#endif
+
+#ifdef USE_USER_POINTER
+	for (i = 0; i < n_bufs; ++i)
+                        free(buffers[i].start);
+#endif
+
+	/* close file descriptor */
+	if (-1 == close(fd))
+                errno_exit("close");
+
+        fd = -1;
+	return 0;
+}
+
+/*
+int main()
+{
+	char *outBuf;
+	int size;
+	init_v4l2_lib_stream("/dev/video0");
+
+	for( int i=0 ;i < 5; i++)
+	{
+	capture_image(&outBuf, &size );
+	process_image(outBuf, size);
+	usleep(100);
+	//queue_next_buff();
+	}
+
+
+	exit_v4l2_lib_stream();
+}
+*/
