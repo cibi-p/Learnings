@@ -43,10 +43,12 @@ module_exit(hello_exit);
 # Types of Drivers
 ## Char Drivers
 
+### inode structure
+
+
 # Key Points
 * As a programmer, you know that an application can call functions it doesn’t define: the linking stage resolves external references using the appropriate library of func- tions. printf is one of those callable functions and is defined in libc. **A module, on the other hand, is linked only to the kernel, and the only functions it can call are the ones exported by the kernel; there are no libraries to link to.** (pg no: 18)
 * A module runs in kernel space, whereas applications run in user space. This concept is at the base of operating systems theory.
-
 
 # File Information
 1. `Documentation/kbuild`: To understand the comiling
@@ -60,3 +62,7 @@ module_exit(hello_exit);
 
 # Table info
 1. `Kernel Symbol Table`: Stores the exportat symbol, used by the kernel to identify the depent module while using modprobe (ldd, PG.No 28 )
+
+
+ldd3-book sample programs:
+https://github.com/mharsch/ldd3-samples
