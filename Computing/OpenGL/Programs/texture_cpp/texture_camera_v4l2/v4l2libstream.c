@@ -55,7 +55,7 @@ struct buffer {
 
 int img_cnt = 0;
 FILE *fp = NULL;
-char fName[5] = "img_out/img_o";
+char fName[14] = "img_out/img_o";
 
 static void errno_exit(const char *s)
 {
@@ -121,7 +121,7 @@ int read_frame(char **outBuf, int *size )
 	}
 
 	assert(buf.index < n_bufs);
-	*outBuf = buffers[buf.index].start;
+	*outBuf = (char *)buffers[buf.index].start;
 	*size = buf.bytesused;
 	
 	//process_image(buffers[buf.index].start, buf.bytesused);
@@ -324,7 +324,7 @@ static void init_mmap(void)
                 exit(EXIT_FAILURE);
         }
 
-        buffers = calloc(req.count, sizeof(*buffers));
+        buffers = (struct buffer *) calloc(req.count, sizeof(*buffers));
 
         if (!buffers) {
                 fprintf(stderr, "Out of memory\\n");
@@ -456,7 +456,7 @@ static void init_UserPointer(unsigned int buffer_size)
                 }
         }
 
-        buffers = calloc(4, sizeof(*buffers));
+        buffers = (struct buffer *) calloc(4, sizeof(*buffers));
 
         if (!buffers) {
                 fprintf(stderr, "Out of memory\\n");
