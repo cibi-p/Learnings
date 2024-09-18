@@ -40,6 +40,14 @@ module_exit(hello_exit);
 ## linking a module to kernel
 ![linking a module to kernel](ldd_try/ldd_module_linking.png)
 
+## How Module get loadded in the kernel
+Interested readers may want to look at how the kernel supports insmod: it relies on a
+system call defined in kernel/module.c. The function sys_init_module allocates kernel
+memory to hold a module (this memory is allocated with vmalloc; see the section
+“vmalloc and Friends” in Chapter 8); it then copies the module text into that mem-
+ory region, resolves kernel references in the module via the kernel symbol table, and
+calls the module’s initialization function to get everything going.
+
 # Types of Drivers
 ## Char Drivers
 
@@ -49,6 +57,32 @@ module_exit(hello_exit);
 # Key Points
 * As a programmer, you know that an application can call functions it doesn’t define: the linking stage resolves external references using the appropriate library of func- tions. printf is one of those callable functions and is defined in libc. **A module, on the other hand, is linked only to the kernel, and the only functions it can call are the ones exported by the kernel; there are no libraries to link to.** (pg no: 18)
 * A module runs in kernel space, whereas applications run in user space. This concept is at the base of operating systems theory.
+
+
+# DOCUMENTAION LIST
+1. File `<kernelSource>/Documentation/changes` tell the required tools and version infos
+2. Files in `<kernelSource>/Documentation/kbuild` tells the building or makefile guide
+
+
+# LOCATIONS
+1. lsmod takes information form `/proc/modules`
+2. info on loaded modules can be found in `/sys/module`
+3. This helps me on take the mipi debug print for camera 0, `echo 0x1f > /sys/class/video4linux/video0/dev_debug`
+5. `vermagic.o`: One of the steps in the build process is to link your module
+against a file (called vermagic.o) from the current kernel tree; this object contains a fair amount of information about the kernel the module was built for, including the
+target kernel version, compiler version, and the settings of a number of important
+configuration variables. When an attempt is made to load a module, this informa-
+tion can be tested for compatibility with the running kernel. If things don’t match,
+the module is not loaded; instead, you see something like:
+```bash
+# insmod hello.ko
+Error inserting './hello.ko': -1 Invalid module format 
+```
+6. Symbol Table is used to tell the function or variable address in the OS.
+
+
+# OTHER GENERAL KEYPOINTS
+1. Symbol Table is used to tell the function or variable address in the OS.
 
 # File Information
 1. `Documentation/kbuild`: To understand the comiling

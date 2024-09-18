@@ -69,3 +69,8 @@ process.
 * Linux does not differentiate Threads and Processes
 * Each thread includes a unique program counter, process stack, and set of processor registers.
 * single program can also has one or more process running for them
+
+
+# DOCUMENTAION LIST
+1. File `<kernelSource>/Documentation/changes` tell the required tools and version infos
+2. Files in `<kernelSource>/Documentation/kbuild` tells the building or makefile guide

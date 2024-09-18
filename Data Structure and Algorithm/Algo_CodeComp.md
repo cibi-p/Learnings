@@ -42,6 +42,18 @@ int lcm(int a, int b) {
   return (a * b) / gcd_val;
 }
 ```
+
+### Cllimbing the lealder board (hackerrank)
+There will be the learder board, the new player plays n games, bases on the score of the new player need to update the leader board, if the two player has the same score, they allocated the same rank, next score follows the rank + 1.
+Rank is sorted in descending order, and player score always be in ascending order
+
+(optimal solution )solution:
+1. remove the duplicate ranks
+2. use the binary search to find the correct position of the score. and calucalate rank pased on the index.
+3. since the new player score always in ascending, the next score is always greater that or equal to previous, so start the next iteration from where you find the previous score
+
+( my solution )
+I only followed the step 3 in the above, and handled the duplicated values
 # Medium
 
 # Hard
