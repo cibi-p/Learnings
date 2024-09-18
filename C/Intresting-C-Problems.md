@@ -137,6 +137,8 @@ Roman equivalent of 1525 is mdxxv.**\
     1 4 6 4 1
     ```
 
+    formula is  $$ row = \frac{row!}{col! * (row-col)!}$$
+
     ```c
     /* Produce the given pattern */ 
     #include <stdio.h> 

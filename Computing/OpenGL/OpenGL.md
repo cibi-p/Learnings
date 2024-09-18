@@ -68,7 +68,12 @@ A*B != B*A
 we used to find the above formula in CPU, to not vasting the GPU to calculate everytime for every pixel.
 
 
+**difference between VBO , VAO, EBO**
 # Glossory
 1. **Immediate Mode and Core-Profile**  
     Immediate Mode: fixed function pipline, it is not more flexible for the developer to control, ( it is deprecated now ) ( openGL version <= 3.2 )
     Core-Profile : New mode supported by openGL ( openGL version >= 3.3 )
+
+
+    # mesa 3d has all the demo implementations including EGL, OpenGL, etc..
+    

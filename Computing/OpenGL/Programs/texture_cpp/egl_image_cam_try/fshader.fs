@@ -1,4 +1,5 @@
-#version 330 core
+#version 320 es
+precision mediump float;
 out vec4 FragColor;
 
 in vec3 ourColor;
@@ -10,5 +11,5 @@ uniform sampler2D texture1;
 void main()
 {
 	vec4 temp = texture(texture1, TexCoord);
-	FragColor = temp - 0.0;
+	FragColor = temp + 0.0;
 }
