@@ -57,3 +57,12 @@ I only followed the step 3 in the above, and handled the duplicated values
 # Medium
 
 # Hard
+
+# ALGORITHM
+
+## GREEDY
+In computer science, a greedy algorithm is an algorithm that finds a solution to problems in the shortest time possible. It picks the path that seems optimal at the moment without regard for the overall optimization of the solution that would be formed.
+
+https://www.freecodecamp.org/news/greedy-algorithms/
+
+## TREE

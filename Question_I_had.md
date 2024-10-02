@@ -374,6 +374,7 @@ using EGL Image we can do that
 
 * https://github.com/raspberrypi/userland/blob/master/host_applications/linux/apps/raspicam/gl_scenes/vcsm_square.c
 
+*( drm dump buffer implementation ) https://embear.ch/blog/drm-framebuffer
 
 IN LAP Implementation try
 

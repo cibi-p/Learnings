@@ -239,6 +239,7 @@ Total count = 10
 ```
 **subsequence in non-continuous but only increse order of index**  
 <sub>tag: subsequence, non-continuous</sub> 
+
 ```c
 #include <stdio.h>
 #include <math.h>
