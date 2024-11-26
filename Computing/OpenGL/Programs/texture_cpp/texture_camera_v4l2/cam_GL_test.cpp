@@ -8,6 +8,16 @@
 
 #include <iostream>
 
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+#include <stdio.h>
+
+
+typedef struct {
+    float x,y,z;
+} IMU_3D_COORD;
+
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow *window);
 
@@ -125,7 +135,41 @@ int main()
     }
     stbi_image_free(data);
 
+    std::cout << "started loading IMU data from the file" << std::endl;
+    std::ifstream file("/home/cibi/Documents/Learning/Github_learning/Learnings/Computing/OpenGL/Programs/texture_cpp/texture_camera_v4l2/imu_handshake_rotate_moderate.csv");
+    IMU_3D_COORD *acce = NULL, 
+                 *gyro = NULL;
+    int n;
+    int count = 7831;
+    float t1, t2;
 
+    // Allocate memory for data points
+    acce = (IMU_3D_COORD *)malloc(count * sizeof(IMU_3D_COORD ));
+    gyro = (IMU_3D_COORD *)malloc(count * sizeof(IMU_3D_COORD ));
+
+    // Read data from the file
+        if (file.is_open()) {
+            std::cout<<"in file"<<std::endl;
+            char ca;
+            int  i;
+            while (file >> n >>ca >> acce[i].x  >>ca>> acce[i].y  >>ca>>acce[i].z >>ca>>gyro[i].x >>ca>>gyro[i].y >>ca>>gyro[i].z >>ca>>t1 >>ca>>t2) {
+            //while (file >>n) {
+                 //Process the data
+           //   std::cout <<" "<< n <<" "<< acce[i].x <<" "<< acce[i].y <<" "<<acce[i].z<<" "<<gyro[i].x<<" "<<gyro[i].y<<" "<<gyro[i].z<<" "<<t1<<" "<<t2<<std::endl;
+              //std::cout<<i<<" ";
+              i++;
+            }
+
+            file.close();
+        } else {
+            // Handle file opening error
+            std::cout<<"error in loading data"<<std::endl;
+        }
+        //std::cout<<n<<" ";
+
+
+    std::cout<<"started rendering"<<std::endl;
+    int imuIdx = 0;
     // render loop
     // -----------
     while (!glfwWindowShouldClose(window))
@@ -146,8 +190,29 @@ int main()
         data = stbi_load_from_memory( streamBuff, size, &width, &height, &nrChannels, 0);
         glTexSubImage2D( GL_TEXTURE_2D, 0, 0, 0, width, height, GL_RGB, GL_UNSIGNED_BYTE, data);
 
+        glm::mat4 transform = glm::mat4(1.0f);
+        //transform = glm::scale(transform, glm::vec3(0.8, 0.8, 0.8));
+        transform = glm::translate(transform, glm::vec3(acce[imuIdx].x,acce[imuIdx].y, acce[imuIdx].z));
+        transform = glm::rotate(transform, (float) glm::radians(gyro[imuIdx].x), glm::vec3(1.0f, 0.0f, 0.0f));
+        transform = glm::rotate(transform, (float) glm::radians(gyro[imuIdx].y), glm::vec3(0.0f, 1.0f, 0.0f));
+        imuIdx+=10;
+        int i = imuIdx;
+          //  std::cout <<imuIdx<<" "<< n <<" "<< acce[i].x <<" "<< acce[i].y <<" "<<acce[i].z<<" "<<gyro[i].x<<" "<<gyro[i].y<<" "<<gyro[i].z<<" "<<t1<<" "<<t2<<std::endl;
+        if (imuIdx >  count)
+        {
+            imuIdx = 0;
+            std::cout<<"completed one cycle of imu data"<<std::endl;
+        }
+        //transform = glm::rotate(transform, glm::radians(40.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+
+
         // render container
         ourShader.use();
+
+        unsigned int transformLoc = glGetUniformLocation(ourShader.ID, "transform");
+        glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
+
+
         glBindVertexArray(VAO);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
