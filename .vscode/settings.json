@@ -65,6 +65,9 @@
         "cinttypes": "cpp",
         "typeinfo": "cpp",
         "glad.h": "c",
-        "glad_egl.h": "c"
-    }
+        "glad_egl.h": "c",
+        "ratio": "cpp",
+        "fstream": "cpp"
+    },
+    "ros.distro": "humble"
 }
