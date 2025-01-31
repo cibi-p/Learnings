@@ -16,3 +16,10 @@
 $$=\frac{1}{6}(n)(n+1)(n+2)$$  
 derivation: https://byjus.com/question-answer/the-sum-of-the-series-1-plus-1-plus-2-plus-1-pl-2-plus-3-upto-n-terms-will-be/  
 explanation: https://www.doubtnut.com/qna/43958777 
+
+## Circle
+1. in cicle $x^2+y^2=r$, {x(t),y(t)}={rcosθ,rsinθ}
+
+## vector
+vector projection formula
+https://byjus.com/vector-projection-formula/ ( learn more )

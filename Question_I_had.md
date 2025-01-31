@@ -448,3 +448,5 @@ Example, gpu compile codes at each step ( image it as a c compiling stages )
 * what is ION?
 
 * What is VBO, VAO, VEO
+
+### Image stabilization 

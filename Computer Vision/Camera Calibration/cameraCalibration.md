@@ -6,6 +6,8 @@ when you want to reconstruct the secen you want the coordinate as a millimeter. 
 
 In order to recover the 3D structure of a scene from its images, we need to know the camera's internal and external parameters.
 
+How camera is positioned in the world coordinate is known as the external parameter.
+
 The internal parameters of the camera refer to how the camera maps points in the world onto its image plane, such as its focal length. The external parameters refer to the position and orientation of the camera with respect to the world coordinate frame.
 
 Camera calibration is the process of determining these internal and external parameters.
@@ -30,3 +32,13 @@ which takes you from  3D to 2D
 
 ref:  
 https://in.mathworks.com/help/vision/ug/camera-calibration.html
+
+![image plane](./img/vid2-3-imageplane.png)
+
+![alt text](./img/vid2-4-imageplane.png )
+
+![alt text](./img/vid2-5_perspectiveprojectio.png)
+
+![homogenous](./img/vid2-6_homogeneous.png)
+
+![alt text](./img/vid2-7_homogenousCoordinate.png)
