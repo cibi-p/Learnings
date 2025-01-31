@@ -191,7 +191,8 @@ int main()
         glTexSubImage2D( GL_TEXTURE_2D, 0, 0, 0, width, height, GL_RGB, GL_UNSIGNED_BYTE, data);
 
         glm::mat4 transform = glm::mat4(1.0f);
-        //transform = glm::scale(transform, glm::vec3(0.8, 0.8, 0.8));
+#define scale_val 0.8
+        transform = glm::scale(transform, glm::vec3(scale_val, scale_val, scale_val));
         transform = glm::translate(transform, glm::vec3(acce[imuIdx].x,acce[imuIdx].y, acce[imuIdx].z));
         transform = glm::rotate(transform, (float) glm::radians(gyro[imuIdx].x), glm::vec3(1.0f, 0.0f, 0.0f));
         transform = glm::rotate(transform, (float) glm::radians(gyro[imuIdx].y), glm::vec3(0.0f, 1.0f, 0.0f));

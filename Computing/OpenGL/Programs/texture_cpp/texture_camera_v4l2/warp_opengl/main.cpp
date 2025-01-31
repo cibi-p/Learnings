@@ -150,7 +150,7 @@ int main()
 	// (8) Enter the Main-Loop
 	// --------------------------------
 	unsigned int scroll_texture_loc = glGetUniformLocation(main_shader.ID, "scroll_texture");
-	float scroll_horizontally = 0;
+	float scroll_horizontally = 0.9;
 	float scroll_vertically = 0;
 	int direction_x = 1;
 	int direction_y = 1;
@@ -159,8 +159,8 @@ int main()
 	{
 		// (9) Scroll Values Used to Scroll the Image in Fragment Shader
 		// --------------------------------------------------------------------------------
-		scroll_horizontally += (1.0f / 100.0f) * direction_x;
-		scroll_vertically += (1.0f / 100.0f) * direction_y;
+		//scroll_horizontally += (1.0f / 100.0f) * direction_x;
+		//scroll_vertically += (1.0f / 100.0f) * direction_y;
  
 		if (std::abs(scroll_horizontally) > 0.9f) // For: 1 / 120, then 0.5 (not 1, because of std::abs) = Direction changes every 2 seconds for 60Hz monitor.
 			direction_x = -direction_x;

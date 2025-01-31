@@ -16,7 +16,7 @@ mat4 transformation_matrix(vec3 axis, float angle); // Function prototype.
  
 void main() // For texture() ... 0,0 = Image bottom left... 1,1 = Top right.
 {
-	if (abs(shape_xy_pos_flat.y) == 0.75) // Draw triangle
+	if (abs(shape_xy_pos_flat.y) == 0.75 && 0.0 == 1.0 ) // Draw triangle
 	{
 		// Drawing using scrolling X value
 		// -----------------------------------------
