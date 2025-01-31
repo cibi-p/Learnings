@@ -1,0 +1,32 @@
+[1.253s] Invoking command in '/home/cibi/Documents/Learning/Github_learning/Learnings/selfDringing_and_ros2/ros_code/bumperbot_ws_1/src/bumperbot_py_examples': CONDA_PROMPT_MODIFIER=(base) PYTHONPATH=/home/cibi/Documents/Learning/Github_learning/Learnings/selfDringing_and_ros2/ros_code/bumperbot_ws_1/build/bumperbot_py_examples/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/cibi/Documents/Learning/Github_learning/Learnings/selfDringing_and_ros2/ros_code/bumperbot_ws_1/install/bumperbot_py_examples/lib/python3.10/site-packages:${PYTHONPATH} _=/usr/bin/env /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/bumperbot_py_examples build --build-base /home/cibi/Documents/Learning/Github_learning/Learnings/selfDringing_and_ros2/ros_code/bumperbot_ws_1/build/bumperbot_py_examples/build install --record /home/cibi/Documents/Learning/Github_learning/Learnings/selfDringing_and_ros2/ros_code/bumperbot_ws_1/build/bumperbot_py_examples/install.log --single-version-externally-managed install_data
+[1.602s] running egg_info
+[1.602s] creating ../../build/bumperbot_py_examples/bumperbot_py_examples.egg-info
+[1.624s] writing ../../build/bumperbot_py_examples/bumperbot_py_examples.egg-info/PKG-INFO
+[1.626s] writing dependency_links to ../../build/bumperbot_py_examples/bumperbot_py_examples.egg-info/dependency_links.txt
+[1.627s] writing requirements to ../../build/bumperbot_py_examples/bumperbot_py_examples.egg-info/requires.txt
+[1.627s] writing top-level names to ../../build/bumperbot_py_examples/bumperbot_py_examples.egg-info/top_level.txt
+[1.779s] writing manifest file '../../build/bumperbot_py_examples/bumperbot_py_examples.egg-info/SOURCES.txt'
+[1.835s] reading manifest file '../../build/bumperbot_py_examples/bumperbot_py_examples.egg-info/SOURCES.txt'
+[1.837s] writing manifest file '../../build/bumperbot_py_examples/bumperbot_py_examples.egg-info/SOURCES.txt'
+[1.837s] running build
+[1.837s] running build_py
+[1.837s] creating /home/cibi/Documents/Learning/Github_learning/Learnings/selfDringing_and_ros2/ros_code/bumperbot_ws_1/build/bumperbot_py_examples/build
+[1.838s] creating /home/cibi/Documents/Learning/Github_learning/Learnings/selfDringing_and_ros2/ros_code/bumperbot_ws_1/build/bumperbot_py_examples/build/lib
+[1.838s] creating /home/cibi/Documents/Learning/Github_learning/Learnings/selfDringing_and_ros2/ros_code/bumperbot_ws_1/build/bumperbot_py_examples/build/lib/bumperbot_py_examples
+[1.838s] copying bumperbot_py_examples/__init__.py -> /home/cibi/Documents/Learning/Github_learning/Learnings/selfDringing_and_ros2/ros_code/bumperbot_ws_1/build/bumperbot_py_examples/build/lib/bumperbot_py_examples
+[1.838s] running install
+[1.846s] running install_lib
+[1.874s] creating /home/cibi/Documents/Learning/Github_learning/Learnings/selfDringing_and_ros2/ros_code/bumperbot_ws_1/install/bumperbot_py_examples/lib/python3.10/site-packages/bumperbot_py_examples
+[1.875s] copying /home/cibi/Documents/Learning/Github_learning/Learnings/selfDringing_and_ros2/ros_code/bumperbot_ws_1/build/bumperbot_py_examples/build/lib/bumperbot_py_examples/__init__.py -> /home/cibi/Documents/Learning/Github_learning/Learnings/selfDringing_and_ros2/ros_code/bumperbot_ws_1/install/bumperbot_py_examples/lib/python3.10/site-packages/bumperbot_py_examples
+[1.876s] byte-compiling /home/cibi/Documents/Learning/Github_learning/Learnings/selfDringing_and_ros2/ros_code/bumperbot_ws_1/install/bumperbot_py_examples/lib/python3.10/site-packages/bumperbot_py_examples/__init__.py to __init__.cpython-310.pyc
+[1.877s] running install_data
+[1.877s] creating /home/cibi/Documents/Learning/Github_learning/Learnings/selfDringing_and_ros2/ros_code/bumperbot_ws_1/install/bumperbot_py_examples/share/ament_index
+[1.877s] creating /home/cibi/Documents/Learning/Github_learning/Learnings/selfDringing_and_ros2/ros_code/bumperbot_ws_1/install/bumperbot_py_examples/share/ament_index/resource_index
+[1.877s] creating /home/cibi/Documents/Learning/Github_learning/Learnings/selfDringing_and_ros2/ros_code/bumperbot_ws_1/install/bumperbot_py_examples/share/ament_index/resource_index/packages
+[1.877s] copying resource/bumperbot_py_examples -> /home/cibi/Documents/Learning/Github_learning/Learnings/selfDringing_and_ros2/ros_code/bumperbot_ws_1/install/bumperbot_py_examples/share/ament_index/resource_index/packages
+[1.877s] copying package.xml -> /home/cibi/Documents/Learning/Github_learning/Learnings/selfDringing_and_ros2/ros_code/bumperbot_ws_1/install/bumperbot_py_examples/share/bumperbot_py_examples
+[1.878s] running install_egg_info
+[1.901s] Copying ../../build/bumperbot_py_examples/bumperbot_py_examples.egg-info to /home/cibi/Documents/Learning/Github_learning/Learnings/selfDringing_and_ros2/ros_code/bumperbot_ws_1/install/bumperbot_py_examples/lib/python3.10/site-packages/bumperbot_py_examples-0.0.0-py3.10.egg-info
+[1.904s] running install_scripts
+[1.967s] writing list of installed files to '/home/cibi/Documents/Learning/Github_learning/Learnings/selfDringing_and_ros2/ros_code/bumperbot_ws_1/build/bumperbot_py_examples/install.log'
+[1.994s] Invoked command in '/home/cibi/Documents/Learning/Github_learning/Learnings/selfDringing_and_ros2/ros_code/bumperbot_ws_1/src/bumperbot_py_examples' returned '0': CONDA_PROMPT_MODIFIER=(base) PYTHONPATH=/home/cibi/Documents/Learning/Github_learning/Learnings/selfDringing_and_ros2/ros_code/bumperbot_ws_1/build/bumperbot_py_examples/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/cibi/Documents/Learning/Github_learning/Learnings/selfDringing_and_ros2/ros_code/bumperbot_ws_1/install/bumperbot_py_examples/lib/python3.10/site-packages:${PYTHONPATH} _=/usr/bin/env /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/bumperbot_py_examples build --build-base /home/cibi/Documents/Learning/Github_learning/Learnings/selfDringing_and_ros2/ros_code/bumperbot_ws_1/build/bumperbot_py_examples/build install --record /home/cibi/Documents/Learning/Github_learning/Learnings/selfDringing_and_ros2/ros_code/bumperbot_ws_1/build/bumperbot_py_examples/install.log --single-version-externally-managed install_data

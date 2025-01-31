@@ -1,0 +1,9 @@
+/home/cibi/Documents/Learning/Github_learning/Learnings/selfDringing_and_ros2/ros_code/bumperbot_ws_1/build/bumperbot_cpp_examples/CMakeFiles/uninstall.dir
+/home/cibi/Documents/Learning/Github_learning/Learnings/selfDringing_and_ros2/ros_code/bumperbot_ws_1/build/bumperbot_cpp_examples/CMakeFiles/bumperbot_cpp_examples_uninstall.dir
+/home/cibi/Documents/Learning/Github_learning/Learnings/selfDringing_and_ros2/ros_code/bumperbot_ws_1/build/bumperbot_cpp_examples/CMakeFiles/test.dir
+/home/cibi/Documents/Learning/Github_learning/Learnings/selfDringing_and_ros2/ros_code/bumperbot_ws_1/build/bumperbot_cpp_examples/CMakeFiles/edit_cache.dir
+/home/cibi/Documents/Learning/Github_learning/Learnings/selfDringing_and_ros2/ros_code/bumperbot_ws_1/build/bumperbot_cpp_examples/CMakeFiles/rebuild_cache.dir
+/home/cibi/Documents/Learning/Github_learning/Learnings/selfDringing_and_ros2/ros_code/bumperbot_ws_1/build/bumperbot_cpp_examples/CMakeFiles/list_install_components.dir
+/home/cibi/Documents/Learning/Github_learning/Learnings/selfDringing_and_ros2/ros_code/bumperbot_ws_1/build/bumperbot_cpp_examples/CMakeFiles/install.dir
+/home/cibi/Documents/Learning/Github_learning/Learnings/selfDringing_and_ros2/ros_code/bumperbot_ws_1/build/bumperbot_cpp_examples/CMakeFiles/install/local.dir
+/home/cibi/Documents/Learning/Github_learning/Learnings/selfDringing_and_ros2/ros_code/bumperbot_ws_1/build/bumperbot_cpp_examples/CMakeFiles/install/strip.dir
