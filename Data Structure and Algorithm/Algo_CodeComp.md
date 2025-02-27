@@ -679,3 +679,59 @@ public:
     }
 };
 ```
+
+**11. h-index**
+
+interesting method.
+
+citation means our research paper is referred in how many other research papers... ( like that )
+
+*h-index*  
+key point: number of citation greater than n researcher paper should equl to citation
+
+According to the [definition of h-index on Wikipedia](https://en.wikipedia.org/wiki/H-index): The h-index is defined as the maximum value of h such that the given researcher has published at least h papers that have each been cited at least h times.
+
+my solution
+
+```c++
+#include <algorithm>
+class Solution {
+public:
+    int hIndex(vector<int>& citations) {
+        sort(citations.begin(), citations.end(), greater<int>());
+        int hIndex = 0;
+        for( int i = 0; i < citations.size(); i++ ) {
+            if(citations[i] >= i + 1)
+                hIndex++;
+            else 
+                break;
+        }
+        return hIndex;
+    }
+};
+```
+
+other solution with O(N) time and O(N) space complexity
+
+```c++
+class Solution {
+public:
+    int hIndex(vector<int>& citations) {
+        int papers = citations.size();
+        vector<int> citationBuckets(papers + 1, 0);
+
+        for (int citation : citations) {
+            citationBuckets[min(citation, papers)]++;
+        }
+
+        int cumulativePapers = 0;
+        for (int hIndex = papers; hIndex >= 0; hIndex--) {
+            cumulativePapers += citationBuckets[hIndex];
+            if (cumulativePapers >= hIndex) {
+                return hIndex;
+            }
+        }
+        return 0;        
+    }
+};
+```
