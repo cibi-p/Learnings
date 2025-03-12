@@ -4,8 +4,30 @@ course from udemy: https://www.udemy.com/course/self-driving-and-ros-2-learn-by-
 Self Driving and ROS 2 Learn By Doing Odometry Control
 
 
-installing ros guide: https://docs.ros.org/en/humble/Installation/Ubuntu-Install-Debs.html
+## Recqiuired installation
+installing ros guide: https://docs.ros.org/en/humble/Installation/Ubuntu-Install-Debs.html  
+ 
+### Furthure configuration 
+( recommended by the udemy self-driving-and-ros2 course )  
+vscode and externsion 
+    - C/C++ extension pack, Python, CMake, XML, MXL Tools, ROS
+ROS2 Necessary package installation  
+```bash
+sudo apt install -y \
+ ros-humble-ros2-control \
+ ros-humble-ros2-controllers \
+ ros-humble-xacro \
+ ros-humble-ros-gz* \
+ ros-humble-*-ros2-control \
+ ros-humble-joint-state-publisher-gui \
+ ros-humble-turtlesim \
+ ros-humble-robot-localization\
+ ros-humble-joy \
+ ros-humble-joy-teleop \
+ ros-humble-tf-transformations \
+ python-pip 
 
+```
 
 ## Introduction
 "Robotics is concerned with the study of those machines that can replace human beings in the execution of a task, as regards both physical activity and decision making"  - Robotics, Sciavicco Siciliano Villani
@@ -139,4 +161,222 @@ ros2 pkg create --build-type ament_python bumperbot_py_examples
 ros2 pkg create --build-type ament_cmake bumperbot_cpp_examples
 
 colcon build
+
+# if you face any error regarding catkin-pkg, run the following command, try agian building
+# pip install catkin-pkg
+
+```
+
+
+**Python simple publishere**
+[Go to this file](/selfDringing_and_ros2/ros_code/bumperBot_ws/src/bumperbot_py_examples/bumperbot_py_examples/simple_publizher.py)
+
+add the file in the [setup.py](/selfDringing_and_ros2/ros_code/bumperBot_ws/src/bumperbot_py_examples/setup.py)
+
+setup.py
+```py
+....
+'console_scripts': [
+            "simple_publisher = bumperbot_py_examples.simple_publizher:main"
+        ],
+    },
+....
+```
+
+add dependencies in the [package.xml](/selfDringing_and_ros2/ros_code/bumperBot_ws/src/bumperbot_py_examples/package.xml)
+
+after that
+
+```bash
+cd bumperbot_ws
+colcon build # to build the changes
+
+#open new terminal and source the bumperbot_ws
+source bumperbot_ws/install/setup.bash
+ros2 run bumperbot_py_examples simple_publisher # this will start the node
+
+#again open the new terminal 
+ros2 topic list # list the topics that are active (it will list /chatter topic which was created by the simple_publisher)
+ros2 topic info /chatter # giver information
+ros2 topic echo /chatter # prints the communication happens in the topic
+ros2 topic hs /chatter --verbose # this command calculates the frequency of the communication happening in topic
+
+```
+
+CPP Simple Publisher
+
+code is in [here](/selfDringing_and_ros2/ros_code/bumperBot_ws/src/bumperbot_cpp_examples/src/simple_publisher.cpp)
+
+put it in src of the bumperbot_cpp_examples
+
+
+modify the CMakeLists.txt under bumperbot_cpp_examples
+
+add the below line in the [CMakeLists.txt](/selfDringing_and_ros2/ros_code/bumperBot_ws/src/bumperbot_cpp_examples/CMakeLists.txt)
+```bash
+...
+find_package(rclcpp REQUIRED)
+find_package(std_msgs REQUIRED)
+
+add_executable(simple_publisher src/simple_publisher.cpp)
+ament_target_dependencies(simple_publisher rclcpp std_msgs)
+
+install(TARGETS
+  simple_publisher
+  DESTINATION lib/${PROJECT_NAME}
+)
+...
+```
+
+add dependencies in [package.xml](/selfDringing_and_ros2/ros_code/bumperBot_ws/src/bumperbot_py_examples/package.xml)
+
+```xml
+...
+  <depend>rclcpp</depend>
+  <depend>std_msgs</depend>
+...
+```
+
+use the same comands as bumperbot-py-expamples to test
+
+**Simple PY Subscriber**
+
+python file: [simple_subscriber.py](/selfDringing_and_ros2/ros_code/bumperBot_ws/src/bumperbot_py_examples/bumperbot_py_examples/simple_subscriber.py)
+
+changes in setup.py
+
+```py
+    entry_points={
+        'console_scripts': [
+            "simple_publisher = bumperbot_py_examples.simple_publizher:main",
+            "simple_subscriber= bumperbot_py_examples.simple_subscriber:main", # new line
+        ],
+    },
+```
+```bash
+colcon build # for building
+ros2 run bumperbot_py_examples simple_subscriber # start listerner
+
+#in new terminal try ros in build publisher
+ros2 topic pub /chatter std_msgs/msg/String 'data: "hello world"' # this will keep saying hello world in that channel
+
+# or u can you bumperbot cpp or py example publisher
+ros2 run bumperbot_py_examples simple_publisher
+```
+
+**CPP simple subscriber**  
+[simple_subscriber.cpp](/selfDringing_and_ros2/ros_code/bumperBot_ws/src/bumperbot_cpp_examples/src/simple_subscriber.cpp)
+
+include the simple_subsciber in the [CMakeLists.txt](/selfDringing_and_ros2/ros_code/bumperBot_ws/src/bumperbot_cpp_examples/CMakeLists.txt) similar to the publisher
+
+## LOCOMOTION
+ Locomotion: Movement or ability to move
+
+ Locomotion is methods such as wheels or legs or drone method are choose by the application. Each method has a unique advantages in there own kind of way.
+
+ 
+ In this course we are learning Wheeled locomotion in that they were 3 type.
+
+ differential drive, ackerman drive, omnidirectional drive
+ ![alt text](/selfDringing_and_ros2/img/wheel_locomotion_types.png)
+
+ state space ( x, y, theta ); //where theta is the angle or orientation of the vechicle
+
+Understanding why wheeled locomotion is efficient in some environment and not in some other.
+
+**Friction effect**
+It will looses more enery in soft surface, and increase the weight on the boat ( since more points is touching the ground ). based on weight trie shape changes and due to that work done will reduce
+
+**Robot Description**  
+1. we can simulate the robot before building the real world, we can even simulate the friction effect... etc
+
+### Simulation
+
+1. Ros2 uses **URDF ( Unified Robot Description Format )** to model our robot. (we can represet the structure and components of the robots through xml tags)
+
+example tags:::
+
+```xml
+<robot> <!--first tag-->
+<link>
+<name></name>
+<visual></visual>
+<collision></collision>
+<intertial></intertial>
+</link>
+
+<joint>
+</joint>
+</robot>   
+```
+
+#### creating the URDF model example node
+
+create package
+```bash
+cd /to/bumperbot_ws/src
+ros2 pkg create --build-type ament_cmake bumperbot_description
+
+#now build
+cd /to/bumperbot_ws/
+colcon build
+
+#create necessary folders
+cd /to/bumperbot_ws/src/bumperbot_description/
+mkdir urdf meshes
+
+#imports the meshes  (stl files are copied here ) selfDringing_and_ros2/ros_code/bumperBot_ws/src/bumperbot_description/meshes
+
+```
+
+put the below code in the /to/bumperbot_ws/src/bumperbot_description/urdf/bumperbot.urdf.xacro
+
+```xml
+<?xml version="1.0"?>
+
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="bumperbot">
+
+  <link name="base_footprint"/>
+
+  <link name="base_link">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="package://bumperbot_description/meshes/base_link.STL"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <joint name="base_joint" type="fixed">
+    <parent link="base_footprint"/>
+    <child link="base_link"/>
+    <origin rpy="0 0 0" xyz="0 0 0.033"/>
+  </joint>
+
+</robot>
+```
+![alt text](./img/urdf_link_image.png)
+
+in CMakeLists.txt of bumperbot_description add below line
+
+```cmake
+install(
+  DIRECTORY meshes urdf
+  DESTINATION share/${PROJECT_NAME}
+)
+```
+
+to display our model,
+
+install ros-humble-urdf-tutorial
+
+```bash
+sudo apt install ros-humble-urdf-tutorial
+
+# to launch the 3d model
+
+ros2 launch urdf_tutorial display.launch.py model:=/media/hari/Studies/github_clone/Learnings/selfDringing_and_ros2/ros_code/bumperBot_ws/src/bumperbot_description/urdf/bumperbot.urdf.xacro
+
+# if the above shows error on RenderingAPI Exception use below command
+export QT_QPA_PLATFORM=xcb
 ```
