@@ -356,6 +356,8 @@ put the below code in the /to/bumperbot_ws/src/bumperbot_description/urdf/bumper
 </robot>
 ```
 ![alt text](./img/urdf_link_image.png)
+![alt text](./img/urdflImage2.png)
+![alt text](./img/urdfLImage3.png)
 
 in CMakeLists.txt of bumperbot_description add below line
 
