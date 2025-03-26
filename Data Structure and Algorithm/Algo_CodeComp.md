@@ -1732,7 +1732,40 @@ public:
     }
 };
 ```
-
+**TwoPointer: 1. valid palindrome**
+https://leetcode.com/problems/valid-palindrome/description/?envType=study-plan-v2&envId=top-interview-150
+```c++
+class Solution {
+public:
+    bool isChar(char *ch) {
+        if(!((*ch >= 'a' && *ch <= 'z') || (*ch >= 'A' && *ch <= 'Z') || (*ch >= '0' && *ch <= '9')))
+            return false;
+        if(*ch >='A' && *ch <= 'Z')
+            *ch += 'a' - 'A';
+        return true;
+    }
+    bool isPalindrome(string s) {
+        int start = 0;
+        int end = s.size() - 1;
+        int updatedChar = 0;
+        //if(s == ".a")
+        //    return true; // i hardcoded this because i dont understand why for "0P" it is false in other case
+        while(start < end) {
+            while(start < end && !isChar(&s[start])) 
+                start++;
+            while(end > start && !isChar(&s[end])) 
+                end--;
+            
+            if(s[start] != s[end])
+                return false;
+            start++;
+            end--;
+            updatedChar++;
+        }
+        return true;
+    }
+};
+```
 **LinkedList: 1. Finding the linked list cycle**
 https://leetcode.com/problems/linked-list-cycle/description
 
