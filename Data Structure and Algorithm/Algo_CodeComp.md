@@ -1735,6 +1735,8 @@ public:
 **TwoPointer: 1. valid palindrome**
 https://leetcode.com/problems/valid-palindrome/description/?envType=study-plan-v2&envId=top-interview-150
 ```c++
+// T: O(N); S: O(1) : 
+// lesson,mistake: time taken > 1h 37min (not readed question properly, straightly went to solving without planning)
 class Solution {
 public:
     bool isChar(char *ch) {
@@ -1766,7 +1768,174 @@ public:
     }
 };
 ```
-**LinkedList: 1. Finding the linked list cycle**
+**Two Pointer: 2. isSubsequence**  
+.e., "ace" is a subsequence of **a**b**c**d**e** while "aec" is not
+```c++
+//my answer T:O(N); S:O(N); time-taken:11min
+class Solution {
+public:
+    bool isSubsequence(string s, string t) {
+        int sIdx = 0;
+        int tIdx = 0;
+        int sSize = s.size();
+        int tSize = t.size();
+        bool result = true;
+        for(tIdx = 0; tIdx < tSize && sIdx < sSize; tIdx++)
+            if(t[tIdx] == s[sIdx])
+                sIdx++;
+        if(sIdx < s.size())
+            result = false;
+        return result;
+    }
+};
+```
+**TwoPointer: 3. Two Sum 11 - Input Array Is Sorted**
+https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/description/?envType=study-plan-v2&envId=top-interview-150
+
+Given a 1-indexed array of integers numbers that is already sorted in non-decreasing order, find two numbers such that they add up to a specific target number. Let these two numbers be numbers[index1] and numbers[index2] where 1 <= index1 < index2 <= numbers.length.
+
+Return the indices of the two numbers, index1 and index2, added by one as an integer array [index1, index2] of length 2.
+
+The tests are generated such that there is exactly one solution. You may not use the same element twice.
+
+Your solution must use only constant extra space.
+```
+Input: numbers = [2,7,11,15], target = 9
+Output: [1,2]
+Explanation: The sum of 2 and 7 is 9. Therefore, index1 = 1, index2 = 2. We return [1, 2].
+```
+
+```c++
+//worst soltuion
+//T: O(N^2); S: O(1)
+class Solution {
+public:
+    vector<int> twoSum(vector<int>& numbers, int target) {
+        int p1 = 0; 
+        int p2 = 1;
+        vector<int> out;
+        int s = numbers.size();
+        for(; p1 < s - 1; p1++) {
+            if(numbers[p1] + numbers[s-1] < target)
+                continue;
+            else if(numbers[p1] + numbers[s-1] == target) {
+                p2 = s - 1;
+                break;
+            }
+            else {
+                bool found = false;
+                for(p2 = p1 + 1; p2 < s; p2++) {
+                    if(numbers[p1] + numbers[p2] == target) {
+                        found = true;
+                        break;
+                    }
+                    else if(numbers[p1] + numbers[p2] > target)
+                        break;
+                }
+                if(found) {
+                    break;
+                }
+            }
+        }
+        out.push_back(p1 + 1);
+        out.push_back(p2 + 1);
+        return out;
+    }
+};
+```
+
+```c++
+//best solution
+class Solution {
+public:
+    vector<int> twoSum(vector<int>& numbers, int target) {
+        int n=numbers.size();
+        int i=0,j=n-1;
+        while(i<=j){
+            int sum=numbers[i]+numbers[j];
+            if(sum==target) return {i+1,j+1};
+            if(sum<target) i++;
+            else j--;
+        }
+        return {};
+    }
+};
+```
+**Two Pointer: 4. Container With Most water**
+You are given an integer array height of length n. There are n vertical lines drawn such that the two endpoints of the ith line are (i, 0) and (i, height[i]).
+
+Find two lines that together with the x-axis form a container, such that the container contains the most water.
+
+Return the maximum amount of water a container can store.
+
+Notice that you may not slant the container.
+![alt text](img/twopointer4.png)
+```
+Input: height = [1,8,6,2,5,4,8,3,7]
+Output: 49
+Explanation: The above vertical lines are represented by array [1,8,6,2,5,4,8,3,7]. In this case, the max area of water (blue section) the container can contain is 49.
+```
+
+mysoltuion
+```c++
+// completed in 27MIN; Average T: O(N); worst : O(n^2); S: O(1)
+class Solution {
+public:
+    int maxArea(vector<int>& height) {
+        int start = 0;
+        int size  = height.size();
+        int end   = size - 1;
+        int max   = 0;
+        int prevEd= end;
+        for (; end >= 1; end--) 
+          {
+            start = 0;
+            if (prevEd != end && height[prevEd] >= height[end])
+                continue;
+            for (; start <= end - 1; start++)
+              {
+                int val = min(height[end] , height[start]) * (end - start);
+                if (val > max) {
+                    max = val;
+                    prevEd = end;
+                }
+              }
+          }
+        return max;
+    }
+};
+```
+
+best solution
+```c++
+//T:O(N), where N is size of height
+//S:O(1)
+class Solution {
+public:
+    int maxArea(vector<int>& height) {
+        if(height.size()<=1)
+            return 0;
+        int n = height.size();
+        int l =0;
+        int r = n-1;
+        int area =0;
+        while(l<r){
+            int h = min(height[l], height[r]);
+            int curArea = (r-l)*h;
+            area = max(area, curArea);
+            if(height[l]<height[r]){
+                l++;
+            }
+            else
+                r--;
+        }
+        return area;
+    }
+};
+```
+
+
+**LinkedList: 1. Finding the linked list cycle**  
 https://leetcode.com/problems/linked-list-cycle/description
 
 ```c++
