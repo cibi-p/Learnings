@@ -1732,6 +1732,60 @@ public:
     }
 };
 ```
+**Other question in comepetion in Strint: Maximize Active Sectio With Trade I**
+You are given a binary string s of length n, where:
+
+'1' represents an active section.  
+'0' represents an inactive section.  
+You can perform at most one trade to maximize the number of active sections in s. In a trade, you:  
+
+Convert a contiguous block of '1's that is surrounded by '0's to all '0's.  
+Afterward, convert a contiguous block of '0's that is surrounded by '1's to all '1's.  
+Return the maximum number of active sections in s after making the optimal trade.  
+
+Note: Treat s as if it is augmented with a '1' at both ends, forming t = '1' + s + '1'. The augmented '1's do not contribute to the final count.  
+ 
+```
+Example 1:
+Input: s = "01"
+Output: 1
+Explanation:
+Because there is no block of '1's surrounded by '0's, no valid trade is possible. The maximum number of active sections is 1.
+```
+
+```cpp
+//Trying to find the maximum number of zeros in left and right of the ones sequently. number of ones in the string  + (max number of zeros in left and right of the ones continuously) will be the answer
+
+// T: O(N); S : O(1); time took (>40min)
+class Solution {
+public:
+    int maxActiveSectionsAfterTrade(string s) {
+        int nuOnes = 0;
+        int lZero  = 0;
+        int rZero  = 0;
+        int maxZero= 0;
+        int len    = s.size();
+        for (int i = 0; i < len; i++) {
+            if (s[i] == '0') {
+                rZero++;
+            }
+            else {
+                if (!(lZero == 0 || rZero == 0)) {
+                    maxZero = max(maxZero, rZero + lZero);
+                }
+                if (rZero != 0)
+                    lZero = rZero;
+                rZero = 0;
+                nuOnes++;
+            }
+        }
+        if(!(lZero == 0 || rZero == 0))
+            maxZero = max(maxZero, lZero + rZero);
+        return nuOnes + maxZero;
+    }
+};
+```
+
 **TwoPointer: 1. valid palindrome**
 https://leetcode.com/problems/valid-palindrome/description/?envType=study-plan-v2&envId=top-interview-150
 ```c++
@@ -1933,8 +1987,203 @@ public:
     }
 };
 ```
+**TwoPointer: 4. ThreeSum**
+```c++
+//my solution time limit exceeded, T:O(N^2); S:O(N)
+//hint section helps me else my solution will be O(N^3) 
+class Solution {
+public:
+    vector<vector<int>> threeSum(vector<int>& nums) {
+        sort(nums.begin(), nums.end());
+        vector<vector<int>> ret3Sums;
+        for(int i = 0; i < nums.size(); i++) {
+            int j = i + 1;
+            int k = nums.size() - 1;
+            while(j < k) {
+                int val = nums[i] + nums[j] + nums[k];
+                if (val == 0) {
+                    vector<int> tar = {nums[i], nums[j], nums[k]};
+                    if(find_if(ret3Sums.begin(), ret3Sums.end(),
+                           [&](const std::vector<int>& inner_vec) {
+                               return inner_vec == tar;
+                           }) == ret3Sums.end()
+                        ){
+                        ret3Sums.push_back({nums[i], nums[j], nums[k]});
+                    }
+                    j++;
+                } 
+                else if (val > 0) 
+                    k--;
+                else
+                    j++;
+            }
+        }
+        return ret3Sums;
+    }
+};
+```
 
+```c++
+//similar to my solution but optimized the finding of the duplicate
+// T: O(N^2); s: O(N)
+class Solution {
+public:
+    vector<vector<int>> threeSum(vector<int>& nums) {
+        vector<vector<int>> res;
+        sort(nums.begin(), nums.end());
 
+        for (int i = 0; i < nums.size(); i++) {
+            if (i > 0 && nums[i] == nums[i-1]) {
+                continue;
+            }
+            
+            int j = i + 1;
+            int k = nums.size() - 1;
+
+            while (j < k) {
+                int total = nums[i] + nums[j] + nums[k];
+
+                if (total > 0) {
+                    k--;
+                } else if (total < 0) {
+                    j++;
+                } else {
+                    res.push_back({nums[i], nums[j], nums[k]});
+                    j++;
+
+                    while (nums[j] == nums[j-1] && j < k) {
+                        j++;
+                    }
+                }
+            }
+        }
+        return res;        
+    }
+};
+```
+
+**Other problem completed similar to Two pointer**  \
+https://leetcode.com/problems/partition-labels/?envType=daily-question&envId=2025-04-01  
+You are given a string s. We want to partition the string into as many parts as possible so that each letter appears in at most one part. For example, the string "ababcc" can be partitioned into ["abab", "cc"], but partitions such as ["aba", "bcc"] or ["ab", "ab", "cc"] are invalid.
+
+Note that the partition is done so that after concatenating all the parts in order, the resultant string should be s.
+
+Return a list of integers representing the size of these parts.
+
+ 
+```
+Example 1:
+
+Input: s = "ababcbacadefegdehijhklij"
+Output: [9,7,8]
+Explanation:
+The partition is "ababcbaca", "defegde", "hijhklij".
+This is a partition so that each letter appears in at most one part.
+A partition like "ababcbacadefegde", "hijhklij" is incorrect, because it splits s into less parts.
+```
+```cpp []
+class Solution {
+public:
+    vector<int> partitionLabels(string s) {
+        unordered_map<char, int> last_occurrence;
+        for (int i = 0; i < s.length(); ++i) {
+            last_occurrence[s[i]] = i;
+        }
+
+        vector<int> partitions;
+        int start = 0;
+        int end = 0;
+
+        for (int i = 0; i < s.length(); ++i) {
+            end = max(end, last_occurrence[s[i]]);
+            if (i == end) {
+                partitions.push_back(end - start + 1);
+                start = i + 1;
+            }
+        }
+        return partitions;
+    }
+};
+```
+**SlidingWindow: 1. Minimum Size Subarray Sum**
+https://leetcode.com/problems/minimum-size-subarray-sum/description/?envType=study-plan-v2&envId=top-interview-150
+Given an array of positive integers nums and a positive integer target, return the minimal length of a subarray whose sum is greater than or equal to target. If there is no such subarray, return 0 instead.
+
+ 
+```
+Example 1:
+
+Input: target = 7, nums = [2,3,1,2,4,3]
+Output: 2
+Explanation: The subarray [4,3] has the minimal length under the problem constraint.
+```
+
+```cpp
+//my solution T: O(N); S: O(N), (took 49min)
+    int minSubArrayLen(int target, vector<int>& nums) {
+        int minV   = INT_MAX;
+        int sum   = 0;
+        int start = 0;
+        int count = 0;
+        for (int i = 0; i < nums.size(); i++) {
+            sum += nums[i];
+            count++;
+            //cout << count <<" " << start << " " << sum <<"\n";
+            if (sum >= target) {
+                minV = min(count, minV);
+                sum -= nums[start];
+                sum -= nums[i];
+                count -= 2;
+                i--;
+                start++;
+               // cout << count <<"Test \n";
+            }
+        }
+        return (minV == INT_MAX) ? 0 : minV;
+    } 
+```
+```cpp
+//other solution for T: O(N*lon(N)), *** USING BINARY SEARCH **
+class Solution {
+public:
+    bool solve(vector<int>& nums,int target,int mid){
+        int i=0,j=mid;
+         int sum=0;
+        for(int k=i;k<j;k++) sum+=nums[k];
+        if(sum>=target) return true;
+        for(int k=j;k<nums.size();k++)
+        {
+
+            sum-=nums[k-j];
+            sum+=nums[k];
+            if(sum>=target) return true;
+        }
+        return false;
+    }
+    int minSubArrayLen(int target, vector<int>& nums) {
+        int n=nums.size();
+        int sum=0;
+        for(auto it:nums) sum+=it;
+        //if(sum==target) return nums.size();
+        if(sum<target) return 0;
+        int l=0;
+        int r=n;
+        int mid;
+        int ans;
+        while(l<=r) {
+             mid=(l+r)/2;
+            if(solve(nums,target,mid)==true){
+                ans=mid;
+                r=mid-1;
+            }
+            else{
+                l=mid+1;
+            }
+        }
+        return ans;
+    }
+};
+```
 **LinkedList: 1. Finding the linked list cycle**  
 https://leetcode.com/problems/linked-list-cycle/description
 
