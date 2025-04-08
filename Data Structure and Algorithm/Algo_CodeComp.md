@@ -2184,6 +2184,38 @@ public:
     }
 };
 ```
+**SlidingWindow: 2. Length of longest substring without repeating characters**  
+```cpp
+//T: O(N); S: O(N)
+//Time taken to pass all testcase 50min
+//Time taken for idea ~28min
+//Time taken for passing 197/987 test case
+class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
+        int longSubStr = 0;
+        int count      = 0;
+        int start      = 0;
+        int len        = s.size();
+        unordered_map<int,int> charHashMap;
+        for (int idx = 0; idx < len; idx++) {
+            count++;
+            if (charHashMap.find(s[idx]) != charHashMap.end()) { // if the element is already presented in map
+                if (charHashMap[s[idx]] >= start) {
+                    start = charHashMap[s[idx]] + 1;
+                    count = idx - start + 1;
+                }
+            }
+            charHashMap[s[idx]] = idx;
+            longSubStr = max(longSubStr, count);
+        }
+        return longSubStr;
+    }
+};
+```
+```c++
+//other efficient solution  AVG T:~O(N). Worst T:O(N^2); S:O(N);
+// but it passess tests in 3ms while mine was 8ms due to hashmap
 **LinkedList: 1. Finding the linked list cycle**  
 https://leetcode.com/problems/linked-list-cycle/description
 
@@ -2235,6 +2267,217 @@ bool hasCycle(ListNode *head) {
         }
         return false;
     }
+```
+**SlidingWindow: 3. Substring with concatenation of all words**
+
+my solution   
+Time limit exceed (passed 179/182 test cases)  
+```c++
+// T: O(N*M)
+// S: O(N*M)
+// TT: 1hr 20min (179/182)
+// Hard Category
+#include<string>
+class Solution {
+public:
+    struct map_struct {
+        int idx;
+        int cn;
+    };
+    vector<int> findSubstring(string s, vector<string>& words) {
+        vector<int> concatStrOut;
+        unordered_map<string, struct map_struct> strMap;
+        unordered_map<string, int> trackCn;
+        int start = 0;
+        int wLen = words[0].size();
+        int max_s_iter = s.size() - wLen + 1;
+        int conCount = 0;
+
+        for (int i = 0; i < words.size(); i++) {
+            strMap[words[i]].idx = i;
+            strMap[words[i]].cn++;
+        }
+
+        for (int i = 0; i < max_s_iter; i++) {
+            string tempStr = s.substr(i,wLen);
+            if (strMap.find(tempStr) != strMap.end()) {
+                //cout << trackCn[tempStr] << " " << strMap[tempStr].cn <<endl;
+                if(trackCn[tempStr] < strMap[tempStr].cn) {
+                    trackCn[tempStr]++;
+                    //cout << i << " \n";
+                    i += wLen - 1;
+                    conCount++;
+                    if (i + 1 < max_s_iter)
+                        continue;
+                }
+            }
+            trackCn.clear();
+            //cout << "\ncount "<< conCount << endl;
+            if (conCount == words.size()) {
+                concatStrOut.push_back(start);
+            }
+            
+            i = start;
+            conCount = 0;
+            start = i + 1;
+            //cout << " " << start << endl;
+        }
+        return concatStrOut;
+    }
+};
+```
+
+```c++
+//Other best solution
+// T: O(N*M) beats 95%
+// S: O(N*M)
+
+class Solution {
+    // This is the reference map.
+    std::unordered_map<std::string, unsigned int> map;
+public:
+    vector<int> findSubstring(string s, vector<string>& words) {
+        std::vector<int> result;
+
+        // Length of each word in words.
+        unsigned int length = words[0].size();
+
+        // Initializing the reference map.
+        map.clear();
+        for (const std::string& word : words)
+            map[word]++;
+
+        // Iterate for each offset
+        // As many times as the number of characters in each word.
+        for (unsigned int offset = 0; offset < length; ++offset) {
+            // Sliding window size.
+            unsigned int size = 0;
+            // Sliding window memory.
+            std::unordered_map<std::string, unsigned int> seen;
+
+            // Iterate over the string, with the step equals to length.
+            for (unsigned int i = offset; i + length <= s.size(); i += length) {
+                // This is the word we're going to check.
+                std::string sub = s.substr(i, length);
+
+                // If the word is absent in the reference map,
+                // we clear the sliding window and move on.
+                auto itr = map.find(sub);
+                if (itr == map.end()) {
+                    seen.clear();
+                    size = 0;
+                    continue;
+                }
+
+                // Increase the number of occurrences
+                // of the word in seen map.
+                ++seen[sub];
+                ++size;
+
+                // To make sure the sliding window is valid,
+                // we need to check only the recent occurrence
+                // against the reference,
+                // because previous occurrences
+                // were checked on previous iterations.
+                while (seen[sub] > itr->second) {
+                    // If the occurrences amount exceeds
+                    // the reference amount,
+                    // we shrink the window from the left until
+                    // the window becomes valid again.
+
+                    // A word at the beginning of the current sliding window.
+                    std::string first = s.substr(i - (size - 1) * length, length);
+
+                    // Remove the occurrence from the window,
+                    // shrinking it from the left.
+                    --seen[first];
+                    --size;
+                }
+                
+                // If we used all words from the words array,
+                // we have found the correct spot
+                // and we need to calculate the beginning
+                // index of the current sliding window.
+                if (size == words.size())
+                    result.push_back(i - (size - 1) * length);
+            }
+        }
+
+        return result;
+    }
+};
+```
+**HashMap: 1. Ransom Note**  
+https://leetcode.com/problems/ransom-note/description/?envType=study-plan-v2&envId=top-interview-150  
+Given two strings ransomNote and magazine, return true if ransomNote can be constructed by using the letters from magazine and false otherwise.
+
+Each letter in magazine can only be used once in ransomNote.
+
+```
+Example 3:
+
+Input: ransomNote = "aa", magazine = "aab"
+Output: true
+
+```
+ 
+
+```cpp
+//my solution
+//T: O(N + M)
+//S: O(N + M)
+//Time Taken: 8min 31sec
+class Solution {
+public:
+    bool canConstruct(string ransomNote, string magazine) {
+        bool b_canConstruct = true;
+        unordered_map<char,int> charMap;
+        int magazine_len   = magazine.size();
+        int ransomNote_len = ransomNote.size();
+        for (int idx = 0; idx < magazine_len; idx++)
+            charMap[magazine[idx]]++;
+
+        for (int idx = 0; idx < ransomNote_len; idx++) {
+            if (charMap[ransomNote[idx]] > 0) {
+                charMap[ransomNote[idx]]--;
+            }
+            else {
+                b_canConstruct = false;
+                break;
+            }
+        }
+        return b_canConstruct;
+    }
+};
+```
+
+```cpp
+//other best solution
+class Solution {
+public:
+      bool canConstruct(string ransomNote, string magazine) {
+        
+        if (ransomNote.length() > magazine.length()) {
+            return false;
+        }
+
+    
+        int letterCount[26] = {0};  
+
+        for (char c : magazine) {
+            letterCount[c - 'a']++;  
+        }
+
+        for (char c : ransomNote) {
+            if (letterCount[c - 'a'] == 0) {  
+                return false; 
+            }
+            letterCount[c - 'a']--;  
+        }
+
+        return true;  
+    }
+};
 ```
 **Heap: 1) Kth Largest element in an array**
 ```c++
