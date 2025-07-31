@@ -5,3 +5,9 @@ Computing/OpenGL/Programs/texture_cpp/Pbo_without_memcpy.txt_temp
 Computing/OpenGL/Programs/texture_cpp/Pbo_with_memcpy.txt_temp
 .vscode/c_cpp_properties.json .vscode/settings.json
 Computing/OpenGL/Programs/include/glm/CMakeLists.txt Computing/OpenGL/Programs/include/glm/common.hpp Computing/OpenGL/Programs/include/glm/copying.txt Computing/OpenGL/Programs/include/glm/detail Computing/OpenGL/Programs/include/glm/exponential.hpp Computing/OpenGL/Programs/include/glm/ext Computing/OpenGL/Programs/include/glm/ext.hpp Computing/OpenGL/Programs/include/glm/fwd.hpp Computing/OpenGL/Programs/include/glm/geometric.hpp Computing/OpenGL/Programs/include/glm/glm.cppm Computing/OpenGL/Programs/include/glm/glm.hpp Computing/OpenGL/Programs/include/glm/gtc Computing/OpenGL/Programs/include/glm/gtx Computing/OpenGL/Programs/include/glm/integer.hpp Computing/OpenGL/Programs/include/glm/mat2x2.hpp Computing/OpenGL/Programs/include/glm/mat2x3.hpp Computing/OpenGL/Programs/include/glm/mat2x4.hpp Computing/OpenGL/Programs/include/glm/mat3x2.hpp Computing/OpenGL/Programs/include/glm/mat3x3.hpp Computing/OpenGL/Programs/include/glm/mat3x4.hpp Computing/OpenGL/Programs/include/glm/mat4x2.hpp Computing/OpenGL/Programs/include/glm/mat4x3.hpp Computing/OpenGL/Programs/include/glm/mat4x4.hpp Computing/OpenGL/Programs/include/glm/matrix.hpp Computing/OpenGL/Programs/include/glm/packing.hpp Computing/OpenGL/Programs/include/glm/simd Computing/OpenGL/Programs/include/glm/trigonometric.hpp Computing/OpenGL/Programs/include/glm/vec2.hpp Computing/OpenGL/Programs/include/glm/vec3.hpp Computing/OpenGL/Programs/include/glm/vec4.hpp Computing/OpenGL/Programs/include/glm/vector_relational.hpp
+selfDringing_and_ros2/ros_code/bumperBot_ws/build/
+selfDringing_and_ros2/ros_code/bumperBot_ws/install/
+selfDringing_and_ros2/ros_code/bumperBot_ws/log/
+*.o
+*.ko
+*.mod.c

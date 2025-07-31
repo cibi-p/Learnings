@@ -100,3 +100,8 @@ Error inserting './hello.ko': -1 Invalid module format
 
 ldd3-book sample programs:
 https://github.com/mharsch/ldd3-samples
+
+
+
+# Useful website tips
+1. for wifi https://www.linuxbabe.com/command-line/ubuntu-server-16-04-wifi-wpa-supplicant

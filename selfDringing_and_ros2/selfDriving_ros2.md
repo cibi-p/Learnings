@@ -382,3 +382,116 @@ ros2 launch urdf_tutorial display.launch.py model:=/media/hari/Studies/github_cl
 # if the above shows error on RenderingAPI Exception use below command
 export QT_QPA_PLATFORM=xcb
 ```
+
+**RViz2**
+
+It alows us to visualize the some ros messages that are published in the ros topic.
+
+It has plugin fory example  
+1. used to visualize the map of the building ( robot to navigate )
+2. visulaize data from sensor such as laser, scanner, (that measure distance)
+3. visualize the image... etc
+
+**NAV2** ( Path planning, obstacle avoidance and etc...)
+
+**PARAMETER EXAMPLE**
+selfDringing_and_ros2/ros_code/bumperBot_ws/src/bumperbot_cpp_examples/src/simple_parameter.cpp
+
+```bash
+selfDringing_and_ros2/ros_code/bumperBot_ws/src/bumperbot_cpp_examples/CMakeLists.txtCMake
+
+find_package(rcl_interfaces REQUIRED)
+...
+
+add_executable(simple_parameter src/simple_parameter.cpp)
+ament_target_dependencies(simple_parameter rclcpp rcl_interfaces)
+
+install(TARGETS
+  simple_publisher
+  simple_subscriber
+  simple_parameter
+  DESTINATION lib/${PROJECT_NAME}
+)
+```
+
+selfDringing_and_ros2/ros_code/bumperBot_ws/src/bumperbot_cpp_examples/package.xml
+```xml
+...
+  <depend>rclcpp</depend>
+  <depend>std_msgs</depend>
+  <depend>rcl_interfaces</depend>
+....
+```
+
+python  
+selfDringing_and_ros2/ros_code/bumperBot_ws/src/bumperbot_py_examples/bumperbot_py_examples/simple_parameter.py
+
+```python setup.py
+    entry_points={
+        'console_scripts': [
+            "simple_publisher = bumperbot_py_examples.simple_publizher:main",
+            "simple_subscriber= bumperbot_py_examples.simple_subscriber:main",
+            "simple_parameter= bumperbot_py_examples.simple_parameter:main",
+        ],
+    },
+```
+
+selfDringing_and_ros2/ros_code/bumperBot_ws/src/bumperbot_py_examples/package.xml
+```xml
+....
+  <depend>rcl_interfaces</depend>
+....
+```
+
+to run the parameter example
+```bash
+s$ ource intall/setup.bash
+$ ros2 run bumperbot_cpp_examples simple_parameter
+
+# in other terminal
+$ ros2 param list
+
+### output 
+/simple_parameter:
+  qos_overrides./parameter_events.publisher.depth
+  qos_overrides./parameter_events.publisher.durability
+  qos_overrides./parameter_events.publisher.history
+  qos_overrides./parameter_events.publisher.reliability
+  simple_int_param
+  simple_string_param
+  use_sim_time
+
+# now run
+$ ros2 param get /simple_parameter simple_int_param 
+Integer value is: 28 #output
+
+# to set the other value close the previouse run session run the below command
+$ ros2 run bumperbot_cpp_examples simple_parameter --ros-args -p simple_int_param:=10
+# now if you run get you will get 10
+$ ros2 param get /simple_parameter simple_int_param 
+Integer value is: 10
+
+# you can also set like thi 
+$ ros2 param set /simple_parameter simple_string_param "hi ros2"
+Set parameter successful  ## output
+
+# the above will result the below message in the ros2 run ... terminal
+[INFO] [1742027109.514520920] [simple_parameter]: Param simple_string_param changed! New value is hi ros2
+
+```
+
+there are other ros param features also
+
+
+```bash
+#other way to move the urdf model ( execute all the 3 commands in seperate terminal after sourncing install/setup.bash)
+$ ros2 run robot_state_publisher robot_state_publisher --ros-args -p robot_description:="$(xacro src/bumperbot_description/urdf/bumperbot.urdf.xacro)"
+
+$ ros2 run joint_state_publisher_gui joint_state_publisher_gui 
+
+$ros2 run rviz2 rviz2
+
+# after this in gui change fixed frame to base_footprint
+#add TF
+#add RobotModel
+# in RobotModel change description topic to /robot_description
