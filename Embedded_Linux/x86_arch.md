@@ -75,3 +75,8 @@ but size of the binary compiled using the gcc is more ( gcc is not compiling the
 -rwxrwxr-x 1 hari hari    16304 Aug  1 08:24 test3* (linked using gcc)
 ```
 
+## Memory mapping
+1. The hardware mapping registers on an x86-64 CPU can map pages of
+2 different sizes - 4096 bytes and 2 megabytes. Linux uses 2 MB pages
+for the kernel and 4 KB pages for most other uses. In some of the more
+recent CPUs there is also support for 1 GB pages.

@@ -27,3 +27,24 @@ make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- Image modules dtbs
 ```bash
 sudo wpa_supplicant -c /etc/wpa_supplicant.conf -i wlan0 &
 ```
+
+**Command to create device file from the userspace**
+```~~
+sudo mknod testdev b 179 
+```
+
+[more details](https://hopeness.medium.com/master-the-linux-mknod-command-a-comprehensive-guide-1c150a546aa8)
+
+**ttyprintk**
+
+using the `/dev/ttyprintk` we can send the message to the dmesg as driver
+
+you can test it like this:
+echo "test message" | sudo tee /dev/ttyprintk
+
+Then check the logs:  
+```sh 
+sudo dmesg | tail -n 10
+```
+
+You should find an entry called test message
