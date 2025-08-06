@@ -11,3 +11,5 @@ selfDringing_and_ros2/ros_code/bumperBot_ws/log/
 *.o
 *.ko
 *.mod.c
+*.cmd
+*.mod
