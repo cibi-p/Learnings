@@ -3,6 +3,8 @@
 
 ARM Architecture Fundamentals Overview: [link](https://www.youtube.com/watch?v=7LqPJGnBPMM)
 
+After this SoC Desgin [An Introdcution to SOC design Development kit](https://github.com/arm-university/Introduction-to-SoC-Design-Education-Kit)
+
 The above video is outdate, but really gives a good starting point or idea, Along side refer the [Arm Architecture Reference Manual for Application processor](https://developer.arm.com/documentation/ddi0487/lb/?lang=en)
 
 
