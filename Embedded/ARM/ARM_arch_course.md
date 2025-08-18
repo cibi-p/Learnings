@@ -2,7 +2,6 @@
 1. [ARM University edx Course](https://www.arm.com/resources/education/online-courses)
 2. [Introduction to Computer Architecture Education kit](https://github.com/arm-university/Introduction-to-Computer-Architecture-Education-Kit?tab=readme-ov-file)
 
-**Week 1:**  
 ## Basic Computer Architecture?
 #### Level of Abstraction
 **Architecture**  
@@ -165,3 +164,31 @@ This example performs vector integer addition:
 ```ASM
 ADD V0.2D, V1.2D, V2.2D
 ```
+
+## Pipelining
+GK: **Pointer Authentication feature in ARM**: What this feature is trying to do is protect against a form of attack called ROP and JOP. These are Return Orientated and Jump Orientated Programming, and it's where an attacker tries to subvert things like the call stack to run legitimate code, but in ways that weren't expected by the programmer or the compiler.
+PAC or Pointer Authentication tries to defend against this kind of attack by using part of an address to provide an encrypted signature. So we can check the signature and the address match and if they don't, we can spot an attack in progress. So why is this a trade-off? Well, because to add security, we want that signature to be as big as possible.
+The bigger the signature, the more bits we use for that, the stronger cryptographically that signature is. The trade-off is: the more bits we use for the signature, the fewer bits we have available for other things, such as the address. So you can have a big signature with a small address, but if you want the address to get bigger, then you get a smaller signature, and that's then cryptographically weaker.
+So the trade-off we have to make when designing a technology like that is: What's the right amount of bits for the signature? What's the strength of cryptography we need from that signature in order to get the design goal,
+
+
+### The Processor Performance Equation
+
+ let's find out how long a program takes to execute.  
+```
+Time taken per instruction = (Average clock cycles per instruction) x (Clock period)
+```
+
+```
+Time taken per program = (Number of instructions in program) x (Average clock cycles per instruction) x (Clock period)
+```
+
+**From the above equation we can reduce the program time by:**  
+1. Either Reduces the number of instructions (ex: loading the two values at the same time could reduce the instructions) (The downside to this approach, is that adding more instructions will require extra circuitry in the processor and therefore we likely increase the clock period. f the extra instructions are rarely used this could even mean an overall decrease in performance. We see this theme often in computer architecture trade-offs that we have to carefully balance.)
+2. Either using the faster transistors (perhaps constructed from a more recent fabrication technology. This would reduce the clock period but may increase costs.)
+
+The rest of this module focuses on an optimization to reduce the clock period called pipelining. This is the most important optimization we use when designing processors.
+
+It uses a similar concept to an assembly line in a factory where work can start on the next item before the previous one finishes.
+
+**Let's take a closer look.** Imagine that each instruction has to go through four circuits in a processor.  If we attempt to do all of these in one clock cycle this means our clock period is the latency of all four circuits added together. If we were to pipeline this, we would add a pipeline register in the middle. This divides the circuit into two sections called stages. Notice that although each instruction takes a similar amount of time to travel down the whole pipeline, the pipeline design can execute nearly twice as many instructions per second. The throughput has doubled. This is because we can set the clock period much shorter. It's now the maximum latency of the two stages. We can pipeline into many stages and this allows for much faster execution of programs. Unfortunately, though, pipelining a real microprocessor design is not quite as simple because the processor has various feedback signals and loops in the circuit.
