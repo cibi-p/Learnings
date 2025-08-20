@@ -192,3 +192,48 @@ The rest of this module focuses on an optimization to reduce the clock period ca
 It uses a similar concept to an assembly line in a factory where work can start on the next item before the previous one finishes.
 
 **Let's take a closer look.** Imagine that each instruction has to go through four circuits in a processor.  If we attempt to do all of these in one clock cycle this means our clock period is the latency of all four circuits added together. If we were to pipeline this, we would add a pipeline register in the middle. This divides the circuit into two sections called stages. Notice that although each instruction takes a similar amount of time to travel down the whole pipeline, the pipeline design can execute nearly twice as many instructions per second. The throughput has doubled. This is because we can set the clock period much shorter. It's now the maximum latency of the two stages. We can pipeline into many stages and this allows for much faster execution of programs. Unfortunately, though, pipelining a real microprocessor design is not quite as simple because the processor has various feedback signals and loops in the circuit.
+
+![Pipelining](./img/AC_Pipelineing.png)
+
+<sub>*In the above image you can see that the 1st circuit has the single stages, and only one block is executing at a time, so the clock period should be high. Since, it need to go 4block in the single clock cycle  
+*In the send circuit, you can see the block are divided using the pipeline registers. in this case the stage 1 and stage 2 run on the same clock period concurrently, clock period also reduces to half, because now it need to run two block.   
+*Similar to the above, but here we have 4 pipeline register. So, the clock period will reduced by 4 times.</sub>
+
+### Pipelining a Microprocessor
+
+![microprocessor block](./img/AC_microprocessor_BlockDiagram.png)
+This diagram shows all the connections needed for a real, unpipelined microprocessor.
+
+1. Each clock cycle, the processor starts by fetching an instruction from the instruction memory.
+2. Once the instruction reaches the decode logic, it is decoded to produce the control signals necessary to execute it.
+3. The exact control signals vary depending on the type of instruction. For example, arithmetic instructions access the register file and interact with the ALU.
+Ultimately, no matter how the instruction was executed, the last step of each clock cycle is to update the program counter. This is done by the branch unit. For non-branch instructions, this just means incrementing the program counter. However, for branch instructions, the branch unit has to do some calculations.
+
+4. When we apply our pipeline optimization to this design,
+we face some challenges. The design has several loops because instructions have dependencies.How can we break these cycles?
+5. The key observation is that not every instruction is the same. In real programs, branch instructions usually make up less than 20 percent of the program. For non-branches, the branch unit doesn't actually need to wait for the ALU before calculating the result.
+6. Let's look at how we can use this fact to pipeline the processor.
+
+![microprocessor pipeline block](./img/AC_microprocessor_pipeline.png)
+
+Once the first instruction reaches the pipeline register,
+we're ready to begin fetching the next instruction.
+The first instruction can be in the execute stage whilst the second instruction is being fetched.Once the first instruction is finished, the second instruction
+is ready to enter the execute stage and a new
+third instruction enters the fetch stage.
+
+What about the branches though?
+Let's imagine this next fourth instruction is a branch.
+The fetch stage works normally until the branch unit,
+but the branch unit cannot proceed.
+Consequently, the pipeline stalls.
+The fetch stage spends a cycle waiting whilst the execute stage executes the branch.
+Finally, once the ALU is done, the branch unit can proceed
+and the next instruction, can be fetched.
+Overall, this means that the processor wasted one cycle stalling
+due to the branch.
+Since only 20 percent of instructions are branches, this means that
+each instruction would require on average 1.2 cycles.
+The same idea of stalling the pipeline can be used to create even longer pipeline designs.
+This diagram shows a typical five-stage processor pipeline.
+In the next video, we'll look at how we can manage or prevent some of the stalls in a design like this.

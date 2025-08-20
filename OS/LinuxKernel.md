@@ -74,3 +74,7 @@ process.
 # DOCUMENTAION LIST
 1. File `<kernelSource>/Documentation/changes` tell the required tools and version infos
 2. Files in `<kernelSource>/Documentation/kbuild` tells the building or makefile guide
+
+
+# Tools in Linux
+1. `hid-tools`: has hid recorder, hid player... etc... (USB)
