@@ -237,3 +237,234 @@ each instruction would require on average 1.2 cycles.
 The same idea of stalling the pipeline can be used to create even longer pipeline designs.
 This diagram shows a typical five-stage processor pipeline.
 In the next video, we'll look at how we can manage or prevent some of the stalls in a design like this.
+
+### The limits of Instruction level Parallelism
+We've seen that instruction-level parallelism can be used on superscalar processors,
+to run them faster than would be possible on a scalar processor.
+But how much of a speedup is this in practice?
+Ultimately, this depends on how much instruction-level parallelism is possible in a typical program.
+How might we measure this?
+We can do this initially without considering any constraints
+that will be imposed by the processor it will run on.
+Let's consider the instructions executed by the program.
+Let's assume that we can predict all the branches in the program perfectly.
+Then we can ignore branch instructions,
+as they don't need to flow down our pipeline.
+Now let's imagine we can execute any instruction as soon as the data it needs is ready.
+That is, we are only restricted by the presence of true data dependencies.
+Note that some dependencies are carried through writes and reads to memory.
+Rather than considering program order,
+we can now just look at the order the dependencies impose on instructions.
+This is referred to as "data-flow analysis."
+Assuming each instruction takes exactly one cycle to execute,
+the fastest possible execution time of the whole program in cycles is given by the longest path in the data-flow graph.
+The instruction-level parallelism of this program is the number of instructions divided by this duration,
+as this gives the average number of instructions we would need
+to be able to execute each cycle to achieve this duration.
+In real programs, this can be anywhere from around five, to hundreds or even thousands.
+An active area of research and innovation for computer architects
+is to imagine processor designs that can expose and exploit as much of this parallelism as possible.
+One insight architects have had is that superscaler processors need to have a fast supply of instructions
+to be able to analyze dependencies effectively.
+This often means that the front end of our processor pipeline is much wider than the rest of the pipeline,
+so that it can "run ahead" and see what behavior the program will have next.
+Fast and accurate branch prediction is vital,
+as we often have to predict multiple branches ahead accurately, to achieve good performance.
+Another key insight is that we don't have to wait to execute the instructions in program order.
+If all the dependencies of an instruction are satisfied,
+the instruction can proceed down the pipeline even if previous instructions are yet to execute.
+This can reduce program execution time by taking advantage of more instruction-level parallelism.
+In practice though, this creates extra complications,
+as we will see in the next module.
+
+## Out of Order Execution
+### Register Renaming
+As we saw in the last module, instruction level parallelism can be used to improve program execution time
+in our microprocessor designs.
+To enable this, the compiler creates an optimized instruction schedule
+when the program is converted into machine code.
+Unfortunately, the compiler cannot know precisely what will happen at run-time,
+so this design is constrained by the order of instructions in the program.
+The compiler won't know what the program's input data will be,
+whether branches will be mispredicted, or whether memory accesses hit or miss in our data cache.
+In contrast, a superscalar processor with "out-of-order" execution can produce an instruction schedule at run-time,
+only constrained by true data dependencies and its hardware limits.
+This schedule is produced on demand and so can even change each time the code runs.
+To do this, we introduce an "issue window" or "issue queue" after the Decode stage.
+This holds instructions until they can be executed,
+not necessarily in the order they arrived in.
+Within this window, instructions can be issued whenever their dependencies are available,
+and when a functional unit is available to process it.
+To be able to detect when an instruction is ready to be issued,
+we must know whether the instruction's dependencies are ready when it enters the issue window.
+We must then update this status as new results are produced.
+To implement this, the names of result registers of executed instructions are broadcast to the issue window.
+The instructions waiting there compare the register names to the registers they require.
+However, this scheme has a problem:
+A register will be written multiple times in the program,
+and since the instructions are executed out-of-order,
+the register name alone is not sufficient to record dependencies.
+It also means that instructions would have to wait
+until all previous reads of a register had finished before executing.
+These are called "false dependencies."
+These problems can be resolved by "renaming" register names at run-time
+so that each "in-flight" instruction writes to a unique destination register.
+We use a "physical register file" that is large enough to ensure we don't run out.
+We keep a "register mapping table" to store the mapping
+between architectural, compiler-assigned registers, and physical registers.
+Register reads to the same architectural register are renamed consistently,
+so that dependencies can be tracked correctly with physical register names.
+Physical registers are reused only when they are no longer used
+by any instruction currently in-flight
+or any entry in the register mapping table.
+The other big issue with out-of-order execution is memory dependencies.
+Load and store instructions can have memory dependencies
+because they access the same memory location.
+To detect this, we need to compare the computed memory addresses
+that the instructions access.
+We thus split memory operations into two steps: address calculator and memory access.
+We issue their address calculation step as soon as the dependencies are available.
+Then, the memory access step is placed in a special load-store queue
+to be sent to our data cache as soon as possible.
+We carefully ensure that operations that access the same address are kept properly ordered,
+but independent accesses can be reordered if beneficial.
+No access can occur until the addresses of all previous accesses are known.
+Since memory writes are irreversible,
+store instructions must also wait until we are certain that they will execute.
+
+### Speculative Execution
+In the previous video, we outlined the concepts of out-of-order execution, and register renaming.
+The issue window will be filled with instructions fetched along the path
+that our branch predictor believes the program will take.
+While we hope our branch predictor will be correct in most cases,
+it will sometimes be wrong.
+How do we handle such cases?
+A simple approach is to start by recording the original program order of the instructions,
+and then to monitor their progress.
+We call the structure that stores the instructions the "reorder buffer."
+As each instruction executes and produces a result,
+we can mark it as done.
+When the oldest instruction has completed,
+we can remove it from the end of the reorder buffer,
+and the instruction is said to have "committed."
+This stream of committed instructions represents how our program would be executed
+on a simple in-order pipeline or by an unpipelined processor.
+It usefully also provides a point at which we can process exceptions.
+For example, if the program divides by zero or attempts to access memory that does not exist.
+We also check branch instructions as they complete in order.
+If they have been mispredicted, we flush the reorder buffer, our instruction window
+and any currently executing instructions and start fetching down the correct path.
+To preserve correctness, we must also restore our registers
+and the register map table to the values they had when we mispredicted the branch.
+This can be done with the aid of a second register map table,
+updated only when instructions commit in program order.
+This can simply be copied to the map table used by our renaming hardware to "rewind time" for the processor.
+All the register values we need will be present,
+as we don't recycle registers before we know they will not be needed again.
+In reality, handling branches in this way is too slow.
+Processors instead take many copies of the register map tables
+and can handle branches as soon as they are resolved,
+and we discover they have been mispredicted.
+They can also selectively neutralize the in-flight instructions in the datapath
+that are on the wrong path,
+rather than flushing all of these instructions away.
+
+### An out of order superscaler pipeline
+We can now bring everything together
+and look at what a typical pipeline for an out-of-order superscalar processor might look like.
+The Fetch stage is aided by an accurate branch predictor as we met in Module 3.
+It will fetch a group of instructions on every clock cycle.
+This group of instructions will be requested from the instruction cache,
+and will be from consecutive memory locations.
+Branches may reduce the number of useful instructions that can, in practice, be fetched in on each cycle.
+The Decode stage decodes multiple instructions in parallel.
+At this point,
+modern high-performance processors may also split complex instructions into simpler operations or "macro-ops."
+In some cases, there may also be opportunities to combine simple instructions into a single operation.
+The next step on an instruction's journey is renaming to receive a unique destination register.
+As we saw in the last video, this increases opportunities for out-of-order execution.
+Remember, there are several times more physical registers in our processor
+than those available to the compiler.
+Instructions are placed in the reorder buffer,
+and are also "dispatched" to the Issue stage.
+They will wait in the window as necessary,
+and are ready to be issued once all their operands are available.
+In the most complex of today's superscalar processors,
+there may be hundreds of instructions buffered in the issue window at the same time.
+Instructions finally commit in program order.
+At this point, any physical registers that are no longer needed can be added back to the pool of free registers.
+These are then assigned during the register renaming step.
+Once an instruction is issued,
+it reads its operands from the physical register file.
+The Execute stage consists of many functional units operating in parallel.
+These may each support different operations and take different numbers of cycles to execute.
+A network of forwarding paths is also provided
+to ensure we can execute any dependent instruction on the next clock cycle after the generation of the result.
+This requires being able to quickly communicate—or "forward"—
+a result from the output of any functional unit, to the input of any other.
+Some instructions will need access to memory.
+After computing their addresses,
+they are placed in the processor's load-store queues.
+"Stores" are sent to memory in program order,
+but "loads" can often be sent out of order,
+and ahead of other older stores or loads that are not yet ready to be issued to memory.
+The memory system reduces the average memory access time
+by providing numerous levels of cache memory.
+After generating results, we write them back to the register file.
+This overview is representative of the fastest modern microprocessors found today
+in laptops, smartphones and servers.
+Whilst much extra innovation goes into real designs,
+they generally follow the ideas discussed in the course.
+
+## The Limits of Superscaler Processors
+One question computer architects always ask themselves is:
+"how much can we scale up our design?"
+Let's take a look at some further potential optimizations to our out-of-order superscalar processor.
+We could try to make it wider.
+For example, by doubling the number of parallel instructions,
+we can fetch, decode and execute more instructions per cycle.
+Would this double our performance?
+Sadly, no, things are not that simple!
+In practice, some components quickly become very complex,
+and performance gains may be hard to extract.
+For example, today's largest machines fetch at most ten instructions per cycle from their instruction caches.
+Fetching more instructions than this offers minimal performance gain,
+despite a large hardware cost.
+If we increase the number of registers, the size of our issue window,
+the size of our load-store queues, or perhaps use a larger and more accurate branch predictor,
+our processor's performance will only improve slightly
+despite a significant increase in the size of these structures.
+After a point, the increase in performance is no longer worth the cost of the extra transistors.
+It's also possible that performance might reduce overall
+as we may need to lower our clock frequency as the structures get larger.
+Finally, we could introduce more pipeline stages,
+but we know this doesn't necessarily lead to higher performance,
+as mispredictions may become more costly.
+The combination of these issues means that extracting performance using instruction-level parallelism alone
+becomes more expensive as more performance is sought.
+This graph shows how the energy cost of executing an instruction grows quickly as we try to build higher performance processors.
+Let's look at some example designs.
+Suppose we have a core, which requires a certain area.
+If we double its area, its performance improves,
+although there is a small rise in energy per instruction.
+If we quadruple its area instead, its performance has now doubled compared to our original core,
+while energy has increased by 50 percent.
+Going further, if we increase our processor's area by a factor of 10,
+performance is only 2 point 5 times our original core,
+but energy per instruction is now 3 times higher.
+Its performance does not improve as fast as the cost of running it!
+Of course, engineers are clever and determined,
+and are constantly developing new techniques to bypass many of these issues.
+This means the performance of processors—even ones running a single thread or program—
+still improves by around 10 to 25 percent each year.
+Nevertheless, ultimately we often need more performance than can be provided by instruction-level parallelism alone.
+A modern solution is to employ multiple processor cores on the same chip—called a "multicore" processor.
+This changes the task for programmers;
+they may need to redesign their programs to take advantage of such parallelism,
+but if they can, it can give vast performance benefits.
+As we've learned throughout the course, every decision involves trade-offs and compromise.
+We are faced with a fascinating but often highly-constrained design problem.
+We've seen how performance bottlenecks, that at first seem impassable, can be overcome with innovative designs.
+What might the future hold for microprocessors?
+Can you think of ideas?
+What would you design?
