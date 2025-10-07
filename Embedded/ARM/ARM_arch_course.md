@@ -235,6 +235,9 @@ due to the branch.
 Since only 20 percent of instructions are branches, this means that
 each instruction would require on average 1.2 cycles.
 The same idea of stalling the pipeline can be used to create even longer pipeline designs.
+
+![five-stage pipeline](./img/AC_Fivestage_pipelines.png)
+
 This diagram shows a typical five-stage processor pipeline.
 In the next video, we'll look at how we can manage or prevent some of the stalls in a design like this.
 
@@ -468,3 +471,483 @@ We've seen how performance bottlenecks, that at first seem impassable, can be ov
 What might the future hold for microprocessors?
 Can you think of ideas?
 What would you design?
+=======
+
+### Pipeline Hazards
+<sub>basic only explained here, for more detail.
+<a herf="https://www.geeksforgeeks.org/computer-organization-architecture/computer-organization-and-architecture-pipelining-set-2-dependencies-and-data-hazard/">GeeksforGeeks page</a>,
+<a herf="https://github.com/arm-university/Introduction-to-Computer-Architecture-Education-Kit/tree/main/Computer-Architecture-Lectures-Armv8-A/contents/Module03_Pipelining">ARM Detailed PPT</a>
+</sub>
+
+- Pipelining allows new instructions to start while others are still in the pipeline, i.e., the execution of instructions is overlapped.
+- There may be cases where an instruction must wait and not move forward in the pipeline to ensure correctness. These cases are known as pipeline hazards:
+  - Structural hazard – arise from resource conflicts
+  - Data hazard – arise from the need to ensure we always respect inter-instruction data dependencies 
+  - Control hazard – are caused by instructions that change the PC, i.e., branches and jumps (details in next module)
+
+#### Structural Hazards
+- Instructions may need to stall in order to wait for access to a shared resource, e.g.:
+  - A functional unit that is not pipelined
+  - A register file read port or register file write port
+  - A memory 
+- Why permit any structural hazards?
+  - Designing for the worst-case may reduce the average (common) case performance, i.e., the added complexity may reduce our CPI but increase our clock period. 
+  - Adding support for the worst-case may be too costly (e.g., in terms of power and area). We may have strict budgets or may want to use these limited resources elsewhere.
+
+#### Data Hazards
+- A data hazard is created whenever the parallel execution of instructions makes it possible for a dependency to be violated.
+
+  - Read After Write (RAW) hazards – produced by true data dependencies, i.e., j attempts to read a source register before i writes to it.
+  - Write After Write (WAW) hazards – produced by output dependencies, i.e., j tries to write to a destination register before it is written by i.
+  - Write After Read (WAR) hazards – produced by anti-dependencies, i.e., j tries to write to a destination before it is read by i.
+
+#### Control Hazard
+![control hazards img](./img/AC_ControlHazards.png)
+
+(CBZ – branches if the operand is equal to zero)  
+If the branch is evaluated in the execute stage, and it is taken, we must convert the two instructions that follow it into NOPs (we waste two cycles).
+
+
+### The Limits of Pipelining
+In the previous videos, we explored how pipelining
+could improve performance by reducing our clock period
+and by overlapping the execution of different instructions.
+We also saw that it was sometimes necessary to stall our pipeline
+to ensure that instructions were executed correctly.
+- Ideally, our average cycles per instruction, or CPI, will remain at 1.0.
+If we must stall, however, this will increase.
+- For example, if 20 percent of our instructions were loads
+and each of these caused one stall cycle, our CPI would be 1.2.
+- If a further 20 percent of instructions were branches,
+and each of these caused two stall cycles, our CPI would be 1.6.
+- The longer we make our pipeline, the more stall cycles there will be,
+and eventually the cost of stalls may outweigh the benefit of the faster clock period.
+- For example, let's imagine we added a stage to our five-stage pipeline from the previous video.
+Now the number of stalls after a branch instruction increases to three, hurting our CPI.
+On the other hand, our clock period would improve.
+So whether or not this helps speed program execution
+would depend on the exact details.
+It may eventually become more difficult to reduce our clock period
+by adding further pipelining stages.
+This is because it becomes harder to perfectly balance the logic between stages
+and because of the constant delays associated with clocking and our pipeline registers.
+To mitigate these issues, we will need to invest in more transistors
+and our design will require more area and power.
+The deeper our pipeline gets, the greater the investment
+we need to make in terms of area and power for the same incremental improvement.
+Commercial processes today have anywhere from `two to twenty pipeline stages`.
+The faster, more expensive and power-hungry processors
+tend to have longer pipelines than the smaller, cheaper processes in embedded devices.
+As with many techniques in computer architecture,
+eventually it becomes more profitable to invest our time and resources
+in an alternative way of improving performance.
+In later modules, we'll explore how we can reduce the CPI, even in heavily pipelined processes.
+
+
+## Handling Branches
+
+In a simple pipeline, it will be necessary to stall the pipeline
+whenever we encounter a branch instruction.
+This is because we must wait until our branch is executed
+before we can be sure which instruction to fetch next.
+As a recap, branches are instructions that change which instruction in the program will be executed next.
+There are two types of branches: `conditional branches` and `unconditional branches`.
+Unconditional branches always change which instruction executes next,
+whereas conditional ones may or may not,
+depending on the computations in the program.
+In real programs, between approximately one fifth and one quarter of all instructions are branches,
+and the majority of these are conditional.
+Executing a branch involves calculating the new address to load into our program counter.
+This is the branch's "target address."
+However, conditional branches have an extra task:
+we must first determine whether the branch is taken.
+If the branch is not taken, we can effectively ignore the branch
+and fetch the next instruction as normal.
+Recall the processor performance equation from an earlier video.
+Since we have to wait for branches to complete before fetching the next instruction, we generate stall cycles.
+These increase the average number of "cycles per instruction,"
+which reduces our microprocessor's performance.
+The longer our pipeline gets, the longer it is
+before each branch is resolved, and the more costly branches become.
+Can you think of a way to avoid some of this stalling?
+
+- One idea is to evaluate branches earlier in the pipeline,
+for example in the Decode stage instead of in the Execute stage.
+This can indeed help to reduce the number of stalls,
+but we may still need to stall if the branch depends on other instructions that haven't been executed yet.
+- Another idea is to continue fetching instructions in program order,
+effectively assuming that each branch is not taken.
+The number of stalls in the pipeline for a not-taken branch is zero in this design.
+On the other hand, if the branch is in fact taken,
+the subsequent instructions that we fetched will be incorrect.
+So, we must remove all instructions that have been
+fetched on this incorrect path from our pipeline.
+This is called "flushing" the pipeline.
+Unfortunately, in real programs, branches are taken much more than not taken.
+Could we then simply assume instead that all branches will be taken?
+Sadly not, no,
+because then we would also need to know the specific "target address" immediately,
+in order to know which instruction to fetch next.
+It may at first seem impossible to know this before the instruction is decoded.
+However, computer architects have found a way to do exactly this.
+
+### Dynamic branch prediction
+The idea of predicting the behavior of the branch instruction before it has even been fetched.
+
+Reference:  
+[1] https://www.cs.umd.edu/~meesh/411/CA-online/chapter/dynamic-branch-prediction/index.html
+[2] https://github.com/arm-university/Introduction-to-Computer-Architecture-Education-Kit/tree/main/Computer-Architecture-Lectures-Armv8-A/contents/Module04_BranchesAndLimitsToPipelining
+
+## Exploiting Instruction level parallelism
+No tutorial in the Course, But read this ppt from arm
+[link](https://github.com/arm-university/Introduction-to-Computer-Architecture-Education-Kit/tree/main/Computer-Architecture-Lectures-Armv8-A/contents/Module05_ExploitingInstructionLevelParallelism)
+
+## Memories
+No tutorial in the Course, But read this ppt from arm
+[link](https://github.com/arm-university/Introduction-to-Computer-Architecture-Education-Kit/tree/main/Computer-Architecture-Lectures-Armv8-A/contents/Module06_Memory)
+## Cache Memories
+[ppt from arm](https://github.com/arm-university/Introduction-to-Computer-Architecture-Education-Kit/tree/main/Computer-Architecture-Lectures-Armv8-A/contents/Module07_Caches)
+### Purpose of cache memories
+So far, we've looked at the microprocessor's "datapath"—
+meaning its execution units, registers, and control circuitry.
+We have given less attention to its memory.
+We usually implement memory using a different type of chip than the microprocessor,
+using a technology called DRAM.
+It is very dense, allowing us to store lots of data in a small area.
+However, one issue with DRAM is its speed.
+Since the 1980s, processor performance has increased very rapidly at roughly 55 percent per year,
+so CPUs of today are many orders of magnitude faster than those of 40 years ago.
+In contrast, memory performance has grown much more modestly.
+Whilst memories are also much faster than they were in previous decades,
+their performance has not kept pace with processors.
+This leads to a processor-memory performance gap,
+with it becoming more costly to access memory as time goes on.
+One of the issues that makes these memories slow is their size.
+We can make a memory as fast as our microprocessor, if it is very small.
+However, this is the opposite of what programmers want.
+Programmers can use extra memory to solve more complex problems,
+or to solve existing problems faster.
+This complicates microprocessor design because although we want a large memory to hold all our data,
+large memories are slow and this slows down our processor.
+How do we overcome this?
+What if we could get the speed benefit of a small memory alongside the size benefit of a large memory?
+One solution is to have a large, slow memory and a small, fast memory in our system.
+For this to be useful, we need the small memory to hold the data that we use most often,
+so that we often get the speed benefits of accessing it,
+and only rarely have to access the slow memory.
+Whilst there are different arrangements of these two memories,
+the configuration that is most often used is an "on-chip cache memory."
+The small memory sits inside the processor between the pipeline and the large memory.
+We keep all data in the large main memory,
+and put copies of often-used data in the small memory, which we call a cache.
+But we are not limited to only one cache!
+Our pipeline reads memory in two places:
+when fetching the instructions; and when accessing the data.
+It makes sense to have two caches here,
+each optimized for different purposes.
+The instruction cache is optimized for fast reading of instructions at Fetch.
+The data cache is optimized for reading and writing data from the memory stage.
+We will often put a larger "level 2" cache between these two caches and the main memory.
+The L2 cache is a "medium-sized" memory:
+faster and smaller than main memory, but slower and larger than the two L1 caches.
+Using a hierarchy of caches reduces the bandwidth requirements to main memory
+and the energy cost of moving data around.
+
+### Patterns that caches Exploit
+We previously looked at the need for a cache,
+which can be used to store often-used data for fast access by the processor.
+But which data is used often enough that it is worth including in the cache?
+Programs are mostly made of loops.
+Here's a simple one that sums values in memory.
+It displays the two characteristics that we can exploit to decide what data to put into a cache.
+Let's look briefly at how it works.
+Each time round the loop, there are two loads and one store.
+The first load is to load the data we're summing.
+The other load, and the store, are to update the running sum.
+Notice two things here.
+First, we access the running sum over and over again;
+each time round the loop.
+Second, when we access part of the data in one loop iteration,
+we've already accessed its predecessor in the previous iteration,
+and will access its successor in the next.
+Caches exploit two types of "locality" in programs in order to be effective.
+* The first is `temporal locality`:
+if a piece of data is accessed, it is likely that it will be accessed again in the near future.
+The running sum has temporal locality.
+* The second type of locality is `spatial locality`:
+If a piece of data is accessed, then its close neighbors are quite likely to be accessed in the near future. By close neighbors, we mean data whose memory addresses are not far from each other.
+The data accesses have spatial locality.
+
+It turns out that most programs exhibit lots of temporal and spatial locality.
+We can exploit this to determine what to put in the cache.
+Exploiting temporal locality is fairly easy:
+we simply see which values have been accessed and place them in the cache.
+Exploiting spatial locality is also quite simple:
+when a piece of data is accessed, place its neighbors in the cache.
+We'll see in the next module how this is actually achieved.
+We use locality to guess what values will be accessed next and store them in the cache.
+If we are correct, we get the benefit of fast memory,
+but if we are wrong, we must perform a slow access to main memory—
+just as we would if the cache were not present.
+In real programs, we see hit rates of 90 percent or more in microprocessor caches,
+resulting in vast performance improvements.
+However, it's worth noting that some programs have less locality,
+and for those programs, caches offer little performance benefit.
+### The construction of a cache
+We've looked at the reasons why we build caches, but how do they actually work?
+To the outside world, a cache simply takes an address as input,
+and either provides the data that is stored at that location at output,
+or returns a signal to say that it doesn't have it.
+If the data is found, this is called a "cache hit".
+If the data is not in the cache, this is called a "cache miss",
+and it means we must look for the data in main memory instead.
+After each miss, we update the contents of the cache.
+The fundamental building block of a cache is called the "cache line".
+It's a number of data bytes from consecutive addresses in main memory.
+Cache lines are typically 32 or 64 bytes long,
+and a cache typically has an array of hundreds to many thousands of lines.
+The line captures spatial locality,
+because it is larger than the data read by a single load instruction.
+When a cache miss occurs,
+the whole line containing that data is copied to the cache from main memory,
+meaning we have nearby values for future accesses.
+When a request comes in, we use some bits from that address to index the line array.
+Just like in the last module on branch prediction,
+this leads to the problem of aliasing again,
+since selecting only some of the bits to index into the array is like a hash.
+This means that many addresses map to the same line in the cache,
+but we can only store one of their lines of data.
+We need to note down which addresses' line is currently stored in the data array,
+in what we call the "tag array".
+There is one tag for each cache line.
+When we access the cache,
+we access the tag array with the same index to see if the data we need is present.
+This design is called a "direct-mapped cache".
+Direct-mapped caches work fairly well, but for some programs,
+we can be unlucky with the program accessing to aliasing lines frequently.
+We can do something about this by duplicating both the arrays,
+so that each line of data can now be stored in one of two places in the cache.
+When we access the cache, we look at both arrays
+and only get a miss if neither of the tags match.
+This is called a "2-way set-associative cache",
+because each line has a set of two places or "ways" it could reside.
+The "associativity" of this cache is therefore two.
+Set-associative caches introduce a further complication:
+when we want to add data, where do we put it?
+In a 2-way set-associative cache, there are two choices.
+How we decide which cache line to evict is called the "replacement policy".
+There are many different types of replacement policy.
+A simple one is just to make a pseudo-random choice from all the possible cache lines.
+Another option is to keep track of when each cache line was last accessed
+and to evict the one last used furthest in the past.
+This is called a "least recently used policy",
+and takes advantage of temporal locality.
+It does, however, means storing extra information in the tags to track usage.
+Many other ideas are possible too.
+Now that we've seen how caches work,
+let's see how they affect the performance of a processor.
+Recall the processor performance equation,
+where the processing time is proportional to the average cycles per instruction.
+Without a data cache, if 20 percent of instructions are loads,
+and main memory takes 20 cycles to access, our CPI figure must be at least 5.
+However, if we provide a cache that holds the required data 80 percent of the time...
+...and only takes 2 cycles to access,
+our CPI reduces to 2.2, which is a significant improvement!
+We can isolate the memory terms in this equation to get the average memory access time
+—abbreviated to AMAT—
+which allows us to compare different cache configurations more easily.
+Changing the cache configuration will impact the AMAT.
+There are many different cache parameters we can change,
+such as the size, replacement policy, associativity,
+whether we put data in the cache for stores or just for loads, and so on.
+For example, reducing the size of the cache will improve the access time for a hit,
+but will also increase the miss rate.
+Let's say that we can halve the access time to 1 with a corresponding halving of the hit rate.
+This alters the AMAT to 13, which in this case is worse for performance overall.
+It's also useful to look at why an address might miss in the cache.
+Broadly speaking, we can divide cache misses into three different categories.
+Compulsory misses occur when we attempt to access an address that we have never seen before
+and so never had the opportunity to cache it.
+Capacity misses occur when there is more data being accessed than the cache could hold,
+even if we had complete freedom in where to put each cache block.
+Conflict misses occur in caches where there are more addresses hashing to the same index
+than arrays to hold the data.
+We can alter our cache configurations to lower these misses,
+but as always, there are trade-offs involved.
+Compulsory misses can be reduced by increasing the cache block size,
+to take advantage of spatial locality.
+But for a fixed cache size,
+this reduces the number of different addresses or cache lines that can be stored.
+A technique called "pre-fetching" can also be used to predict the addresses that will soon be accessed,
+and bring their data into the cache early.
+But this increases energy consumption,
+and may make the cache perform worse if the predictions are not highly accurate.
+Capacity misses can be reduced through increasing the size of the cache.
+Although, as we saw before, this impacts the number of cycles taken to determine a hit.
+Conflict misses can be reduced through increasing the number of cache blocks in each set,
+with an increase in energy consumption as a side effect of this.
+Now that we've seen how caches work,
+let's see how they affect the performance of a processor.
+Recall the processor performance equation,
+where the processing time is proportional to the average cycles per instruction.
+Without a data cache, if 20 percent of instructions are loads,
+and main memory takes 20 cycles to access, our CPI figure must be at least 5.
+However, if we provide a cache that holds the required data 80 percent of the time...
+...and only takes 2 cycles to access,
+our CPI reduces to 2.2, which is a significant improvement!
+We can isolate the memory terms in this equation to get the average memory access time
+—abbreviated to AMAT—
+which allows us to compare different cache configurations more easily.
+Changing the cache configuration will impact the AMAT.
+There are many different cache parameters we can change,
+such as the size, replacement policy, associativity,
+whether we put data in the cache for stores or just for loads, and so on.
+For example, reducing the size of the cache will improve the access time for a hit,
+but will also increase the miss rate.
+Let's say that we can halve the access time to 1 with a corresponding halving of the hit rate.
+This alters the AMAT to 13, which in this case is worse for performance overall.
+It's also useful to look at why an address might miss in the cache.
+Broadly speaking, we can divide cache misses into three different categories.
+Compulsory misses occur when we attempt to access an address that we have never seen before
+and so never had the opportunity to cache it.
+Capacity misses occur when there is more data being accessed than the cache could hold,
+even if we had complete freedom in where to put each cache block.
+Conflict misses occur in caches where there are more addresses hashing to the same index
+than arrays to hold the data.
+We can alter our cache configurations to lower these misses,
+but as always, there are trade-offs involved.
+Compulsory misses can be reduced by increasing the cache block size,
+to take advantage of spatial locality.
+But for a fixed cache size,
+this reduces the number of different addresses or cache lines that can be stored.
+A technique called "pre-fetching" can also be used to predict the addresses that will soon be accessed,
+and bring their data into the cache early.
+But this increases energy consumption,
+and may make the cache perform worse if the predictions are not highly accurate.
+Capacity misses can be reduced through increasing the size of the cache.
+Although, as we saw before, this impacts the number of cycles taken to determine a hit.
+Conflict misses can be reduced through increasing the number of cache blocks in each set,
+with an increase in energy consumption as a side effect of this.
+
+### Measuring Cache Performance
+<sub> Read chapter 7 in the https://github.com/arm-university/Introduction-to-Computer-Architecture-Education-Kit/tree/main/Computer-Architecture-Lectures-Armv8-A/contents/Module07_Caches </sub>
+Now that we've seen how caches work,
+let's see how they affect the performance of a processor.
+Recall the processor performance equation,
+where the processing time is proportional to the average cycles per instruction.
+Without a data cache, if 20 percent of instructions are loads,
+and main memory takes 20 cycles to access, our CPI figure must be at least 5.
+However, if we provide a cache that holds the required data 80 percent of the time...
+...and only takes 2 cycles to access,
+our CPI reduces to 2.2, which is a significant improvement!
+We can isolate the memory terms in this equation to get the average memory access time
+—abbreviated to AMAT—
+which allows us to compare different cache configurations more easily.
+Changing the cache configuration will impact the AMAT.
+There are many different cache parameters we can change,
+such as the size, replacement policy, associativity,
+whether we put data in the cache for stores or just for loads, and so on.
+For example, reducing the size of the cache will improve the access time for a hit,
+but will also increase the miss rate.
+Let's say that we can halve the access time to 1 with a corresponding halving of the hit rate.
+This alters the AMAT to 13, which in this case is worse for performance overall.
+It's also useful to look at why an address might miss in the cache.
+Broadly speaking, we can divide cache misses into three different categories.
+Compulsory misses occur when we attempt to access an address that we have never seen before
+and so never had the opportunity to cache it.
+Capacity misses occur when there is more data being accessed than the cache could hold,
+even if we had complete freedom in where to put each cache block.
+Conflict misses occur in caches where there are more addresses hashing to the same index
+than arrays to hold the data.
+We can alter our cache configurations to lower these misses,
+but as always, there are trade-offs involved.
+Compulsory misses can be reduced by increasing the cache block size,
+to take advantage of spatial locality.
+But for a fixed cache size,
+this reduces the number of different addresses or cache lines that can be stored.
+A technique called "pre-fetching" can also be used to predict the addresses that will soon be accessed,
+and bring their data into the cache early.
+But this increases energy consumption,
+and may make the cache perform worse if the predictions are not highly accurate.
+Capacity misses can be reduced through increasing the size of the cache.
+Although, as we saw before, this impacts the number of cycles taken to determine a hit.
+Conflict misses can be reduced through increasing the number of cache blocks in each set,
+with an increase in energy consumption as a side effect of this.
+
+## Superscalar Processors
+### Instruction-Level Parallelism
+In this module, we'll look at how to further improve performance
+by exploiting "instruction-level parallelism."
+In Module 2, we explored how pipelining can improve the performance of our processor.
+This reduced our clock period,
+and allowed execution of instructions to be overlapped, improving throughput.
+One way to boost performance further would be to create a much deeper pipeline.
+At some point, this would mean even the ALU in our Execute stage will be pipelined.
+Consider the simple program shown in the slide.
+Some instructions are dependent on a result from the previous instruction.
+Remember in our 5-stage pipeline that these dependent instructions
+could be executed in consecutive clock cycles with the aid of data forwarding.
+If execution takes place over two pipeline stages within the pipeline,
+we need to stall if adjacent instruction share a dependency.
+This allows time for the result to be computed.
+The programmer may be able to rewrite their program to get the same result with fewer stalls,
+by placing an independent instruction between our pair of dependent instructions.
+In this case, we can move the third and fifth instructions earlier to optimize performance.
+The performance of programs that run on our "super-pipelined" processor would, to some degree,
+be determined by the availability of independent instructions
+that could be executed in parallel in the pipeline.
+This is "instruction-level parallelism"—or ILP.
+Very deep pipelines are problematic as they would require:
+a very high-frequency clock to be distributed across the chip very precisely;
+careful balancing of logic between many, very short, pipeline stages;
+the pipelining of logic that is difficult to divide further into stages;
+and the division of logic at points requiring many pipelining registers to be inserted.
+A different approach to exploit ILP is to make our pipeline wider rather than deeper.
+In this design, the processor will fetch, decode, and potentially execute multiple instructions each cycle.
+Such a design avoids the problems of a super-pipelined processor,
+although as we'll see in the next video, it does introduce some new complications.
+
+### A Simple Super-Scalar Processor
+![A Simple Super scaler Processor](./img/AC_simpleSuperscalerProcessor.png)
+In this video, we are going to explore "superscalar" processors,
+which can process multiple instructions in each pipeline stage.
+In our simple 5-stage pipeline,
+there is at most one instruction per pipeline stage.
+At best, we can complete one instruction per cycle.
+We call such a design a "scalar" processor.
+In a 2-way superscalar version of this processor,
+we would extend this design so it is able to fetch, decode, execute and writeback up to two instructions at a time.
+In general, superscalar processors may vary the number of instructions that can be processed together in each stage.
+Let's step through the design.
+Our instruction cache will need to supply two instructions per cycle.
+Typical superscalar processors only ever fetch adjacent instructions on a given cycle.
+This can lower performance if, for example,
+the first instruction fetched is a taken branch,
+because then the second would not be required.
+Note that now every cycle lost due to control hazards will cost us two instructions rather than one,
+so accurate branch prediction matters even more in superscalar designs.
+The Decode stage must now decode and read the registers for two instructions simultaneously.
+Fortunately, we are able to extend the register file design
+to read many register values at the same time.
+The Decode stage also needs to check whether the two instructions are independent.
+If so, and if the functional units they both need are available,
+it can "issue" them for execution in parallel on the next clock cycle.
+Otherwise, in this simple design, it will only issue the first, and keep the second back.
+A simple design such as this—where two instructions are fetched, decoded and issued—
+is called a "2-way" or "dual-issue" processor.
+In other designs, the width may vary at different stages of the pipeline.
+To support the execution of multiple instructions at the same time,
+the Execute stage is expanded and contains two execution pipelines.
+It's common for these to have slightly different capabilities to save area.
+For example, the top pipeline can execute both ALU and memory instructions,
+while the second pipeline only executes ALU instructions.
+To ensure that dependent instructions can execute on consecutive clock cycles,
+we must add data forwarding paths.
+These data forwarding paths must allow results stored in either execution pipeline
+to be forwarded to the input of either ALU.
+During writeback, we need to store both results to the register file.
+This means the register file must be redesigned to allow two writes per clock cycle.
+Overall, these changes typically require 25 percent more logic circuitry in our processor,
+compared with a scalar processor.
+But we'd expect an improvement in execution time of between 25 and 30 percent for real world programs.
+
