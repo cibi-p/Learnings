@@ -1,5 +1,7 @@
 # Embedded linux in Raspberrypi
+https://github.com/arm-university/Operating-Systems-Foundations-with-Linux-on-the-Raspberry-Pi (Seems to be a greate resource)
 
+[Kit Link](https://github.com/arm-university/Embedded-Linux-Education-Kit/tree/main/Raspberry_Pi/contents)
 
 # TRM for the Raspberrypi zero 2w
 
