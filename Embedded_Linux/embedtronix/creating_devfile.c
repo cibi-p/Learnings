@@ -11,6 +11,9 @@
 #include<linux/module.h>
 #include<linux/kdev_t.h>
 #include<linux/moduleparam.h>
+#include<linux/device.h>
+#include<linux/fs.h>
+#include<linux/err.h>
  
 
 #if 0
@@ -46,6 +49,7 @@
 #endif
 
 dev_t dev = 0;
+static struct class *dev_class;
 /*
 ** Module init function
 */
@@ -56,6 +60,28 @@ static int __init hello_world_init(void)
           printk(KERN_INFO "Cannot allocate major number for device 1\n");
                 return -1;
         };
+        pr_info("Major = %d Minor = %d \n",MAJOR(dev), MINOR(dev));
+        /*Creating struct class*/
+        dev_class = class_create("test_class");
+        if(IS_ERR(dev_class)){
+            pr_err("Cannot create the struct class for device\n");
+            goto r_class;
+        }
+
+        /*Creating device*/
+        if(IS_ERR(device_create(dev_class,NULL,dev,NULL,"test_device"))){
+            pr_err("Cannot create the Device\n");
+            goto r_device;
+        }
+        pr_info("Kernel Module Inserted Successfully...\n");
+        return 0;
+ 
+r_device:
+        class_destroy(dev_class);
+r_class:
+        unregister_chrdev_region(dev,1);
+        return -1;
+
   #if 0
         // printk(KERN_INFO "ValueETX = %d  \n", valueETX);
         // printk(KERN_INFO "cb_valueETX = %d  \n", cb_valueETX);
@@ -64,8 +90,8 @@ static int __init hello_world_init(void)
         //         printk(KERN_INFO "Arr_value[%d] = %d\n", i, arr_valueETX[i]);
         // }
   #endif
-        printk(KERN_INFO "Kernel Module Inserted Successfully...\n");
-    return 0;
+
+        
 }
 
 /*
@@ -73,6 +99,8 @@ static int __init hello_world_init(void)
 */
 static void __exit hello_world_exit(void)
 {
+    device_destroy(dev_class,dev);
+    class_destroy(dev_class);
     unregister_chrdev_region(dev, 1);
     printk(KERN_INFO "Kernel Module Removed Successfully...\n");
 }
