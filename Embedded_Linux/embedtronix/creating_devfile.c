@@ -16,7 +16,11 @@
 #include<linux/err.h>
 #include<linux/cdev.h>
 #include<linux/slab.h>
- 
+#include<linux/proc_fs.h>
+
+
+#define LINUX_KERNEL_VERSION  612
+
 
 #if 0
 // Code for passing parameters
@@ -57,6 +61,11 @@ static struct class *dev_class;
 static struct cdev etx_cdev;
 uint8_t *kernel_buffer;
 int32_t value = 0;
+static struct proc_dir_entry *parent;
+char etx_array[20]="try_proc_array\n";
+static int len = 1;
+
+
 
 
 /*
@@ -70,6 +79,14 @@ static ssize_t  etx_read(struct file *filp, char __user *buf, size_t len,loff_t 
 static ssize_t  etx_write(struct file *filp, const char *buf, size_t len, loff_t * off);
 static long     etx_ioctl(struct file *file, unsigned int cmd, unsigned long arg);
 
+
+/***************** Procfs Functions *******************/
+static int      open_proc(struct inode *inode, struct file *file);
+static int      release_proc(struct inode *inode, struct file *file);
+static ssize_t  read_proc(struct file *filp, char __user *buffer, size_t length,loff_t * offset);
+static ssize_t  write_proc(struct file *filp, const char *buff, size_t len, loff_t * off);
+
+
 #define WR_VALUE _IOW('a','a',int32_t*)
 #define RD_VALUE _IOR('a','b',int32_t*)
 
@@ -82,6 +99,84 @@ static struct file_operations fops =
     .unlocked_ioctl = etx_ioctl,
     .release    = etx_release,
 };
+
+
+#if ( LINUX_KERNEL_VERSION > 505 )
+/*
+** procfs operation sturcture
+*/
+static struct proc_ops proc_fops = {
+        .proc_open = open_proc,
+        .proc_read = read_proc,
+        .proc_write = write_proc,
+        .proc_release = release_proc
+};
+#else //LINUX_KERNEL_VERSION > 505
+/*
+** procfs operation sturcture
+*/
+static struct file_operations proc_fops = {
+        .open = open_proc,
+        .read = read_proc,
+        .write = write_proc,
+        .release = release_proc
+};
+#endif //LINUX_KERNEL_VERSION > 505
+/*
+** This function will be called when we open the procfs file
+*/
+static int open_proc(struct inode *inode, struct file *file)
+{
+    pr_info("proc file opend.....\t");
+    return 0;
+}
+/*
+** This function will be called when we close the procfs file
+*/
+static int release_proc(struct inode *inode, struct file *file)
+{
+    pr_info("proc file released.....\n");
+    return 0;
+}
+/*
+** This function will be called when we read the procfs file
+*/
+static ssize_t read_proc(struct file *filp, char __user *buffer, size_t length,loff_t * offset)
+{
+    pr_info("proc file read.....\n");
+    if(len)
+    {
+        len=0;
+    }
+    else
+    {
+        len=1;
+        return 0;
+    }
+    
+    if( copy_to_user(buffer,etx_array,20) )
+    {
+        pr_err("Data Send : Err!\n");
+    }
+ 
+    return length;;
+}
+/*
+** This function will be called when we write the procfs file
+*/
+static ssize_t write_proc(struct file *filp, const char *buff, size_t len, loff_t * off)
+{
+    pr_info("proc file wrote.....\n");
+    
+    if( copy_from_user(etx_array,buff,len) )
+    {
+        pr_err("Data Write : Err!\n");
+    }
+    
+    return len;
+}
+
+
 /*
 ** This function will be called when we open the Device file
 */
@@ -179,6 +274,18 @@ static int __init hello_world_init(void)
             pr_err("Cannot create the Device\n");
             goto r_device;
         }
+
+        parent = proc_mkdir("test_drv_dir",NULL);
+        
+        if( parent == NULL )
+        {
+            pr_info("Error creating proc entry");
+            goto r_device;
+        }
+        
+        /*Creating Proc entry under "/proc/etx/" */
+        proc_create("test_drv_proc", 0666, parent, &proc_fops);
+
         pr_info("Kernel Module Inserted Successfully...\n");
         return 0;
  
@@ -205,6 +312,7 @@ r_class:
 */
 static void __exit hello_world_exit(void)
 {
+    proc_remove(parent);
     device_destroy(dev_class,dev);
     class_destroy(dev_class);
     cdev_del(&etx_cdev);
