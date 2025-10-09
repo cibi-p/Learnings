@@ -15,6 +15,7 @@
 #include<linux/fs.h>
 #include<linux/err.h>
 #include<linux/cdev.h>
+#include<linux/slab.h>
  
 
 #if 0
@@ -49,9 +50,15 @@
 // /*-------------------------------------------------------------------------*/
 #endif
 
+#define mem_size        1024           //Memory Size
+
 dev_t dev = 0;
 static struct class *dev_class;
 static struct cdev etx_cdev;
+uint8_t *kernel_buffer;
+int32_t value = 0;
+
+
 /*
 ** Function Prototypes
 */
@@ -61,6 +68,10 @@ static int      etx_open(struct inode *inode, struct file *file);
 static int      etx_release(struct inode *inode, struct file *file);
 static ssize_t  etx_read(struct file *filp, char __user *buf, size_t len,loff_t * off);
 static ssize_t  etx_write(struct file *filp, const char *buf, size_t len, loff_t * off);
+static long     etx_ioctl(struct file *file, unsigned int cmd, unsigned long arg);
+
+#define WR_VALUE _IOW('a','a',int32_t*)
+#define RD_VALUE _IOR('a','b',int32_t*)
 
 static struct file_operations fops =
 {
@@ -68,6 +79,7 @@ static struct file_operations fops =
     .read       = etx_read,
     .write      = etx_write,
     .open       = etx_open,
+    .unlocked_ioctl = etx_ioctl,
     .release    = etx_release,
 };
 /*
@@ -75,6 +87,10 @@ static struct file_operations fops =
 */
 static int etx_open(struct inode *inode, struct file *file)
 {
+        if((kernel_buffer = kmalloc(mem_size , GFP_KERNEL)) == 0){
+            printk(KERN_INFO "Cannot allocate memory in kernel\n");
+            return -1;
+        }
         pr_info("Driver Open Function Called...!!!\n");
         return 0;
 }
@@ -83,6 +99,7 @@ static int etx_open(struct inode *inode, struct file *file)
 */
 static int etx_release(struct inode *inode, struct file *file)
 {
+        kfree(kernel_buffer);
         pr_info("Driver Release Function Called...!!!\n");
         return 0;
 }
@@ -91,6 +108,7 @@ static int etx_release(struct inode *inode, struct file *file)
 */
 static ssize_t etx_read(struct file *filp, char __user *buf, size_t len, loff_t *off)
 {
+        copy_to_user(buf, kernel_buffer, mem_size);
         pr_info("Driver Read Function Called...!!!\n");
         return 0;
 }
@@ -99,10 +117,36 @@ static ssize_t etx_read(struct file *filp, char __user *buf, size_t len, loff_t 
 */
 static ssize_t etx_write(struct file *filp, const char __user *buf, size_t len, loff_t *off)
 {
-        pr_info("Driver Write Function Called...!!!\n");
+        copy_from_user(kernel_buffer, buf, len);
+        pr_info("Driver Write %s \n", buf);
         return len;
 }
-
+/*
+** This function will be called when we write IOCTL on the Device file
+*/
+static long etx_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
+{
+         switch(cmd) {
+                case WR_VALUE:
+                        if( copy_from_user(&value ,(int32_t*) arg, sizeof(value)) )
+                        {
+                                pr_err("Data Write : Err!\n");
+                        }
+                        pr_info("Value = %d\n", value);
+                        break;
+                case RD_VALUE:
+                        if( copy_to_user((int32_t*) arg, &value, sizeof(value)) )
+                        {
+                                pr_err("Data Read : Err!\n");
+                        }
+                        break;
+                default:
+                        pr_info("Default\n");
+                        break;
+        }
+        return 0;
+}
+ 
 
 /*
 ** Module init function
