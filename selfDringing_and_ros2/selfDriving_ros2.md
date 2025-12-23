@@ -13,19 +13,20 @@ vscode and externsion
     - C/C++ extension pack, Python, CMake, XML, MXL Tools, ROS
 ROS2 Necessary package installation  
 ```bash
+export ROS_OS=jazzy
 sudo apt install -y \
- ros-humble-ros2-control \
- ros-humble-ros2-controllers \
- ros-humble-xacro \
- ros-humble-ros-gz* \
- ros-humble-*-ros2-control \
- ros-humble-joint-state-publisher-gui \
- ros-humble-turtlesim \
- ros-humble-robot-localization\
- ros-humble-joy \
- ros-humble-joy-teleop \
- ros-humble-tf-transformations \
- python-pip 
+ ros-$ROS_OS-ros2-control \
+ ros-$ROS_OS-ros2-controllers \
+ ros-$ROS_OS-xacro \
+ ros-$ROS_OS-ros-gz* \
+ ros-$ROS_OS-*-ros2-control \
+ ros-$ROS_OS-joint-state-publisher-gui \
+ ros-$ROS_OS-turtlesim \
+ ros-$ROS_OS-robot-localization\
+ ros-$ROS_OS-joy \
+ ros-$ROS_OS-joy-teleop \
+ ros-$ROS_OS-tf-transformations \
+ python3-pip 
 
 ```
 
@@ -373,7 +374,7 @@ to display our model,
 install ros-humble-urdf-tutorial
 
 ```bash
-sudo apt install ros-humble-urdf-tutorial
+sudo apt install ros-$ROS_OS-urdf-tutorial
 
 # to launch the 3d model
 

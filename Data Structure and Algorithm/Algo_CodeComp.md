@@ -2662,3 +2662,11 @@ public:
 ```
 
 
+## Dynamic Programming
+link: https://www.geeksforgeeks.org/competitive-programming/dynamic-programming/
+
+### 1. How many ways form the number n from the array.
+Note: from Geek for geeks:https://www.geeksforgeeks.org/dsa/solve-dynamic-programming-problem/
+
+
+
