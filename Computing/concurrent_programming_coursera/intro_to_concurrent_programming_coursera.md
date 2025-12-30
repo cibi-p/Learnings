@@ -89,7 +89,7 @@ Flynn's Taxonomy is a classification system that helps us understand different t
 ## Parallel Programming Python
 ### Syntax and patterns
 Note: commonly used 3 methods
-
+Example: [code link](./code/m3_python_parallel_programming/)
 #### Threading
 
 Threading allows you to run multiple threads (smaller units of a process) at the same time. This is useful for tasks that are I/O-bound, like reading files or making network requests.
@@ -163,6 +163,5 @@ Threading is great for I/O-bound tasks and allows multiple threads to run concur
 Asyncio is perfect for handling asynchronous tasks without blocking the program.
 Multiprocessing is ideal for CPU-bound tasks, allowing separate processes to run independently.
 If you have any other concepts from the content that you would like me to explain, feel free to ask!
-
 
 
